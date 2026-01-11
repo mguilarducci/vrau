@@ -9,7 +9,10 @@
       "name": "vrau",
       "description": "Workflow orchestration with autonomous execution and user-driven decisions",
       "version": "0.0.1",
-      "source": "../",
+      "source": {
+        "source": "url",
+        "url": "https://github.com/mguilarducci/vrau.git"
+      },
       "author": {
         "name": "mguilarducci"
       }
