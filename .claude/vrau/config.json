@@ -1,0 +1,14 @@
+{
+  "paths": {
+    "workflows": ".claude/vrau/workflows"
+  },
+  "reviewer": {
+    "lenses": ["security", "architecture", "testability", "maintainability"]
+  },
+  "errorHandling": {
+    "onBrainstormError": "stop_and_ask",
+    "onPlanError": "stop_and_ask",
+    "onExecutionError": "auto_retry_once",
+    "maxRetries": 1
+  }
+}
