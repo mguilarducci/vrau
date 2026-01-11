@@ -1,10 +1,18 @@
 {
   "name": "vrau-marketplace",
   "description": "Vrau workflow orchestration plugin for Claude Code",
+  "owner": {
+    "name": "mguilarducci"
+  },
   "plugins": [
     {
       "name": "vrau",
-      "path": ".."
+      "description": "Workflow orchestration with autonomous execution and user-driven decisions",
+      "version": "0.0.1",
+      "source": "../",
+      "author": {
+        "name": "mguilarducci"
+      }
     }
   ]
 }
