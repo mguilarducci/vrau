@@ -1,0 +1,5 @@
+*.local.*
+
+# Vrau local files
+.claude/vrau/**/*.local.md
+.claude/vrau/**/*.local.json
