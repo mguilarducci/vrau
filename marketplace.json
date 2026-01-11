@@ -1,0 +1,10 @@
+{
+  "name": "vrau-marketplace",
+  "description": "Vrau workflow orchestration plugin for Claude Code",
+  "plugins": [
+    {
+      "name": "vrau",
+      "path": "."
+    }
+  ]
+}
