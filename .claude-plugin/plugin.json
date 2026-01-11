@@ -1,17 +1,12 @@
 {
   "name": "vrau",
-  "version": "0.0.1",
   "description": "Workflow orchestration with autonomous execution and user-driven decisions",
+  "version": "0.0.1",
   "author": {
     "name": "mguilarducci"
   },
+  "homepage": "https://github.com/mguilarducci/vrau",
   "repository": "https://github.com/mguilarducci/vrau",
   "license": "MIT",
-  "keywords": ["workflow", "orchestration", "brainstorm", "planning"],
-  "dependencies": {
-    "plugins": ["superpowers"]
-  },
-  "commands": "./commands/",
-  "skills": "./skills/",
-  "agents": "./agents/"
+  "keywords": ["workflow", "orchestration", "brainstorm", "planning"]
 }
