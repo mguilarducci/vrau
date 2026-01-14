@@ -6,47 +6,44 @@ description: "View or edit vrau configuration"
 
 ## Load Configuration
 
-1. Read `.claude/vrau/config.json` (team defaults)
-2. Read `.claude/vrau/config.local.json` (personal overrides)
+1. Read `.claude/vrau/config.json` (team defaults, committed)
+2. Read `.claude/vrau/config.local.json` (personal overrides, gitignored)
 3. Merge: local overrides team defaults
 
 ## Display Current Config
 
 ```
-Current configuration:
+Vrau Configuration:
 
-  Storage:
-    workflows: <paths.workflows>
+  Reviewer lenses:
+    - security
+    - architecture
+    - testability
+    - maintainability
 
-  Reviewer:
-    lenses: <reviewer.lenses as comma-separated list>
-
-  Error Handling:
-    onBrainstormError: <errorHandling.onBrainstormError>
-    onPlanError: <errorHandling.onPlanError>
-    onExecutionError: <errorHandling.onExecutionError>
-    maxRetries: <errorHandling.maxRetries>
+  Paths:
+    workflows: .claude/vrau/workflows
 
 Options:
-1. Edit setting
+1. Edit reviewer lenses
 2. Reset to defaults
-3. Show config file paths
-4. Done
+3. Done
 ```
 
-## Edit Setting
-
-If user chooses "Edit setting":
+## Edit Reviewer Lenses
 
 ```
-Which setting to edit?
+Current lenses: security, architecture, testability, maintainability
 
-1. Reviewer lenses
-2. onBrainstormError (stop_and_ask | auto_retry_once | log_and_continue)
-3. onPlanError (stop_and_ask | auto_retry_once | log_and_continue)
-4. onExecutionError (stop_and_ask | auto_retry_once | log_and_continue)
-5. maxRetries
-6. Cancel
+Available lenses:
+- security (vulnerabilities, auth, data exposure)
+- architecture (patterns, coupling, scalability)
+- testability (test coverage, mocking, isolation)
+- maintainability (readability, complexity, documentation)
+- performance (efficiency, caching, optimization)
+- accessibility (a11y compliance, usability)
+
+Enter lenses (comma-separated) or 'reset' for defaults:
 ```
 
 Save changes to `.claude/vrau/config.local.json`.
@@ -60,12 +57,6 @@ Save changes to `.claude/vrau/config.local.json`.
   },
   "reviewer": {
     "lenses": ["security", "architecture", "testability", "maintainability"]
-  },
-  "errorHandling": {
-    "onBrainstormError": "stop_and_ask",
-    "onPlanError": "stop_and_ask",
-    "onExecutionError": "auto_retry_once",
-    "maxRetries": 1
   }
 }
 ```

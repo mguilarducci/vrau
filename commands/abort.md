@@ -1,61 +1,66 @@
 ---
-description: "Abandon workflow completely"
+description: "Delete a vrau workflow"
 ---
 
-# Vrau Abort
+# Abort Workflow
 
-Read `.claude/vrau/state.local.json`.
+Delete a workflow folder and its contents.
 
-## Validation
+## Find Workflow
 
-If file not found or state is `idle`:
-- Tell user: "No active workflow to abort."
-- Stop here.
+Scan `.claude/vrau/workflows/` for folders.
+
+If no workflows exist:
+```
+No workflows to abort.
+```
+
+If multiple workflows exist, list them and ask which to delete:
+```
+Found workflows:
+1. 2026-01-10-add-auth
+2. 2026-01-12-fix-api
+3. 2026-01-13-refactor-db
+
+Which workflow to delete?
+```
 
 ## Confirmation
 
-Display current state and ask:
+Show workflow contents and confirm:
 
 ```
-⚠ Abort Workflow
+Delete workflow: 2026-01-10-add-auth
 
-Current workflow: <workflow>
-State: <state>
-Branch: <branch>
+Contents:
+  - brainstorm.md
+  - plan.md
 
-What do you want to do with workflow files?
+1. Delete
+   -> Remove folder and all files
 
-1. Keep files
-   → Files stay in .claude/vrau/workflows/<workflow>/
+2. Archive
+   -> Move to .claude/vrau/archive/
 
-2. Archive files
-   → Move to .claude/vrau/archive/<workflow>/
-
-3. Delete files
-   → Remove workflow folder entirely
-
-4. Cancel
-   → Return without aborting
+3. Cancel
 ```
 
-## Abort Action
+## Execute
 
-Based on choice (1, 2, or 3):
+Based on choice:
 
-1. Perform file action (keep/archive/delete)
+**Delete:**
+```bash
+rm -rf .claude/vrau/workflows/<workflow>
+```
 
-2. Reset `state.local.json`:
-   ```json
-   {
-     "state": "idle"
-   }
-   ```
+**Archive:**
+```bash
+mkdir -p .claude/vrau/archive
+mv .claude/vrau/workflows/<workflow> .claude/vrau/archive/
+```
 
-3. Display:
-   ```
-   ✓ Workflow aborted
-   ✓ Files: <kept|archived|deleted>
-   ✓ State reset to idle
-
-   Use /vrau:start to begin a new workflow.
-   ```
+Display result:
+```
+Workflow deleted/archived.
+```

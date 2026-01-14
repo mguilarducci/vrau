@@ -1,46 +1,60 @@
 ---
-description: "Continue or refine the current brainstorm"
+description: "Continue brainstorming for an existing workflow"
 ---
 
-# Vrau Brainstorm
+# Continue Brainstorm
 
-Read `.claude/vrau/state.local.json`.
+Use this to continue or refine a brainstorm for an existing workflow.
 
-## Validation
+## Find Workflow
 
-If state is not `brainstorming` or `brainstorm_review`:
-- Tell user: "Cannot brainstorm in current state: <state>. Use `/vrau:status` to see details."
-- Stop here.
+Scan `.claude/vrau/workflows/` for folders.
+
+If no workflows exist:
+```
+No workflows found. Use /vrau:start to begin.
+```
+
+If multiple workflows exist, list them and ask which to continue:
+```
+Found workflows:
+1. 2026-01-10-add-auth (has: brainstorm.md, plan.md)
+2. 2026-01-12-fix-api (has: brainstorm.md)
+3. 2026-01-13-refactor-db (empty)
+
+Which workflow?
+```
+
+## Check State
+
+Read the workflow folder contents:
+- If `brainstorm.md` exists → offer to refine or view
+- If no `brainstorm.md` → start fresh brainstorm
 
 ## Actions
 
-### If state is `brainstorming`:
-
-Continue with `superpowers:brainstorming` skill.
-
-If the brainstorm is complete, save to workflow folder:
-- `.claude/vrau/workflows/<workflow>/brainstorm.md`
-
-Update state to `brainstorm_review`.
-
-### If state is `brainstorm_review`:
-
-Ask user:
+### If brainstorm.md exists:
 
 ```
-Brainstorm is complete. What would you like to do?
+Brainstorm exists for this workflow.
 
 1. Refine brainstorm
-   → Return to brainstorming phase
+   -> Continue with superpowers:brainstorming
+   -> Update brainstorm.md
 
 2. View current brainstorm
-   → Display the brainstorm.md contents
+   -> Display contents
 
-3. Proceed to review
-   → Present review options
+3. Re-run review
+   -> Invoke vrau:vrau-reviewer
 ```
 
-Based on choice:
-- **Option 1**: Update state to `brainstorming`, continue with `superpowers:brainstorming`
-- **Option 2**: Read and display `.claude/vrau/workflows/<workflow>/brainstorm.md`
-- **Option 3**: Present review options (checklist / subagent / both / skip)
+### If no brainstorm.md:
+
+Invoke `superpowers:brainstorming` skill.
+
+When complete:
+1. Save to `.claude/vrau/workflows/<workflow>/brainstorm.md`
+2. Invoke `vrau:vrau-reviewer` for review
+3. Follow review loop (max 3 iterations, then ask user)
+4. When approved, proceed to planning (invoke `superpowers:writing-plans`)

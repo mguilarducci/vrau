@@ -8,8 +8,7 @@ description: |
 
 # Vrau Workflow Suggestion
 
-When you detect a complex multi-step task that would benefit from structured
-brainstorming, planning, and execution, suggest using vrau.
+When you detect a complex multi-step task, suggest using vrau.
 
 ## When to Suggest
 
@@ -18,7 +17,6 @@ Suggest vrau for:
 - Refactoring efforts spanning multiple files
 - Bug fixes requiring investigation and multi-step resolution
 - Tasks the user describes with multiple requirements
-- Any task that would benefit from brainstorm → plan → execute flow
 
 Do NOT suggest vrau for:
 - Simple single-file changes
@@ -33,10 +31,10 @@ Present the choice naturally:
 ```
 This looks like a multi-step task that could benefit from structured workflow.
 
-Would you like to use vrau to orchestrate this?
-→ Brainstorm requirements first
-→ Create a detailed plan
-→ Execute with tracking and verification
+Would you like to use vrau?
+-> Brainstorm requirements (with auto-review)
+-> Create a detailed plan (with auto-review)
+-> Execute with tracking
 
 1. Yes, start vrau workflow
 2. No, just help me directly
@@ -44,9 +42,21 @@ Would you like to use vrau to orchestrate this?
 
 If user chooses "Yes", invoke `/vrau:start` with the task description.
 
-If user chooses "No", proceed normally without vrau.
+## Vrau Flow
+
+```
+/vrau:start
+  -> Ask task, branch, workspace setup
+  -> Brainstorm (asks questions, then writes brainstorm.md)
+  -> Auto-review (max 3 iterations)
+  -> Plan (asks questions, then writes plan.md)
+  -> Auto-review (max 3 iterations)
+  -> Execute
+```
+
+State is derived from workflow files - no state file needed.
+Each workflow lives in `.claude/vrau/workflows/<date>-<branch>/`.
 
 ## Key Principle
 
-**Never force vrau.** Always let the user decide. Vrau is for when structure helps,
-not for imposing process on simple tasks.
+**Never force vrau.** Always let the user decide.

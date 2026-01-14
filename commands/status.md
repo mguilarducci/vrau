@@ -1,39 +1,68 @@
 ---
-description: "Show current vrau workflow status"
+description: "Show vrau workflow status"
 ---
 
 # Vrau Status
 
-Read `.claude/vrau/state.local.json`. If not found, display:
+Scan `.claude/vrau/workflows/` for folders.
 
+## No Workflows
+
+If directory doesn't exist or is empty:
 ```
-No active vrau workflow.
+No vrau workflows found.
 Use /vrau:start to begin.
 ```
 
-Otherwise, display status:
+## List Workflows
+
+For each workflow folder, check which files exist and derive state:
+
+| Files Present | State |
+|--------------|-------|
+| (empty folder) | Not started |
+| brainstorm.md only | Brainstorm complete |
+| brainstorm.md + plan.md | Plan complete |
+| brainstorm.md + plan.md + execution-log.md | Execution started |
+
+Display:
 
 ```
-┌─────────────────────────────────────────────┐
-│ VRAU Status                                 │
-├─────────────────────────────────────────────┤
-│ State:    <state>                           │
-│ Branch:   <branch>                          │
-│ Workflow: <workflow>                        │
-│ Started:  <startedAt>                       │
-│ Workspace: <workspaceType>                  │
-│                                             │
-│ Files:                                      │
-│   <✓|○> brainstorm.md                       │
-│   <✓|○> plan.md                             │
-│   <✓|○> execution-log.local.md              │
-└─────────────────────────────────────────────┘
+Vrau Workflows:
+
+  2026-01-10-add-auth
+    State: Plan complete
+    Files: brainstorm.md, plan.md
+
+  2026-01-12-fix-api
+    State: Brainstorm complete
+    Files: brainstorm.md
+
+  2026-01-13-refactor-db
+    State: Not started
+    Files: (none)
+
+Commands:
+  /vrau:start      - Begin new workflow
+  /vrau:brainstorm - Continue brainstorming
+  /vrau:plan       - Continue planning
+  /vrau:execute    - Continue execution
+  /vrau:abort      - Delete workflow
 ```
 
-Check for file existence:
-- `✓` = file exists
-- `○` = file does not exist
+## Single Workflow Detail
 
-If state is `executing`, also show progress from `execution-log.local.md`:
-- Count completed tasks
-- Show current task if in progress
+If user asks about a specific workflow, show more detail:
+
+```
+Workflow: 2026-01-10-add-auth
+
+State: Plan complete
+Created: 2026-01-10
+
+Files:
+  brainstorm.md (2.3 KB)
+  plan.md (4.1 KB)
+
+Next step: /vrau:execute
+```

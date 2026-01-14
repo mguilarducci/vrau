@@ -1,49 +1,55 @@
 ---
-description: "Continue or refine the current plan"
+description: "Continue planning for an existing workflow"
 ---
 
-# Vrau Plan
+# Continue Plan
 
-Read `.claude/vrau/state.local.json`.
+Use this to continue or refine a plan for an existing workflow.
 
-## Validation
+## Find Workflow
 
-If state is not `planning` or `plan_review`:
-- Tell user: "Cannot plan in current state: <state>. Use `/vrau:status` to see details."
-- Stop here.
+Scan `.claude/vrau/workflows/` for folders.
+
+If no workflows exist:
+```
+No workflows found. Use /vrau:start to begin.
+```
+
+If multiple workflows exist, list them with their state and ask which to continue.
+
+## Check State
+
+Read the workflow folder contents:
+- If no `brainstorm.md` → "Cannot plan without brainstorm. Run /vrau:brainstorm first."
+- If `plan.md` exists → offer to refine or view
+- If `brainstorm.md` exists but no `plan.md` → start fresh plan
 
 ## Actions
 
-### If state is `planning`:
-
-Continue with `superpowers:writing-plans` skill.
-
-Reference the brainstorm document at:
-- `.claude/vrau/workflows/<workflow>/brainstorm.md`
-
-When plan is complete, save to workflow folder:
-- `.claude/vrau/workflows/<workflow>/plan.md`
-
-Update state to `plan_review`.
-
-### If state is `plan_review`:
-
-Ask user:
+### If plan.md exists:
 
 ```
-Plan is complete. What would you like to do?
+Plan exists for this workflow.
 
 1. Refine plan
-   → Return to planning phase
+   -> Continue with superpowers:writing-plans
+   -> Update plan.md
 
 2. View current plan
-   → Display the plan.md contents
+   -> Display contents
 
-3. Proceed to review
-   → Present review options
+3. Re-run review
+   -> Invoke vrau:vrau-reviewer
 ```
 
-Based on choice:
-- **Option 1**: Update state to `planning`, continue with `superpowers:writing-plans`
-- **Option 2**: Read and display `.claude/vrau/workflows/<workflow>/plan.md`
-- **Option 3**: Present review options (checklist / subagent / both / skip)
+### If no plan.md (but brainstorm exists):
+
+Invoke `superpowers:writing-plans` skill.
+
+Reference the brainstorm at `.claude/vrau/workflows/<workflow>/brainstorm.md`.
+
+When complete:
+1. Save to `.claude/vrau/workflows/<workflow>/plan.md`
+2. Invoke `vrau:vrau-reviewer` for review
+3. Follow review loop (max 3 iterations, then ask user)
+4. When approved, proceed to execution

@@ -1,59 +1,68 @@
 ---
-description: "Continue execution of the current plan"
+description: "Continue execution for an existing workflow"
 ---
 
-# Vrau Execute
+# Continue Execution
 
-Read `.claude/vrau/state.local.json`.
+Use this to continue or start execution for an existing workflow.
 
-## Validation
+## Find Workflow
 
-If state is not `executing`:
-- Tell user: "Cannot execute in current state: <state>. Use `/vrau:status` to see details."
-- Stop here.
+Scan `.claude/vrau/workflows/` for folders.
 
-## Show Progress
+If no workflows exist:
+```
+No workflows found. Use /vrau:start to begin.
+```
 
-Read `.claude/vrau/workflows/<workflow>/execution-log.local.md` if it exists.
+If multiple workflows exist, list them with their state and ask which to continue.
 
-Display current progress:
+## Check State
 
+Read the workflow folder contents:
+- If no `plan.md` → "Cannot execute without plan. Run /vrau:plan first."
+- If `execution-log.md` exists → show progress and offer to continue
+- If `plan.md` exists but no `execution-log.md` → start execution
+
+## Actions
+
+### If execution-log.md exists:
+
+Read the log and show progress:
 ```
 Execution Progress:
 - Completed: X/Y tasks
-- Current: <task name or "None">
-- Errors: <count or "None">
-```
-
-## Continue Execution
-
-Ask user:
-
-```
-How would you like to proceed?
+- Last task: <task name>
 
 1. Continue execution
-   → Resume from current task
+   -> Resume from where we left off
 
 2. View execution log
-   → Show detailed progress
+   -> Display full log
 
 3. View plan
-   → Show the plan being executed
+   -> Display plan.md
 
-4. Abort execution
-   → Stop and return to idle
+4. Restart execution
+   -> Start from beginning
 ```
 
-Based on choice:
-- **Option 1**: Continue with the execution method originally chosen (subagent or parallel)
-- **Option 2**: Display `execution-log.local.md`
-- **Option 3**: Display `plan.md`
-- **Option 4**: Update state to `idle`, offer cleanup options
+### If no execution-log.md (but plan exists):
 
-## Execution Completion
+```
+Plan approved! Ready to execute.
 
-When all tasks complete:
-1. Update state to `done`
+1. Subagent-driven (this session)
+   -> Uses superpowers:subagent-driven-development
+   -> Fresh subagent per task
+
+2. Parallel session (separate terminal)
+   -> Uses superpowers:executing-plans
+   -> Open new terminal
+```
+
+No auto-review for execution.
+
+When execution completes:
+1. Write execution log to `.claude/vrau/workflows/<workflow>/execution-log.md`
 2. Invoke `superpowers:finishing-a-development-branch`
-3. Present cleanup options
