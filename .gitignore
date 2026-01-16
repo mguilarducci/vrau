@@ -3,3 +3,8 @@
 # Vrau local files
 .claude/vrau/**/*.local.md
 .claude/vrau/**/*.local.json
+
+# Vrau local-only workflow files
+docs/designs/**/.no-commit.local
+docs/designs/**/*.local.md
+.claude/vrau/**/*.local.*
