@@ -1,62 +1,65 @@
 ---
 name: vrau-workflow
 description: |
-  Suggests vrau workflow for complex multi-step tasks.
-  Use when detecting features, refactors, or tasks that
-  would benefit from brainstorming → planning → execution.
+  Use when detecting complex multi-step tasks that would benefit from
+  structured brainstorm → plan → execute workflow. Triggers: new features,
+  refactors, multi-file changes, bug investigations, architectural changes.
 ---
 
 # Vrau Workflow Suggestion
 
-When you detect a complex multi-step task, suggest using vrau.
+Suggest vrau for complex tasks, but never force it.
+
+## Complexity Estimation
+
+Before suggesting vrau, estimate task complexity:
+
+| Signal | Points |
+|--------|--------|
+| Multiple files mentioned | +1 |
+| Multiple components/systems | +1 |
+| Requires investigation first | +1 |
+| User says "feature", "refactor", "redesign", "architecture" | +1 |
+| User says "quick", "small", "just", "simple" | -2 |
+| Single file explicitly mentioned | -1 |
+
+**Threshold:** Suggest vrau when score >= 2
 
 ## When to Suggest
 
-Suggest vrau for:
+Score >= 2 AND task involves:
 - New features with multiple components
-- Refactoring efforts spanning multiple files
-- Bug fixes requiring investigation and multi-step resolution
-- Tasks the user describes with multiple requirements
+- Refactoring spanning multiple files
+- Bug fixes requiring investigation
+- Tasks with multiple requirements
+- Architectural changes or design decisions
 
-Do NOT suggest vrau for:
+## When NOT to Suggest
+
+Score < 2 OR task is:
 - Simple single-file changes
 - Quick fixes or typo corrections
 - Questions or research tasks
-- Tasks the user explicitly wants done immediately
+- Tasks user explicitly wants done immediately
 
 ## How to Suggest
 
-Present the choice naturally:
+Present naturally when score >= 2:
 
 ```
 This looks like a multi-step task that could benefit from structured workflow.
 
 Would you like to use vrau?
--> Brainstorm requirements (with auto-review)
--> Create a detailed plan (with auto-review)
--> Execute with tracking
+→ Brainstorm requirements (with auto-review)
+→ Create detailed plan (with auto-review)
+→ Execute with tracking
 
 1. Yes, start vrau workflow
 2. No, just help me directly
 ```
 
-If user chooses "Yes", invoke `/vrau:start` with the task description.
-
-## Vrau Flow
-
-```
-/vrau:start
-  -> Ask task, branch, workspace setup
-  -> Brainstorm (asks questions, then writes brainstorm.md)
-  -> Auto-review (max 3 iterations)
-  -> Plan (asks questions, then writes plan.md)
-  -> Auto-review (max 3 iterations)
-  -> Execute
-```
-
-State is derived from workflow files - no state file needed.
-Each workflow lives in `.claude/vrau/workflows/<date>-<branch>/`.
+If user chooses "Yes", invoke `/vrau:start`.
 
 ## Key Principle
 
-**Never force vrau.** Always let the user decide.
+**Never force vrau.** Always offer "help directly" as an alternative.
