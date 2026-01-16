@@ -31,6 +31,7 @@ Derive state from folder contents:
 | README.md only | not_started |
 | README.md + design/*.md | brainstorm_complete |
 | README.md + design/*.md + plan/*.md | plan_complete |
+| README.md with "Execution in progress" | executing |
 | README.md with "Execution complete" | done |
 
 ## Output Format
