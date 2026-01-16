@@ -4,11 +4,11 @@ description: "Show vrau workflow status"
 
 # Vrau Status
 
+## Find Workflows
+
 Scan `.claude/vrau/workflows/` for folders.
 
-## No Workflows
-
-If directory doesn't exist or is empty:
+If none exist:
 ```
 No vrau workflows found.
 Use /vrau:start to begin.
@@ -16,7 +16,7 @@ Use /vrau:start to begin.
 
 ## List Workflows
 
-For each workflow folder, check which files exist and derive state:
+Use the `find-workflow` skill's state derivation for each workflow:
 
 | Files Present | State |
 |--------------|-------|
@@ -30,17 +30,9 @@ Display:
 ```
 Vrau Workflows:
 
-  2026-01-10-add-auth
-    State: Plan complete
-    Files: brainstorm.md, plan.md
-
-  2026-01-12-fix-api
-    State: Brainstorm complete
-    Files: brainstorm.md
-
-  2026-01-13-refactor-db
-    State: Not started
-    Files: (none)
+  <workflow-name>
+    State: <state>
+    Files: <file list>
 
 Commands:
   /vrau:start      - Begin new workflow
@@ -52,17 +44,16 @@ Commands:
 
 ## Single Workflow Detail
 
-If user asks about a specific workflow, show more detail:
+If user asks about specific workflow:
 
 ```
-Workflow: 2026-01-10-add-auth
+Workflow: <name>
 
-State: Plan complete
-Created: 2026-01-10
+State: <state>
+Created: <date from folder name>
 
 Files:
-  brainstorm.md (2.3 KB)
-  plan.md (4.1 KB)
+  <file> (<size>)
 
-Next step: /vrau:execute
+Next step: <recommended command>
 ```
