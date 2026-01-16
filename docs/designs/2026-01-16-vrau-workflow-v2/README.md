@@ -64,6 +64,8 @@ docs/designs/{date}-{branch-name-dashes}/
 
 ## Links
 
-- Design files: (to be created)
-- Plan files: (to be created)
-- GitHub Issues: (if option B selected)
+### Design Documents
+- [design/vrau-v2-architecture.md](design/vrau-v2-architecture.md)
+
+### Plan Documents
+- [plan/vrau-v2-implementation.md](plan/vrau-v2-implementation.md)
