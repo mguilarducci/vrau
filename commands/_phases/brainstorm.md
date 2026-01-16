@@ -94,7 +94,7 @@ Wait for user response. If user wants to compact, pause here and let them handle
 
 ```
 Skill tool:
-- skill: "superpowers:receiving-brainstorm-review"
+- skill: "vrau:receiving-brainstorm-review"
 - args: ".claude/vrau/workflows/<workflow>/brainstorm.md"
 ```
 
