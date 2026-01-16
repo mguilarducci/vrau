@@ -52,12 +52,12 @@ Skill tool:
 Immediately after brainstorming completes, save the output:
 
 ```
-.claude/vrau/workflows/<workflow>/brainstorm.md
+docs/designs/<workflow>/design/brainstorm.md
 ```
 
 **Commit immediately:**
 ```bash
-git add .claude/vrau/workflows/<workflow>/brainstorm.md
+git add docs/designs/<workflow>/design/brainstorm.md
 git commit -m "vrau(<workflow>): complete initial brainstorm"
 ```
 
@@ -76,7 +76,7 @@ Before requesting formal review, do a quick self-check:
 If something is missing, add it now. Save and commit:
 
 ```bash
-git add .claude/vrau/workflows/<workflow>/brainstorm.md
+git add docs/designs/<workflow>/design/brainstorm.md
 git commit -m "vrau(<workflow>): refine brainstorm after self-review"
 ```
 
@@ -95,7 +95,7 @@ Wait for user response. If user wants to compact, pause here and let them handle
 ```
 Skill tool:
 - skill: "vrau:receiving-brainstorm-review"
-- args: ".claude/vrau/workflows/<workflow>/brainstorm.md"
+- args: "docs/designs/<workflow>/design/brainstorm.md"
 ```
 
 **Let the skill handle the review process:**
@@ -124,7 +124,7 @@ If the brainstorm is large or complex, consider breaking it down into smaller fe
 
 1. **Create breakdown document:**
    ```
-   .claude/vrau/workflows/<workflow>/brainstorm-breakdown.md
+   docs/designs/<workflow>/design/brainstorm-breakdown.md
    ```
 
 2. **Content format:**
@@ -148,7 +148,7 @@ If the brainstorm is large or complex, consider breaking it down into smaller fe
 
 3. **Commit breakdown:**
    ```bash
-   git add .claude/vrau/workflows/<workflow>/brainstorm-breakdown.md
+   git add docs/designs/<workflow>/design/brainstorm-breakdown.md
    git commit -m "vrau(<workflow>): propose brainstorm breakdown"
    ```
 
@@ -195,7 +195,7 @@ Once brainstorm is approved (and optionally broken down), open a PR for the brai
    - Ready to proceed to planning phase
 
    ## Brainstorm Document
-   See `.claude/vrau/workflows/<workflow>/brainstorm.md`
+   See `docs/designs/<workflow>/design/brainstorm.md`
 
    ## Next Steps
    - Merge this PR

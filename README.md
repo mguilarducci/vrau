@@ -1,21 +1,15 @@
 # Vrau
 
-Workflow orchestration plugin for Claude Code with autonomous execution and user-driven decisions.
+Workflow orchestration plugin for Claude Code.
 
 ## Philosophy
 
-**Autonomous execution, user-driven decisions.**
-
-Vrau automates the development cycle while keeping humans in control of all key decisions:
-
-```
-START → BRAINSTORM → REVIEW → PLAN → REVIEW → EXECUTE → DONE
-```
+Autonomous execution, user-driven decisions.
 
 ## Requirements
 
 - [Claude Code](https://github.com/anthropics/claude-code)
-- [Superpowers](https://github.com/obra/superpowers) plugin (required dependency)
+- [Superpowers](https://github.com/anthropics/superpowers) plugin
 
 ## Installation
 
@@ -23,68 +17,30 @@ START → BRAINSTORM → REVIEW → PLAN → REVIEW → EXECUTE → DONE
 claude plugins add mguilarducci/vrau
 ```
 
-## Commands
+## Usage
 
-| Command | Description |
-|---------|-------------|
-| `/vrau` | Auto-detect state, continue workflow |
-| `/vrau:start` | Begin new workflow |
-| `/vrau:status` | Show current state |
-| `/vrau:brainstorm` | Continue/refine brainstorm |
-| `/vrau:plan` | Continue/refine plan |
-| `/vrau:execute` | Continue execution |
-| `/vrau:config` | View/edit configuration |
-| `/vrau:reset` | Clear state (keeps files) |
-| `/vrau:abort` | Abandon workflow |
+```
+/vrau:start
+```
 
-## Workflow States
+Single command handles everything:
+- Detects existing workflows and offers to resume
+- Creates new workflows with guided setup
+- Progresses through phases automatically
 
-1. **idle** - No active workflow
-2. **brainstorming** - Creating/refining brainstorm
-3. **brainstorm_review** - Awaiting review choice
-4. **planning** - Creating implementation plan
-5. **plan_review** - Awaiting review choice
-6. **executing** - Running the plan
-7. **done** - Workflow complete
+## Workflow
 
-## Review Options
-
-At each review checkpoint:
-- **Guided checklist** - Quick self-review questions
-- **Subagent review** - Fresh-eyes analysis with severity ratings
-- **Both** - Checklist + subagent in parallel
-- **Skip** - Proceed directly
-
-## Configuration
-
-Edit via `/vrau:config` or directly in `.claude/vrau/config.json`:
-
-```json
-{
-  "reviewer": {
-    "lenses": ["security", "architecture", "testability", "maintainability"]
-  },
-  "errorHandling": {
-    "onBrainstormError": "stop_and_ask",
-    "onPlanError": "stop_and_ask",
-    "onExecutionError": "auto_retry_once",
-    "maxRetries": 1
-  }
-}
+```
+START → BRAINSTORM → REVIEW → PLAN → REVIEW → EXECUTE → DONE
 ```
 
 ## File Structure
 
 ```
-.claude/vrau/
-├── workflows/
-│   └── 2026-01-11-feature-name/
-│       ├── brainstorm.md         # Committed
-│       ├── plan.md               # Committed
-│       └── *.local.md            # Local only
-├── config.json                   # Committed (team)
-├── config.local.json             # Local (personal)
-└── state.local.json              # Local (current state)
+docs/designs/<date>-<branch>/
+├── README.md       # Workflow metadata
+├── design/         # Brainstorm outputs
+└── plan/           # Implementation plans
 ```
 
 ## License
