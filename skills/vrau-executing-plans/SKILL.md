@@ -32,7 +32,7 @@ Reads plan's parallel execution groups and dispatches concurrent agents for inde
 **Print ALL superpowers skill phases:**
 
 ```
-TDD (test-driven-development):
+test-driven-development:
   → TDD: RED - writing failing tests
   → TDD: RED - verified tests fail
   → TDD: GREEN - writing minimal code
@@ -40,33 +40,82 @@ TDD (test-driven-development):
   → TDD: REFACTOR - cleaning up
   → TDD: complete
 
-Debugging (systematic-debugging):
-  → DEBUG: reproducing issue
-  → DEBUG: gathering evidence
-  → DEBUG: forming hypothesis
-  → DEBUG: testing hypothesis
-  → DEBUG: root cause identified
-  → DEBUG: implementing fix
+systematic-debugging:
+  → DEBUG: Phase 1 - root cause investigation
+  → DEBUG: Phase 2 - pattern analysis
+  → DEBUG: Phase 3 - hypothesis testing
+  → DEBUG: Phase 4 - implementing fix
   → DEBUG: verifying fix
+  → DEBUG: complete
 
-Brainstorming:
-  → BRAINSTORM: exploring requirements
+brainstorming:
+  → BRAINSTORM: exploring user intent
+  → BRAINSTORM: gathering requirements
   → BRAINSTORM: identifying constraints
   → BRAINSTORM: generating options
   → BRAINSTORM: evaluating trade-offs
+  → BRAINSTORM: finalizing design
   → BRAINSTORM: complete
 
-Code Review:
-  → REVIEW: requesting review
-  → REVIEW: receiving feedback
-  → REVIEW: addressing feedback
-  → REVIEW: complete
-
-Verification:
+verification-before-completion:
   → VERIFY: running tests
   → VERIFY: checking build
-  → VERIFY: confirming output
+  → VERIFY: confirming output matches expected
+  → VERIFY: evidence gathered
   → VERIFY: complete
+
+writing-plans:
+  → PLAN: analyzing requirements
+  → PLAN: identifying tasks
+  → PLAN: defining file paths
+  → PLAN: writing code samples
+  → PLAN: complete
+
+requesting-code-review:
+  → CODE-REVIEW: dispatching reviewer
+  → CODE-REVIEW: waiting for feedback
+  → CODE-REVIEW: feedback received
+
+receiving-code-review:
+  → REVIEW-RESPONSE: evaluating feedback
+  → REVIEW-RESPONSE: verifying claims
+  → REVIEW-RESPONSE: implementing valid changes
+  → REVIEW-RESPONSE: documenting disagreements
+  → REVIEW-RESPONSE: complete
+
+using-git-worktrees:
+  → WORKTREE: selecting directory
+  → WORKTREE: creating worktree
+  → WORKTREE: verifying isolation
+  → WORKTREE: running setup commands
+  → WORKTREE: complete
+
+finishing-a-development-branch:
+  → FINISH: verifying tests pass
+  → FINISH: presenting options (merge/PR/keep/discard)
+  → FINISH: executing choice
+  → FINISH: cleanup complete
+
+dispatching-parallel-agents:
+  → PARALLEL: identifying independent tasks
+  → PARALLEL: dispatching N agents
+  → PARALLEL: waiting for completion
+  → PARALLEL: all agents complete
+
+subagent-driven-development:
+  → SUBAGENT: dispatching task agent
+  → SUBAGENT: task complete
+  → SUBAGENT: spec compliance review
+  → SUBAGENT: code quality review
+  → SUBAGENT: reviews passed
+
+executing-plans:
+  → EXECUTE: loading plan
+  → EXECUTE: reviewing plan critically
+  → EXECUTE: starting batch N
+  → EXECUTE: batch N complete
+  → EXECUTE: awaiting architect review
+  → EXECUTE: all batches complete
 ```
 
 **Print group transitions:**
@@ -96,13 +145,22 @@ This is NOT optional. "Task didn't mention TDD" is not an excuse.
 If you find yourself writing implementation code without having
 invoked test-driven-development, STOP. You are violating discipline.
 
-STATUS REPORTING: Print status updates for EVERY phase of skills you invoke:
+STATUS REPORTING: You MUST print status updates for EVERY superpowers skill phase.
 
-TDD: "→ TDD: RED - writing failing tests", "→ TDD: GREEN - tests passing", "→ TDD: REFACTOR - cleaning up"
-DEBUG: "→ DEBUG: reproducing issue", "→ DEBUG: root cause identified", "→ DEBUG: verifying fix"
-BRAINSTORM: "→ BRAINSTORM: exploring requirements", "→ BRAINSTORM: complete"
-REVIEW: "→ REVIEW: requesting", "→ REVIEW: addressing feedback"
-VERIFY: "→ VERIFY: running tests", "→ VERIFY: complete"
+Format: "→ SKILL: phase description"
+
+Examples:
+  → TDD: RED - writing failing tests
+  → TDD: GREEN - tests passing
+  → DEBUG: Phase 1 - root cause investigation
+  → BRAINSTORM: gathering requirements
+  → VERIFY: running tests
+  → CODE-REVIEW: dispatching reviewer
+  → SUBAGENT: spec compliance review
+  → WORKTREE: creating worktree
+  → FINISH: verifying tests pass
+
+Print these as you enter each phase. The user must see superpowers working.
 ```
 
 **Why:** Subagents have no memory of quality expectations. Without this preamble, they skip TDD (baseline test showed agents write code first, tests second).
