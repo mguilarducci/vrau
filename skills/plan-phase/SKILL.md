@@ -64,10 +64,37 @@ Select: [1-N]
 
 ### Branch Setup
 
-Same as Phase 1 Step 0:
-1. Update default branch: `git fetch origin && git checkout main && git pull`
-2. Branch/worktree selection (use superpowers:using-git-worktrees if worktree)
-3. Push new branch: `git push -u origin <branch>`
+**Follow the same process as Phase 1 Branch Setup:**
+
+1. **Update default branch:**
+   ```bash
+   git fetch origin && git checkout main && git pull
+   ```
+
+2. **Ask user about branch strategy:**
+   ```
+   Branch setup options:
+
+   A) Git worktree (isolated, recommended for complex work)
+   B) New branch from main
+   C) Continue in current branch
+
+   Which option? [A/B/C]
+   ```
+
+3. **Execute based on choice:**
+
+   **If A (worktree):**
+   - Use `superpowers:using-git-worktrees` skill
+
+   **If B (new branch):**
+   ```bash
+   git checkout -b vrau/<workflow>/plan
+   git push -u origin vrau/<workflow>/plan
+   ```
+
+   **If C (current branch):**
+   - Continue in current branch
 
 ## Write Plan (opus)
 

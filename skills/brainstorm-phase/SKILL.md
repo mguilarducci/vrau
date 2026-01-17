@@ -42,6 +42,52 @@ Wait for user response. Use their input as the task description for the rest of 
 
 ---
 
+## Branch Setup (haiku)
+
+**Model enforcement:** If current session is not haiku, dispatch Task tool:
+```
+Task(subagent_type="general-purpose", model="haiku", prompt="[Branch Setup instructions]")
+```
+If current session is haiku, run in current session.
+
+### Update Default Branch
+
+1. **Fetch and update main branch:**
+   ```bash
+   git fetch origin && git checkout main && git pull
+   ```
+
+### Create Feature Branch
+
+2. **Ask user about branch strategy:**
+   ```
+   Branch setup options:
+
+   A) Git worktree (isolated, recommended for complex work)
+   B) New branch from main
+   C) Continue in current branch
+
+   Which option? [A/B/C]
+   ```
+
+3. **Execute based on choice:**
+
+   **If A (worktree):**
+   - Use `superpowers:using-git-worktrees` skill
+   - Creates isolated workspace
+
+   **If B (new branch):**
+   ```bash
+   git checkout -b vrau/<workflow>/brainstorm
+   git push -u origin vrau/<workflow>/brainstorm
+   ```
+
+   **If C (current branch):**
+   - Verify current branch is not main
+   - If on main, force option A or B
+
+---
+
 ## Step 0: Research Available Tools (haiku)
 
 **Model enforcement:** If current session is not haiku, dispatch Task tool:
