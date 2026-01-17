@@ -15,6 +15,38 @@ Reads plan's parallel execution groups and dispatches concurrent agents for inde
 
 ---
 
+## Status Logging (REQUIRED)
+
+**The orchestrator MUST print status updates to the user.** This provides visibility into what's happening.
+
+**Print BEFORE dispatching each task:**
+```
+▶ Starting Task N: <task name> (model: <model>)
+```
+
+**Print AFTER task completes:**
+```
+✓ Completed Task N: <task name>
+```
+
+**Print skill invocations observed:**
+```
+  → TDD: writing failing tests
+  → TDD: tests passing, refactoring
+  → Quality check: starting
+  → Quality check: complete
+```
+
+**Print group transitions:**
+```
+═══ Group A complete (Tasks 0, 1) ═══
+═══ Starting Group B (Tasks 2, 3) ═══
+```
+
+**Why:** Without status logging, the user has no visibility into execution progress. Silent execution feels broken.
+
+---
+
 ## CRITICAL: Subagent Skill Preamble
 
 **Every task prompt MUST include this preamble:**
@@ -31,6 +63,13 @@ This is NOT optional. "Task didn't mention TDD" is not an excuse.
 
 If you find yourself writing implementation code without having
 invoked test-driven-development, STOP. You are violating discipline.
+
+STATUS REPORTING: Print status updates as you work:
+- "→ TDD: writing failing tests"
+- "→ TDD: tests passing"
+- "→ TDD: refactoring"
+- "→ Quality check: starting"
+- "→ Quality check: complete"
 ```
 
 **Why:** Subagents have no memory of quality expectations. Without this preamble, they skip TDD (baseline test showed agents write code first, tests second).
