@@ -36,7 +36,7 @@ git push
 | Step | Model | Rationale |
 |------|-------|-----------|
 | Pre-checks | haiku | Simple verification tasks |
-| Brainstorming | opus | Creative, quality thinking |
+| Brainstorming | **main session** | USER must answer questions |
 | Save | sonnet | Standard operations |
 | Breakdown check | sonnet | Always evaluate scope before review |
 | Self-review | sonnet | Optional quality check |
@@ -197,17 +197,23 @@ These checks establish baseline health and inform the brainstorm.
 
 ## Step 1: Invoke Brainstorming Skill
 
-**Invoke wrapper skill to enforce opus model:**
+**CRITICAL: Brainstorming runs in MAIN session - USER must answer questions.**
+
+Do NOT dispatch a subagent for brainstorming. Subagents cannot interact with the user.
 
 ```
 Skill tool:
-- skill: "vrau:brainstorm-step-brainstorm"
+- skill: "superpowers:brainstorming"
+- args: "[task description from user]"
 ```
 
 The skill will:
-- Always dispatch Task tool with opus model
-- Invoke superpowers:brainstorming skill
-- Drive the brainstorming conversation
+- Ask the USER clarifying questions
+- Wait for USER answers (not AI-generated answers!)
+- Guide design exploration with user input
+- Produce a final brainstorm document
+
+**Why main session?** Brainstorming requires human judgment. A subagent answering its own questions produces biased, low-quality designs.
 
 **Completion signal:** The skill produces a brainstorm document ready to save.
 

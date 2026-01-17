@@ -5,38 +5,28 @@ description: Use when executing brainstorming step in brainstorm phase - enforce
 
 # Brainstorm Step: Invoke Brainstorming Skill
 
-**This skill enforces opus model usage by always dispatching to opus.**
+**This skill runs in the MAIN session because it requires user interaction.**
 
-## Model Enforcement
+## CRITICAL: User Must Answer Questions
 
-**ALWAYS dispatch a Task with opus model.** Do not attempt to check your current model.
+**Brainstorming requires USER input.** Do NOT dispatch a subagent that answers its own questions.
 
-**Before dispatching:** Read `docs/designs/<workflow>/execution-log.md` and include its content in the prompt so the subagent has full workflow context.
+The orchestrator must:
+1. Invoke `superpowers:brainstorming` skill directly in the MAIN session
+2. Let the skill ask the USER questions
+3. Wait for USER answers
+4. Continue until brainstorm is complete
 
 ```
-Task tool:
-- subagent_type: "general-purpose"
-- model: "opus"
-- description: "Execute brainstorming"
-- prompt: "You are in the brainstorm phase of a vrau workflow.
-
-TASK DESCRIPTION: [paste task description from user]
-
-RESEARCH CONTEXT: [paste research summary from Step 0]
-
-INSTRUCTIONS:
-Invoke the superpowers:brainstorming skill with this task description.
-
 Skill tool:
-- skill: 'superpowers:brainstorming'
-- args: '[task description]'
-
-The skill will:
-- Ask clarifying questions
-- Guide design exploration
-- Produce a final brainstorm document
-
-Let the skill drive the conversation. Answer questions thoroughly."
+- skill: "superpowers:brainstorming"
+- args: "[task description]"
 ```
 
-**Wait for the task to complete.** The output is the brainstorm document ready to save.
+**Why not a subagent?** Subagents cannot interact with the user. If brainstorming runs in a subagent, it will either:
+- Answer its own questions (WRONG - biased, no user input)
+- Return incomplete (no clarification gathered)
+
+**The brainstorming conversation happens in the main session with the user.**
+
+**Output:** The brainstorm document ready to save.
