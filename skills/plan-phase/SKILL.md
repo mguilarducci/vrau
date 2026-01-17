@@ -129,6 +129,9 @@ Select: [1-N]
 
 ## Write Plan
 
+**BEFORE invoking the skill, announce to the user:**
+> "I'm using the **vrau:plan-step-write** skill to create a detailed implementation plan with dependency graphs and task breakdown."
+
 **Invoke wrapper skill to enforce opus model:**
 
 ```
@@ -156,6 +159,9 @@ The skill will:
 **FIRST: Recommend session compaction**
 
 > "Before I request a plan review, consider compacting the session to reduce token usage."
+
+**BEFORE invoking the skill, announce to the user:**
+> "I'm using the **vrau:review-step-spawn-reviewer** skill to spawn a separate reviewer agent for unbiased fresh-eyes review of the plan."
 
 **Invoke wrapper skill to enforce opus model:**
 
@@ -243,7 +249,12 @@ When plan is approved, report to user:
 
 > "Phase 2 (Plan) is complete. Ready to proceed to Phase 3 (Execute)?"
 
-Wait for user confirmation, then invoke:
+Wait for user confirmation.
+
+**After confirmation, announce to the user:**
+> "I'm using the **vrau:execute-phase** skill to orchestrate implementation of the plan with parallel task execution."
+
+Then invoke:
 
 ```
 Skill tool:

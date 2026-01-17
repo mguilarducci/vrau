@@ -143,6 +143,9 @@ Task(subagent_type="general-purpose", model="haiku", prompt="[Branch Setup instr
 
 ## Step 0: Research Context
 
+**BEFORE invoking the skill, announce to the user:**
+> "I'm using the **vrau:brainstorm-step-research** skill to gather relevant context using available tools and documentation."
+
 **Invoke wrapper skill to enforce haiku model:**
 
 ```
@@ -168,6 +171,9 @@ The skill will:
 **CRITICAL: Brainstorming runs in MAIN session - USER must answer questions.**
 
 Do NOT dispatch a subagent for brainstorming. Subagents cannot interact with the user.
+
+**BEFORE invoking the skill, announce to the user:**
+> "I'm using the **superpowers:brainstorming** skill to explore requirements and design. This skill will ask you clarifying questions to understand your needs and help create a thorough brainstorm document."
 
 ```
 Skill tool:
@@ -332,6 +338,9 @@ git commit -m "vrau(<workflow>): refine brainstorm after self-review"
 
 Wait for user response. If user wants to compact, pause here and let them handle it.
 
+**After user confirms, announce to the user:**
+> "I'm using the **vrau:review-step-spawn-reviewer** skill to spawn a separate reviewer agent for unbiased fresh-eyes review of the brainstorm."
+
 **Invoke wrapper skill to enforce opus model:**
 
 ```
@@ -418,7 +427,12 @@ Brainstorm phase is now complete. Report to user:
 
 > "Phase 1 (Brainstorm) is complete and merged to main. Ready to proceed to Phase 2 (Plan)?"
 
-Wait for user confirmation, then invoke:
+Wait for user confirmation.
+
+**After confirmation, announce to the user:**
+> "I'm using the **vrau:plan-phase** skill to orchestrate the planning phase with detailed task breakdown and dependency analysis."
+
+Then invoke:
 
 ```
 Skill tool:

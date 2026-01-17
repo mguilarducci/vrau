@@ -253,11 +253,15 @@ If conflict detected → execute sequentially.
 
 1. Verify all tasks succeeded
 2. Check for change conflicts
-3. Run tests if applicable
+3. **MANDATORY: Use verification skill after EACH parallel group:**
+   - Announce to user: "Using **superpowers:verification-before-completion** to verify group [X] implementation"
+   - Invoke `superpowers:verification-before-completion` skill
+   - Verify tests pass and build succeeds
+   - If verification fails: fix issues and re-verify before proceeding
 4. **Update execution log:**
    - Update Current Group to next group letter
    - Add completed task numbers to Completed Tasks
-   - Note any issues in Notes
+   - Note verification results in Notes
    - Commit and push
 5. Proceed to next group
 
@@ -270,6 +274,8 @@ If conflict detected → execute sequentially.
 - Ignore task failures
 - **Dispatch tasks WITHOUT the skill preamble**
 - **Skip TDD because "task is simple"**
+- **Claim tests pass without using verification-before-completion**
+- **Skip verification between groups**
 
 ## Subagent Skill Violations
 

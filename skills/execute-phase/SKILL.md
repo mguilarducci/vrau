@@ -102,6 +102,44 @@ Proceed with execution? [Y/n]
 - Update Last Updated
 - Commit and push
 
+---
+
+## Verification (MANDATORY)
+
+**CRITICAL: NEVER claim completion without verification.**
+
+**BEFORE opening PR or claiming completion:**
+
+1. **Announce to user:**
+   > "I'm using the **superpowers:verification-before-completion** skill to verify all tests pass and the implementation is complete."
+
+2. **Invoke the skill:**
+   ```
+   Skill tool:
+   - skill: "superpowers:verification-before-completion"
+   ```
+
+3. **Wait for verification results** - the skill will:
+   - Run the test suite
+   - Build the project
+   - Check for errors
+   - Provide actual evidence of success or failure
+
+4. **If verification FAILS:**
+   - Fix issues
+   - Re-verify using the skill again
+   - DO NOT proceed to Post-Execution until verification passes
+
+**Red Flags - STOP if you think any of these:**
+- "Tests passed earlier, no need to verify again"
+- "I already ran tests manually"
+- "Verification is just a formality"
+- "I'll verify after creating the PR"
+
+**All of these mean: Stop. Use verification-before-completion skill NOW.**
+
+---
+
 ## Post-Execution (haiku)
 
 **Model enforcement:** Always dispatch Task tool with haiku model:
@@ -130,9 +168,10 @@ gh pr create --title "<task description>" --body "## Summary
 - Implements design from docs/designs/<workflow>/
 - Plan: docs/designs/<workflow>/plan/<plan>.md
 
-## Test Plan
-- [x] All tests pass
-- [x] Manual verification complete"
+## Verification
+- Verified using superpowers:verification-before-completion
+- All tests passing
+- Build successful"
 
 gh pr comment <pr-number> --body "@claude, review"
 ```
