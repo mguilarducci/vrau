@@ -1,3 +1,8 @@
+---
+name: execute-phase
+description: Use when executing Phase 3 of a vrau workflow - after plan is complete and approved, ready to implement
+---
+
 # Phase 3: Execute
 
 **FIRST: Recommend session compaction**
@@ -78,3 +83,9 @@ gh pr create --title "<task description>" --body "## Summary
 
 gh pr comment <pr-number> --body "@claude, review"
 ```
+
+## Phase 3 Complete
+
+Workflow is complete. Report to user:
+
+> "Vrau workflow complete! PR created and ready for review."

@@ -86,19 +86,31 @@ git push
 
 ## Phase 1: Brainstorm
 
-Read [_phases/brainstorm.md](_phases/brainstorm.md)
+Invoke the brainstorm-phase skill:
+```
+Skill tool:
+- skill: "vrau:brainstorm-phase"
+```
 
 ---
 
 ## Phase 2: Plan
 
-Read [_phases/plan.md](_phases/plan.md)
+Invoke the plan-phase skill:
+```
+Skill tool:
+- skill: "vrau:plan-phase"
+```
 
 ---
 
 ## Phase 3: Execute
 
-Read [_phases/execute.md](_phases/execute.md)
+Invoke the execute-phase skill:
+```
+Skill tool:
+- skill: "vrau:execute-phase"
+```
 
 ---
 

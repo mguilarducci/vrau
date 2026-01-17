@@ -1,3 +1,8 @@
+---
+name: brainstorm-phase
+description: Use when executing Phase 1 of a vrau workflow - after workflow setup, when design/brainstorm.md doesn't exist yet
+---
+
 # Phase 1: Brainstorm
 
 You're now in Phase 1 (Brainstorm) of the vrau workflow.
@@ -105,9 +110,9 @@ Skill tool:
 - Guide you through any necessary revisions
 
 **The skill will signal when review is complete:**
-- "APPROVED" → proceed to Step 5
-- "NEEDS_REVISION" → skill will guide revision loop
-- "MAX_ITERATIONS" → skill will ask user how to proceed
+- "APPROVED" -> proceed to Step 5
+- "NEEDS_REVISION" -> skill will guide revision loop
+- "MAX_ITERATIONS" -> skill will ask user how to proceed
 
 ---
 
@@ -158,9 +163,9 @@ If the brainstorm is large or complex, consider breaking it down into smaller fe
    > B) Continue with the current workflow as-is"
 
 **If user chooses A (separate workflows):**
-- Use `/vrau:abort` to delete current workflow
+- Delete current workflow: `rm -rf docs/designs/<workflow>`
 - Use `/vrau:start` for each sub-design
-- Each becomes its own vrau workflow with independent brainstorm → plan → execute phases
+- Each becomes its own vrau workflow with independent brainstorm -> plan -> execute phases
 
 **If user chooses B (continue as-is):**
 - Keep breakdown.md for reference
@@ -223,11 +228,11 @@ Brainstorm phase is now complete. Report to user:
 
 > "Phase 1 (Brainstorm) is complete and merged to main. Ready to proceed to Phase 2 (Plan)?"
 
-Wait for user confirmation, then:
+Wait for user confirmation, then invoke:
 
 ```
 Skill tool:
-- skill: "vrau:plan"
+- skill: "vrau:plan-phase"
 ```
 
 This will load Phase 2 instructions and continue the workflow.

@@ -1,3 +1,8 @@
+---
+name: plan-phase
+description: Use when executing Phase 2 of a vrau workflow - after brainstorm is complete, when plan/*.md doesn't exist yet
+---
+
 # Phase 2: Plan
 
 **Important:** Plans always go to files, NOT issues. Do not update GitHub Issues with plan content.
@@ -74,6 +79,15 @@ git push
 
 4. Loop constraints: Max 3 iterations, then ask user
 
-## Proceed to Execution
+## Phase 2 Complete
 
-When plan is approved, proceed to Phase 3 (Execute).
+When plan is approved, report to user:
+
+> "Phase 2 (Plan) is complete. Ready to proceed to Phase 3 (Execute)?"
+
+Wait for user confirmation, then invoke:
+
+```
+Skill tool:
+- skill: "vrau:execute-phase"
+```
