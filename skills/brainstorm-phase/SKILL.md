@@ -257,24 +257,38 @@ If current session is opus, run in current session.
 
 Wait for user response. If user wants to compact, pause here and let them handle it.
 
-**Once ready for review, use the receiving-brainstorm-review skill:**
+### Review Process
 
-```
-Skill tool:
-- skill: "vrau:receiving-brainstorm-review"
-- args: "docs/designs/<workflow>/design/brainstorm.md"
-```
+1. **Read the brainstorm document:**
+   ```
+   Read tool: docs/designs/<workflow>/design/brainstorm.md
+   ```
 
-**Let the skill handle the review process:**
-- It will fetch the brainstorm content
-- Request review from a vrau reviewer agent
-- Handle approval, rejection, or revision requests
-- Guide you through any necessary revisions
+2. **Spawn reviewer agent:**
+   ```
+   Task tool:
+   - subagent_type: "vrau:vrau-reviewer"
+   - model: "opus"
+   - prompt:
+     1. Task: <one-line description>
+     2. Complexity: <trivial/simple/moderate/complex>
+     3. Content: <paste brainstorm.md content>
+     4. Request: "Review this brainstorm for completeness, clarity, and technical soundness"
+   ```
 
-**The skill will signal when review is complete:**
-- "APPROVED" -> proceed to Step 6
-- "NEEDS_REVISION" -> skill will guide revision loop
-- "MAX_ITERATIONS" -> skill will ask user how to proceed
+3. **Wait for reviewer feedback**
+
+4. **If reviewer returns REVISE or RETHINK:**
+   - **REQUIRED SKILL:** Use `vrau:receiving-brainstorm-review`
+   - Process each issue with technical verification
+   - Update brainstorm document
+   - Save, commit, push
+   - Re-spawn reviewer (step 2)
+
+5. **If reviewer returns APPROVED:**
+   - Proceed to Step 6
+
+6. **Loop constraints:** Max 3 iterations, then ask user
 
 ---
 

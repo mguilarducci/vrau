@@ -108,25 +108,38 @@ If current session is opus, run in current session.
 
 ### Review Process
 
-1. Ensure plan is saved and committed
-2. Spawn reviewer:
+1. **Ensure plan is saved and committed**
+
+2. **Read the plan document:**
    ```
-   subagent_type: "vrau:vrau-reviewer"
-   prompt:
+   Read tool: docs/designs/<workflow>/plan/<design-name>-plan.md
+   ```
+
+3. **Spawn reviewer agent:**
+   ```
+   Task tool:
+   - subagent_type: "vrau:vrau-reviewer"
+   - model: "opus"
+   - prompt:
      1. Task: <one-line description>
      2. Complexity: <same as brainstorm>
-     3. Content: <plan.md content>
+     3. Content: <paste plan.md content>
      4. Request: "Review this plan for completeness and feasibility"
    ```
 
-3. If reviewer returns REVISE or RETHINK:
+4. **Wait for reviewer feedback**
+
+5. **If reviewer returns REVISE or RETHINK:**
    - **REQUIRED SKILL:** Use `vrau:receiving-plan-review`
    - Process each issue with technical rigor
-   - Update plan
+   - Update plan document
    - Save, commit, push
-   - Re-invoke reviewer
+   - Re-spawn reviewer (step 3)
 
-4. Loop constraints: Max 3 iterations, then ask user
+6. **If reviewer returns APPROVED:**
+   - Plan is complete, proceed to Phase 3
+
+7. **Loop constraints:** Max 3 iterations, then ask user
 
 ## Phase 2 Complete
 
