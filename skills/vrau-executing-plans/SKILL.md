@@ -29,12 +29,44 @@ Reads plan's parallel execution groups and dispatches concurrent agents for inde
 ✓ Completed Task N: <task name>
 ```
 
-**Print skill invocations observed:**
+**Print ALL superpowers skill phases:**
+
 ```
-  → TDD: writing failing tests
-  → TDD: tests passing, refactoring
-  → Quality check: starting
-  → Quality check: complete
+TDD (test-driven-development):
+  → TDD: RED - writing failing tests
+  → TDD: RED - verified tests fail
+  → TDD: GREEN - writing minimal code
+  → TDD: GREEN - tests passing
+  → TDD: REFACTOR - cleaning up
+  → TDD: complete
+
+Debugging (systematic-debugging):
+  → DEBUG: reproducing issue
+  → DEBUG: gathering evidence
+  → DEBUG: forming hypothesis
+  → DEBUG: testing hypothesis
+  → DEBUG: root cause identified
+  → DEBUG: implementing fix
+  → DEBUG: verifying fix
+
+Brainstorming:
+  → BRAINSTORM: exploring requirements
+  → BRAINSTORM: identifying constraints
+  → BRAINSTORM: generating options
+  → BRAINSTORM: evaluating trade-offs
+  → BRAINSTORM: complete
+
+Code Review:
+  → REVIEW: requesting review
+  → REVIEW: receiving feedback
+  → REVIEW: addressing feedback
+  → REVIEW: complete
+
+Verification:
+  → VERIFY: running tests
+  → VERIFY: checking build
+  → VERIFY: confirming output
+  → VERIFY: complete
 ```
 
 **Print group transitions:**
@@ -64,12 +96,13 @@ This is NOT optional. "Task didn't mention TDD" is not an excuse.
 If you find yourself writing implementation code without having
 invoked test-driven-development, STOP. You are violating discipline.
 
-STATUS REPORTING: Print status updates as you work:
-- "→ TDD: writing failing tests"
-- "→ TDD: tests passing"
-- "→ TDD: refactoring"
-- "→ Quality check: starting"
-- "→ Quality check: complete"
+STATUS REPORTING: Print status updates for EVERY phase of skills you invoke:
+
+TDD: "→ TDD: RED - writing failing tests", "→ TDD: GREEN - tests passing", "→ TDD: REFACTOR - cleaning up"
+DEBUG: "→ DEBUG: reproducing issue", "→ DEBUG: root cause identified", "→ DEBUG: verifying fix"
+BRAINSTORM: "→ BRAINSTORM: exploring requirements", "→ BRAINSTORM: complete"
+REVIEW: "→ REVIEW: requesting", "→ REVIEW: addressing feedback"
+VERIFY: "→ VERIFY: running tests", "→ VERIFY: complete"
 ```
 
 **Why:** Subagents have no memory of quality expectations. Without this preamble, they skip TDD (baseline test showed agents write code first, tests second).
