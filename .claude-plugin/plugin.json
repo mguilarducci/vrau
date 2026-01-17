@@ -1,7 +1,7 @@
 {
   "name": "vrau",
   "description": "Workflow orchestration with autonomous execution and user-driven decisions",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "author": {
     "name": "mguilarducci"
   },
