@@ -15,9 +15,10 @@ You're now in Phase 1 (Brainstorm) of the vrau workflow.
 |------|-------|-----------|
 | Pre-checks | haiku | Simple verification tasks |
 | Brainstorming | opus | Creative, quality thinking |
-| Save & self-review | sonnet | Standard operations |
+| Save | sonnet | Standard operations |
+| Breakdown check | sonnet | Always evaluate scope before review |
+| Self-review | sonnet | Optional quality check |
 | Formal review | opus | Via reviewer agent |
-| Breakdown | sonnet | Analysis task |
 | PR/Merge | haiku | Mechanical git operations |
 
 ---
@@ -81,62 +82,17 @@ git commit -m "vrau(<workflow>): complete initial brainstorm"
 
 ---
 
-## Step 3: Self-Review (sonnet) - Optional but Recommended
+## Step 3: Evaluate Scope for Breakdown (sonnet)
 
-Before requesting formal review, do a quick self-check:
+**Always check if the brainstorm should be split.** Smaller, focused workflows are preferred over large ones.
 
-1. **Completeness:** Does the brainstorm cover requirements, design, and implementation approach?
-2. **Clarity:** Would another engineer understand the approach?
-3. **Risks:** Are major risks and unknowns identified?
-
-If something is missing, add it now. Save and commit:
-
-```bash
-git add docs/designs/<workflow>/design/brainstorm.md
-git commit -m "vrau(<workflow>): refine brainstorm after self-review"
-```
-
----
-
-## Step 4: Request Formal Review (opus via reviewer agent)
-
-**IMPORTANT: Before requesting review, remind the user about session compaction:**
-
-> "Before I request a formal review, this is a good time to compact the session to reduce token usage and cost. Would you like me to proceed with the review now, or would you prefer to compact first?"
-
-Wait for user response. If user wants to compact, pause here and let them handle it.
-
-**Once ready for review, use the receiving-brainstorm-review skill:**
-
-```
-Skill tool:
-- skill: "vrau:receiving-brainstorm-review"
-- args: "docs/designs/<workflow>/design/brainstorm.md"
-```
-
-**Let the skill handle the review process:**
-- It will fetch the brainstorm content
-- Request review from a vrau reviewer agent
-- Handle approval, rejection, or revision requests
-- Guide you through any necessary revisions
-
-**The skill will signal when review is complete:**
-- "APPROVED" -> proceed to Step 5
-- "NEEDS_REVISION" -> skill will guide revision loop
-- "MAX_ITERATIONS" -> skill will ask user how to proceed
-
----
-
-## Step 5: Attempt Brainstorm Breakdown (sonnet) - Optional
-
-If the brainstorm is large or complex, consider breaking it down into smaller feature-sized pieces:
-
-**Ask yourself:**
+**Evaluate:**
 - Is this brainstorm larger than a single feature?
 - Could it be split into independent sub-designs?
 - Would multiple workflows be clearer than one large workflow?
+- Are there distinct components that could be delivered separately?
 
-**If YES to any of above:**
+**If breakdown makes sense:**
 
 1. **Create breakdown document:**
    ```
@@ -169,28 +125,78 @@ If the brainstorm is large or complex, consider breaking it down into smaller fe
    ```
 
 4. **Ask user:**
-   > "I've created a breakdown proposal in brainstorm-breakdown.md. Would you like to:
-   > A) Proceed with separate workflows for each sub-design
+   > "I've analyzed the scope and recommend splitting this into smaller workflows:
+   > [list sub-designs]
+   >
+   > Options:
+   > A) Proceed with separate workflows for each sub-design (recommended)
    > B) Continue with the current workflow as-is"
 
 **If user chooses A (separate workflows):**
 - Delete current workflow: `rm -rf docs/designs/<workflow>`
 - Use `/vrau:start` for each sub-design
 - Each becomes its own vrau workflow with independent brainstorm -> plan -> execute phases
+- **STOP HERE** - phase 1 restarts for each sub-workflow
 
 **If user chooses B (continue as-is):**
 - Keep breakdown.md for reference
-- Proceed to Phase 2 (Plan)
+- Continue to Step 4
 
-**If NO breakdown needed:**
-- Skip this step entirely
-- Proceed directly to Phase 2 (Plan)
+**If breakdown doesn't make sense:**
+- Document why in a brief note (scope is already focused, components are tightly coupled, etc.)
+- Continue to Step 4
+
+---
+
+## Step 4: Self-Review (sonnet) - Optional
+
+Before requesting formal review, do a quick self-check:
+
+1. **Completeness:** Does the brainstorm cover requirements, design, and implementation approach?
+2. **Clarity:** Would another engineer understand the approach?
+3. **Risks:** Are major risks and unknowns identified?
+
+If something is missing, add it now. Save and commit:
+
+```bash
+git add docs/designs/<workflow>/design/brainstorm.md
+git commit -m "vrau(<workflow>): refine brainstorm after self-review"
+```
+
+---
+
+## Step 5: Request Formal Review (opus via reviewer agent)
+
+**IMPORTANT: Before requesting review, remind the user about session compaction:**
+
+> "Before I request a formal review, this is a good time to compact the session to reduce token usage and cost. Would you like me to proceed with the review now, or would you prefer to compact first?"
+
+Wait for user response. If user wants to compact, pause here and let them handle it.
+
+**Once ready for review, use the receiving-brainstorm-review skill:**
+
+```
+Skill tool:
+- skill: "vrau:receiving-brainstorm-review"
+- args: "docs/designs/<workflow>/design/brainstorm.md"
+```
+
+**Let the skill handle the review process:**
+- It will fetch the brainstorm content
+- Request review from a vrau reviewer agent
+- Handle approval, rejection, or revision requests
+- Guide you through any necessary revisions
+
+**The skill will signal when review is complete:**
+- "APPROVED" -> proceed to Step 6
+- "NEEDS_REVISION" -> skill will guide revision loop
+- "MAX_ITERATIONS" -> skill will ask user how to proceed
 
 ---
 
 ## Step 6: Open PR and Merge (haiku)
 
-Once brainstorm is approved (and optionally broken down), open a PR for the brainstorm phase:
+Once brainstorm is approved, open a PR for the brainstorm phase:
 
 1. **Ensure all changes are committed:**
    ```bash
