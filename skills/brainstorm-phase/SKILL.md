@@ -40,7 +40,7 @@ git push
 | Save | sonnet | Standard operations |
 | Breakdown check | sonnet | Always evaluate scope before review |
 | Self-review | sonnet | Optional quality check |
-| Formal review | opus | Via reviewer agent |
+| Formal review | sonnet | Via reviewer agent |
 | PR/Merge | haiku | Mechanical git operations |
 
 ---
@@ -341,7 +341,7 @@ Wait for user response. If user wants to compact, pause here and let them handle
 **After user confirms, announce to the user:**
 > "I'm using the **vrau:review-step-spawn-reviewer** skill to spawn a separate reviewer agent for unbiased fresh-eyes review of the brainstorm."
 
-**Invoke wrapper skill to enforce opus model:**
+**Invoke wrapper skill to enforce sonnet model:**
 
 ```
 Skill tool:
@@ -349,7 +349,7 @@ Skill tool:
 ```
 
 The skill will:
-- Always dispatch Task tool with opus model
+- Always dispatch Task tool with sonnet model
 - Read brainstorm document
 - **MANDATORY: Spawn a SEPARATE vrau-reviewer agent for unbiased fresh-eyes review**
 - The orchestrator must NOT review the document itself

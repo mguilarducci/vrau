@@ -1,22 +1,22 @@
 ---
 name: review-step-spawn-reviewer
-description: Use when spawning reviewer agent - enforces opus model and MANDATORY separate reviewer spawn for unbiased feedback
+description: Use when spawning reviewer agent - enforces sonnet model and MANDATORY separate reviewer spawn for unbiased feedback
 ---
 
 # Review Step: Spawn Reviewer Agent
 
-**This skill enforces opus model usage by always dispatching to opus.**
+**This skill enforces sonnet model usage by always dispatching to sonnet.**
 
 ## Model Enforcement
 
-**ALWAYS dispatch a Task with opus model.** Do not attempt to check your current model.
+**ALWAYS dispatch a Task with sonnet model.** Do not attempt to check your current model.
 
 **Before dispatching:** Read `docs/designs/<workflow>/execution-log.md` and include its content in the prompt so the subagent has full workflow context.
 
 ```
 Task tool:
 - subagent_type: "general-purpose"
-- model: "opus"
+- model: "sonnet"
 - description: "Spawn reviewer and handle feedback"
 - prompt: "You are in the review phase of a vrau workflow.
 
@@ -61,7 +61,7 @@ Use Read tool on the document path.
 
 Task tool:
 - subagent_type: 'vrau:vrau-reviewer'
-- model: 'opus'
+- model: 'sonnet'
 - prompt:
   1. Task: <one-line description>
   2. Complexity: <trivial/simple/moderate/complex>

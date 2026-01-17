@@ -35,7 +35,7 @@ git push
 |------|-------|-----------|
 | Pre-plan setup | haiku | Simple file listing, git operations |
 | Write plan | opus | Quality planning requires deep thinking |
-| Review loop | opus | Via reviewer agent |
+| Review loop | sonnet | Via reviewer agent |
 
 ---
 
@@ -163,7 +163,7 @@ The skill will:
 **BEFORE invoking the skill, announce to the user:**
 > "I'm using the **vrau:review-step-spawn-reviewer** skill to spawn a separate reviewer agent for unbiased fresh-eyes review of the plan."
 
-**Invoke wrapper skill to enforce opus model:**
+**Invoke wrapper skill to enforce sonnet model:**
 
 ```
 Skill tool:
@@ -171,7 +171,7 @@ Skill tool:
 ```
 
 The skill will:
-- Always dispatch Task tool with opus model
+- Always dispatch Task tool with sonnet model
 - Read plan document
 - **MANDATORY: Spawn a SEPARATE vrau-reviewer agent for unbiased fresh-eyes review**
 - The orchestrator must NOT review the document itself
