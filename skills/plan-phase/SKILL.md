@@ -170,14 +170,66 @@ The skill will:
 - **MANDATORY: Spawn a SEPARATE vrau-reviewer agent for unbiased fresh-eyes review**
 - The orchestrator must NOT review the document itself
 - If REVISE/RETHINK: Use receiving-plan-review skill
-- If APPROVED: Signal completion
-
-**When plan is approved:** Proceed to Phase 3.
+- If APPROVED: Continue to next step (PR and merge)
 
 **After review approved, update execution log:**
 - Set Plan Status to `approved`
 - Update Last Updated
 - Commit and push
+
+---
+
+## Step: Open PR and Merge (haiku)
+
+**IMPORTANT: Only execute this step when plan review is APPROVED.**
+
+**Model enforcement:** Always dispatch Task tool with haiku model:
+```
+Task(subagent_type="general-purpose", model="haiku", prompt="[Step instructions]")
+```
+
+Once plan is approved, open a PR for the plan phase:
+
+1. **Ensure all changes are committed:**
+   ```bash
+   git status  # should be clean
+   ```
+
+2. **Push branch:**
+   ```bash
+   git push -u origin vrau/<workflow>/plan
+   ```
+
+3. **Create PR:**
+   ```bash
+   gh pr create --title "vrau(<workflow>): Phase 2 - Plan" --body "$(cat <<'EOF'
+   ## Summary
+   - Completed plan phase for <workflow>
+   - Addressed review feedback
+   - Ready to proceed to execution phase
+
+   ## Plan Document
+   See `docs/designs/<workflow>/plan/<design-name>-plan.md`
+
+   ## Next Steps
+   - Merge this PR
+   - Proceed to Phase 3 (Execute)
+   EOF
+   )"
+   ```
+
+4. **Merge PR:**
+   ```bash
+   gh pr merge --squash --delete-branch
+   ```
+
+5. **Update local main:**
+   ```bash
+   git checkout main
+   git pull
+   ```
+
+---
 
 ## Phase 2 Complete
 
