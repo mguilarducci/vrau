@@ -9,6 +9,28 @@ description: Use when executing Phase 3 of a vrau workflow - after plan is compl
 
 Tell user: "Consider compacting or starting a fresh session for execution."
 
+---
+
+## Stateless Execution Pattern
+
+**Each step is stateless.** Subagents have no memory of previous steps. Use the execution log to persist context.
+
+**Execution log location:** `docs/designs/<workflow>/execution-log.md`
+
+**Every step MUST:**
+1. READ execution log at start (pass content to subagent)
+2. DO the step's work
+3. WRITE updated execution log with current status and context for next step
+4. COMMIT AND PUSH immediately
+
+```bash
+git add docs/designs/<workflow>/execution-log.md
+git commit -m "vrau(<workflow>): update execution log - <step name>"
+git push
+```
+
+**When dispatching subagents:** Include execution log content in the prompt so the subagent has full context.
+
 ### Model Selection for Phase 3
 
 | Step | Model | Rationale |
@@ -21,11 +43,10 @@ Tell user: "Consider compacting or starting a fresh session for execution."
 
 ## Pre-Execution Checks (sonnet)
 
-**Model enforcement:** If current session is not sonnet, dispatch Task tool:
+**Model enforcement:** Always dispatch Task tool with sonnet model:
 ```
 Task(subagent_type="general-purpose", model="sonnet", prompt="[Pre-Execution Checks instructions]")
 ```
-If current session is sonnet, run in current session.
 
 ### Verify Dependencies
 
@@ -43,6 +64,11 @@ Missing implementations: [list any missing]
 ```
 
 If dependencies missing, notify user before proceeding.
+
+**After pre-execution checks, update execution log:**
+- Set Execution Status to `in_progress`
+- Update Last Updated
+- Commit and push
 
 ### Ask Permission
 
@@ -69,13 +95,19 @@ Proceed with execution? [Y/n]
 - Wait for group completion before next group
 - Model enforced per task from plan's Model field
 
+**After each parallel group completes, update execution log:**
+- Update Current Group to next group letter
+- Add completed task numbers to Completed Tasks
+- Note any issues in Notes
+- Update Last Updated
+- Commit and push
+
 ## Post-Execution (haiku)
 
-**Model enforcement:** If current session is not haiku, dispatch Task tool:
+**Model enforcement:** Always dispatch Task tool with haiku model:
 ```
 Task(subagent_type="general-purpose", model="haiku", prompt="[Post-Execution instructions]")
 ```
-If current session is haiku, run in current session.
 
 ### Update README
 
@@ -105,7 +137,25 @@ gh pr create --title "<task description>" --body "## Summary
 gh pr comment <pr-number> --body "@claude, review"
 ```
 
+**After PR created, update execution log:**
+- Set Execution Status to `complete`
+- Update Last Updated
+- Commit and push
+
 ## Phase 3 Complete
+
+**Cleanup execution log after PR is merged:**
+
+Once the PR is merged, delete the execution log file:
+
+```bash
+rm docs/designs/<workflow>/execution-log.md
+git add docs/designs/<workflow>/execution-log.md
+git commit -m "vrau(<workflow>): cleanup execution log"
+git push
+```
+
+**Why cleanup?** The execution log is a temporary file used for workflow recovery. Once the workflow is complete and merged, it's no longer needed.
 
 Workflow is complete. Report to user:
 

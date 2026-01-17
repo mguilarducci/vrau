@@ -5,21 +5,13 @@ description: Use when executing brainstorming step in brainstorm phase - enforce
 
 # Brainstorm Step: Invoke Brainstorming Skill
 
-**This skill enforces opus model usage. You cannot skip this check.**
+**This skill enforces opus model usage by always dispatching to opus.**
 
-## Model Enforcement Check
+## Model Enforcement
 
-**FIRST: Check your current session model.**
+**ALWAYS dispatch a Task with opus model.** Do not attempt to check your current model.
 
-Are you running on **opus** model right now?
-
-### If YES (you are opus):
-
-Execute the brainstorming step directly in this session. Skip to "Brainstorming Instructions" below.
-
-### If NO (you are haiku or sonnet):
-
-**You MUST dispatch a Task tool with opus model.** Do NOT execute in current session.
+**Before dispatching:** Read `docs/designs/<workflow>/execution-log.md` and include its content in the prompt so the subagent has full workflow context.
 
 ```
 Task tool:
@@ -47,27 +39,4 @@ The skill will:
 Let the skill drive the conversation. Answer questions thoroughly."
 ```
 
-**STOP HERE.** Wait for the task to complete, then continue to next step (Save Brainstorm Output).
-
----
-
-## Brainstorming Instructions
-
-**(Only execute if you are opus model)**
-
-### Invoke Superpowers Brainstorming Skill
-
-```
-Skill tool:
-- skill: "superpowers:brainstorming"
-- args: <full task description>
-```
-
-**Let the skill drive the conversation:**
-- It will ask clarifying questions
-- Answer thoroughly and thoughtfully
-- The skill will produce a final brainstorm document when complete
-
-**Completion signal:** The skill produces a summary or "brainstorm complete" message.
-
-**Output:** The brainstorm document content (will be saved in next step).
+**Wait for the task to complete.** The output is the brainstorm document ready to save.

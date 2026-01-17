@@ -93,7 +93,12 @@ If conflict detected → execute sequentially.
 1. Verify all tasks succeeded
 2. Check for change conflicts
 3. Run tests if applicable
-4. Proceed to next group
+4. **Update execution log:**
+   - Update Current Group to next group letter
+   - Add completed task numbers to Completed Tasks
+   - Note any issues in Notes
+   - Commit and push
+5. Proceed to next group
 
 ## Red Flags
 

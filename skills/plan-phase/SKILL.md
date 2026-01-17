@@ -7,6 +7,28 @@ description: Use when executing Phase 2 of a vrau workflow - after brainstorm is
 
 **Important:** Plans always go to files, NOT issues. Do not update GitHub Issues with plan content.
 
+---
+
+## Stateless Execution Pattern
+
+**Each step is stateless.** Subagents have no memory of previous steps. Use the execution log to persist context.
+
+**Execution log location:** `docs/designs/<workflow>/execution-log.md`
+
+**Every step MUST:**
+1. READ execution log at start (pass content to subagent)
+2. DO the step's work
+3. WRITE updated execution log with current status and context for next step
+4. COMMIT AND PUSH immediately
+
+```bash
+git add docs/designs/<workflow>/execution-log.md
+git commit -m "vrau(<workflow>): update execution log - <step name>"
+git push
+```
+
+**When dispatching subagents:** Include execution log content in the prompt so the subagent has full context.
+
 ### Model Selection for Phase 2
 
 | Step | Model | Rationale |
@@ -19,11 +41,10 @@ description: Use when executing Phase 2 of a vrau workflow - after brainstorm is
 
 ## Step 0: Research Available Tools (haiku)
 
-**Model enforcement:** If current session is not haiku, dispatch Task tool:
+**Model enforcement:** Always dispatch Task tool with haiku model:
 ```
 Task(subagent_type="general-purpose", model="haiku", prompt="[Step 0 instructions]")
 ```
-If current session is haiku, run in current session.
 
 Before writing the plan, check what research tools are available:
 
@@ -33,15 +54,19 @@ Before writing the plan, check what research tools are available:
 
 **Output:** Brief summary of research findings to inform the plan.
 
+**After research, update execution log:**
+- Add research findings to Research Summary section
+- Update Last Updated
+- Commit and push
+
 ---
 
 ## Pre-Plan Setup (haiku)
 
-**Model enforcement:** If current session is not haiku, dispatch Task tool:
+**Model enforcement:** Always dispatch Task tool with haiku model:
 ```
 Task(subagent_type="general-purpose", model="haiku", prompt="[Pre-Plan Setup instructions]")
 ```
-If current session is haiku, run in current session.
 
 **Recommend new session:** "Consider starting a fresh session for planning."
 
@@ -96,6 +121,12 @@ Select: [1-N]
    **If C (current branch):**
    - Continue in current branch
 
+**After pre-plan setup, update execution log:**
+- Update Branch to current branch name
+- Note selected design file
+- Update Last Updated
+- Commit and push
+
 ## Write Plan
 
 **Invoke wrapper skill to enforce opus model:**
@@ -106,13 +137,19 @@ Skill tool:
 ```
 
 The skill will:
-- Check current session model
-- If not opus, dispatch Task tool with opus model
-- If opus, invoke vrau:vrau-writing-plans skill directly
+- Always dispatch Task tool with opus model
+- Invoke vrau:vrau-writing-plans skill
 - Create plan with dependency graph, parallel groups, model assignments
 - Commit after each major section
 
 **Output:** Plan document saved to `docs/designs/<workflow>/plan/<design-name>-plan.md`
+
+**After plan write, update execution log:**
+- Set Plan Status to `complete`
+- Set Plan File to the plan path
+- Add one-line Summary
+- Update Last Updated
+- Commit and push
 
 ## Review Loop
 
@@ -128,17 +165,26 @@ Skill tool:
 ```
 
 The skill will:
-- Check current session model
-- If not opus, dispatch Task tool with opus model
-- If opus, execute review process directly:
-  - Read plan document
-  - Spawn vrau-reviewer agent
-  - If REVISE/RETHINK: Use receiving-plan-review skill
-  - If APPROVED: Signal completion
+- Always dispatch Task tool with opus model
+- Read plan document
+- Spawn vrau-reviewer agent
+- If REVISE/RETHINK: Use receiving-plan-review skill
+- If APPROVED: Signal completion
 
 **When plan is approved:** Proceed to Phase 3.
 
+**After review approved, update execution log:**
+- Set Plan Status to `approved`
+- Update Last Updated
+- Commit and push
+
 ## Phase 2 Complete
+
+**Update execution log for next phase:**
+- Set Phase to `execute`
+- Add `## Execution` section with Status: `pending`
+- Update Last Updated
+- Commit and push
 
 When plan is approved, report to user:
 

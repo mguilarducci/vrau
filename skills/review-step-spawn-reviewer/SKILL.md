@@ -5,21 +5,13 @@ description: Use when spawning reviewer agent - enforces opus model usage for re
 
 # Review Step: Spawn Reviewer Agent
 
-**This skill enforces opus model usage. You cannot skip this check.**
+**This skill enforces opus model usage by always dispatching to opus.**
 
-## Model Enforcement Check
+## Model Enforcement
 
-**FIRST: Check your current session model.**
+**ALWAYS dispatch a Task with opus model.** Do not attempt to check your current model.
 
-Are you running on **opus** model right now?
-
-### If YES (you are opus):
-
-Execute the review step directly in this session. Skip to "Review Instructions" below.
-
-### If NO (you are haiku or sonnet):
-
-**You MUST dispatch a Task tool with opus model.** Do NOT execute in current session.
+**Before dispatching:** Read `docs/designs/<workflow>/execution-log.md` and include its content in the prompt so the subagent has full workflow context.
 
 ```
 Task tool:
@@ -32,63 +24,41 @@ DOCUMENT TO REVIEW: [specify brainstorm.md or plan.md]
 DOCUMENT PATH: [full path]
 
 INSTRUCTIONS:
-1. Read the document
-2. Spawn vrau-reviewer agent with the content
-3. Wait for feedback
-4. If REVISE/RETHINK: Use receiving-review skill to process feedback
-5. If APPROVED: Report completion
 
-Follow the review process from the phase skill."
+1. READ THE DOCUMENT
+   Use Read tool on the document path.
+
+2. SPAWN REVIEWER AGENT
+   Task tool:
+   - subagent_type: 'vrau:vrau-reviewer'
+   - model: 'opus'
+   - prompt:
+     1. Task: <one-line description>
+     2. Complexity: <trivial/simple/moderate/complex>
+     3. Content: <paste document content>
+     4. Request: 'Review this <brainstorm/plan> for <completeness, clarity, technical soundness / completeness and feasibility>'
+
+3. WAIT FOR REVIEWER FEEDBACK
+   The reviewer will return one of:
+   - APPROVED - Continue to next phase
+   - REVISE - Minor issues to fix
+   - RETHINK - Major issues, needs rework
+
+4. PROCESS FEEDBACK
+   If REVISE or RETHINK:
+   - Use appropriate receiving-review skill:
+     - For brainstorms: vrau:receiving-brainstorm-review
+     - For plans: vrau:receiving-plan-review
+   - Process each issue with technical verification
+   - Update document
+   - Save, commit, push
+   - Re-spawn reviewer (go to step 2)
+
+   If APPROVED:
+   - Review complete, report completion
+
+5. LOOP CONSTRAINTS
+   Maximum 3 iterations, then ask user how to proceed."
 ```
 
-**STOP HERE.** Wait for the task to complete.
-
----
-
-## Review Instructions
-
-**(Only execute if you are opus model)**
-
-### 1. Read the Document
-
-```
-Read tool: <document-path>
-```
-
-### 2. Spawn Reviewer Agent
-
-```
-Task tool:
-- subagent_type: "vrau:vrau-reviewer"
-- model: "opus"
-- prompt:
-  1. Task: <one-line description>
-  2. Complexity: <trivial/simple/moderate/complex>
-  3. Content: <paste document content>
-  4. Request: "Review this <brainstorm/plan> for <completeness, clarity, technical soundness / completeness and feasibility>"
-```
-
-### 3. Wait for Reviewer Feedback
-
-The reviewer will return one of:
-- **APPROVED** - Continue to next phase
-- **REVISE** - Minor issues to fix
-- **RETHINK** - Major issues, needs rework
-
-### 4. Process Feedback
-
-**If REVISE or RETHINK:**
-- **REQUIRED SKILL:** Use appropriate receiving-review skill:
-  - For brainstorms: `vrau:receiving-brainstorm-review`
-  - For plans: `vrau:receiving-plan-review`
-- Process each issue with technical verification
-- Update document
-- Save, commit, push
-- Re-spawn reviewer (go to step 2)
-
-**If APPROVED:**
-- Review complete, proceed to next step in phase
-
-### 5. Loop Constraints
-
-Maximum 3 iterations, then ask user how to proceed.
+**Wait for the task to complete.** Returns when review is APPROVED or user intervention needed.

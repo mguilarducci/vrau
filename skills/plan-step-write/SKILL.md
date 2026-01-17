@@ -5,21 +5,13 @@ description: Use when executing write plan step in plan phase - enforces opus mo
 
 # Plan Step: Write Plan
 
-**This skill enforces opus model usage. You cannot skip this check.**
+**This skill enforces opus model usage by always dispatching to opus.**
 
-## Model Enforcement Check
+## Model Enforcement
 
-**FIRST: Check your current session model.**
+**ALWAYS dispatch a Task with opus model.** Do not attempt to check your current model.
 
-Are you running on **opus** model right now?
-
-### If YES (you are opus):
-
-Execute the write plan step directly in this session. Skip to "Write Plan Instructions" below.
-
-### If NO (you are haiku or sonnet):
-
-**You MUST dispatch a Task tool with opus model.** Do NOT execute in current session.
+**Before dispatching:** Read `docs/designs/<workflow>/execution-log.md` and include its content in the prompt so the subagent has full workflow context.
 
 ```
 Task tool:
@@ -50,42 +42,4 @@ git commit -m 'plan: <description> [#issue-number]'
 git push"
 ```
 
-**STOP HERE.** Wait for the task to complete, then continue to Review Loop.
-
----
-
-## Write Plan Instructions
-
-**(Only execute if you are opus model)**
-
-### 1. Invoke vrau-writing-plans Skill
-
-```
-Skill tool:
-- skill: "vrau:vrau-writing-plans"
-```
-
-### 2. Provide Context
-
-Reference the selected design document from Pre-Plan Setup.
-
-### 3. Write Plan
-
-Save to: `docs/designs/<workflow>/plan/<design-name>-plan.md`
-
-### 4. Commit Discipline
-
-Commit after each major section:
-```bash
-git add docs/designs/<workflow>/plan/
-git commit -m "plan: <description> [#issue-number]"
-git push
-```
-
-**Plan requirements (vrau-writing-plans format):**
-- Task dependency graph (visual ASCII)
-- Parallel execution groups table
-- Model assignments table
-- Per-task: depends-on, parallel group, model fields
-- Reference the design document
-- Follow bite-sized task format
+**Wait for the task to complete.** The output is the plan document saved and committed.

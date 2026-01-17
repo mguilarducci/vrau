@@ -9,6 +9,28 @@ You're now in Phase 1 (Brainstorm) of the vrau workflow.
 
 **Goal:** Produce a thorough, reviewed brainstorm document exploring requirements, design, and implementation approach.
 
+---
+
+## Stateless Execution Pattern
+
+**Each step is stateless.** Subagents have no memory of previous steps. Use the execution log to persist context.
+
+**Execution log location:** `docs/designs/<workflow>/execution-log.md`
+
+**Every step MUST:**
+1. READ execution log at start (pass content to subagent)
+2. DO the step's work
+3. WRITE updated execution log with current status and context for next step
+4. COMMIT AND PUSH immediately
+
+```bash
+git add docs/designs/<workflow>/execution-log.md
+git commit -m "vrau(<workflow>): update execution log - <step name>"
+git push
+```
+
+**When dispatching subagents:** Include execution log content in the prompt so the subagent has full context.
+
 ### Model Selection for Phase 1
 
 | Step | Model | Rationale |
@@ -40,15 +62,41 @@ Please specify:
 
 Wait for user response. Use their input as the task description for the rest of the phase.
 
+### Initialize Execution Log
+
+After getting user input, create the execution log:
+
+```markdown
+# Execution Log: <workflow>
+
+## Workflow Context
+- **Task:** <user's task description>
+- **Phase:** brainstorm
+- **Branch:** (pending)
+- **Started:** <timestamp>
+
+## Brainstorm
+- **Status:** pending
+- **File:** docs/designs/<workflow>/design/brainstorm.md
+
+## Last Updated
+<timestamp> - initialized
+```
+
+```bash
+git add docs/designs/<workflow>/execution-log.md
+git commit -m "vrau(<workflow>): initialize execution log"
+git push
+```
+
 ---
 
 ## Branch Setup (haiku)
 
-**Model enforcement:** If current session is not haiku, dispatch Task tool:
+**Model enforcement:** Always dispatch Task tool with haiku model:
 ```
 Task(subagent_type="general-purpose", model="haiku", prompt="[Branch Setup instructions]")
 ```
-If current session is haiku, run in current session.
 
 ### Update Default Branch
 
@@ -86,6 +134,11 @@ If current session is haiku, run in current session.
    - Verify current branch is not main
    - If on main, force option A or B
 
+**After branch setup, update execution log:**
+- Set Branch to the created branch name
+- Update Last Updated
+- Commit and push
+
 ---
 
 ## Step 0: Research Available Tools
@@ -98,22 +151,24 @@ Skill tool:
 ```
 
 The skill will:
-- Check current session model
-- If not haiku, dispatch Task tool with haiku model
-- If haiku, execute research directly
+- Always dispatch Task tool with haiku model
 - Research available MCP tools and gather context
 
 **Output:** Research summary to pass to brainstorming step.
+
+**After research, update execution log:**
+- Add `## Research Summary` section with findings
+- Update Last Updated
+- Commit and push
 
 ---
 
 ## Pre-Brainstorm Checks (haiku)
 
-**Model enforcement:** If current session is not haiku, dispatch Task tool:
+**Model enforcement:** Always dispatch Task tool with haiku model:
 ```
 Task(subagent_type="general-purpose", model="haiku", prompt="[Pre-checks instructions]")
 ```
-If current session is haiku, run in current session.
 
 Run these checks ONCE at the start of the brainstorm phase:
 
@@ -133,6 +188,11 @@ Run these checks ONCE at the start of the brainstorm phase:
 
 These checks establish baseline health and inform the brainstorm.
 
+**After pre-checks, update execution log:**
+- Note any test failures or dev server issues in Research Summary
+- Update Last Updated
+- Commit and push
+
 ---
 
 ## Step 1: Invoke Brainstorming Skill
@@ -145,22 +205,26 @@ Skill tool:
 ```
 
 The skill will:
-- Check current session model
-- If not opus, dispatch Task tool with opus model
-- If opus, invoke superpowers:brainstorming skill directly
+- Always dispatch Task tool with opus model
+- Invoke superpowers:brainstorming skill
 - Drive the brainstorming conversation
 
 **Completion signal:** The skill produces a brainstorm document ready to save.
+
+**After brainstorming, update execution log:**
+- Set Brainstorm Status to `in_progress`
+- Add one-line Summary of brainstorm
+- Update Last Updated
+- Commit and push
 
 ---
 
 ## Step 2: Save Brainstorm Output (sonnet)
 
-**Model enforcement:** If current session is not sonnet, dispatch Task tool:
+**Model enforcement:** Always dispatch Task tool with sonnet model:
 ```
 Task(subagent_type="general-purpose", model="sonnet", prompt="[Step 2 instructions]")
 ```
-If current session is sonnet, run in current session.
 
 Immediately after brainstorming completes, save the output:
 
@@ -176,15 +240,19 @@ git commit -m "vrau(<workflow>): complete initial brainstorm"
 
 **Why commit now?** Claude Code is stateless. Each save/commit creates a recovery point. If the session ends, you can resume from this checkpoint.
 
+**After save, update execution log:**
+- Set Brainstorm Status to `complete`
+- Update Last Updated
+- Commit and push
+
 ---
 
 ## Step 3: Evaluate Scope for Breakdown (sonnet)
 
-**Model enforcement:** If current session is not sonnet, dispatch Task tool:
+**Model enforcement:** Always dispatch Task tool with sonnet model:
 ```
 Task(subagent_type="general-purpose", model="sonnet", prompt="[Step 3 instructions]")
 ```
-If current session is sonnet, run in current session.
 
 **Always check if the brainstorm should be split.** Smaller, focused workflows are preferred over large ones.
 
@@ -248,15 +316,19 @@ If current session is sonnet, run in current session.
 - Document why in a brief note (scope is already focused, components are tightly coupled, etc.)
 - Continue to Step 4
 
+**After breakdown check, update execution log:**
+- Note breakdown decision (split vs continue)
+- Update Last Updated
+- Commit and push
+
 ---
 
 ## Step 4: Self-Review (sonnet) - Optional
 
-**Model enforcement:** If current session is not sonnet, dispatch Task tool:
+**Model enforcement:** Always dispatch Task tool with sonnet model:
 ```
 Task(subagent_type="general-purpose", model="sonnet", prompt="[Step 4 instructions]")
 ```
-If current session is sonnet, run in current session.
 
 Before requesting formal review, do a quick self-check:
 
@@ -270,6 +342,11 @@ If something is missing, add it now. Save and commit:
 git add docs/designs/<workflow>/design/brainstorm.md
 git commit -m "vrau(<workflow>): refine brainstorm after self-review"
 ```
+
+**After self-review, update execution log:**
+- Note any refinements made
+- Update Last Updated
+- Commit and push
 
 ---
 
@@ -289,25 +366,27 @@ Skill tool:
 ```
 
 The skill will:
-- Check current session model
-- If not opus, dispatch Task tool with opus model
-- If opus, execute review process directly:
-  - Read brainstorm document
-  - Spawn vrau-reviewer agent
-  - If REVISE/RETHINK: Use receiving-brainstorm-review skill
-  - If APPROVED: Signal completion
+- Always dispatch Task tool with opus model
+- Read brainstorm document
+- Spawn vrau-reviewer agent
+- If REVISE/RETHINK: Use receiving-brainstorm-review skill
+- If APPROVED: Signal completion
 
 **When review is approved:** Proceed to Step 6.
+
+**After review approved, update execution log:**
+- Set Brainstorm Status to `approved`
+- Update Last Updated
+- Commit and push
 
 ---
 
 ## Step 6: Open PR and Merge (haiku)
 
-**Model enforcement:** If current session is not haiku, dispatch Task tool:
+**Model enforcement:** Always dispatch Task tool with haiku model:
 ```
 Task(subagent_type="general-purpose", model="haiku", prompt="[Step 6 instructions]")
 ```
-If current session is haiku, run in current session.
 
 Once brainstorm is approved, open a PR for the brainstorm phase:
 
@@ -353,6 +432,12 @@ Once brainstorm is approved, open a PR for the brainstorm phase:
 ---
 
 ## Phase 1 Complete
+
+**Update execution log for next phase:**
+- Set Phase to `plan`
+- Add `## Plan` section with Status: `pending`
+- Update Last Updated
+- Commit and push
 
 Brainstorm phase is now complete. Report to user:
 
