@@ -9,6 +9,16 @@ description: Use when executing Phase 3 of a vrau workflow - after plan is compl
 
 Tell user: "Consider compacting or starting a fresh session for execution."
 
+### Model Selection for Phase 3
+
+| Step | Model | Rationale |
+|------|-------|-----------|
+| Pre-execution checks | sonnet | Dependency analysis |
+| Execution | varies | Based on task complexity (see rules below) |
+| Post-execution | haiku | Simple git/PR operations |
+
+---
+
 ## Pre-Execution Checks (sonnet)
 
 ### Verify Dependencies
@@ -54,7 +64,7 @@ Based on task complexity (from README.md config):
    - Ask only if doubts or decisions needed
 3. Follow superpower skill until complete
 
-## Post-Execution
+## Post-Execution (haiku)
 
 ### Update README
 

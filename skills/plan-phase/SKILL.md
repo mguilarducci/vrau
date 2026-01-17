@@ -7,6 +7,16 @@ description: Use when executing Phase 2 of a vrau workflow - after brainstorm is
 
 **Important:** Plans always go to files, NOT issues. Do not update GitHub Issues with plan content.
 
+### Model Selection for Phase 2
+
+| Step | Model | Rationale |
+|------|-------|-----------|
+| Pre-plan setup | haiku | Simple file listing, git operations |
+| Write plan | opus | Quality planning requires deep thinking |
+| Review loop | opus | Via reviewer agent |
+
+---
+
 ## Pre-Plan Setup (haiku)
 
 **Recommend new session:** "Consider starting a fresh session for planning."

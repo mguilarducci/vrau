@@ -9,9 +9,20 @@ You're now in Phase 1 (Brainstorm) of the vrau workflow.
 
 **Goal:** Produce a thorough, reviewed brainstorm document exploring requirements, design, and implementation approach.
 
+### Model Selection for Phase 1
+
+| Step | Model | Rationale |
+|------|-------|-----------|
+| Pre-checks | haiku | Simple verification tasks |
+| Brainstorming | opus | Creative, quality thinking |
+| Save & self-review | sonnet | Standard operations |
+| Formal review | opus | Via reviewer agent |
+| Breakdown | sonnet | Analysis task |
+| PR/Merge | haiku | Mechanical git operations |
+
 ---
 
-## Before You Start: Pre-Brainstorm Checks
+## Before You Start: Pre-Brainstorm Checks (haiku)
 
 Run these checks ONCE at the start of the brainstorm phase:
 
@@ -33,7 +44,7 @@ These checks establish baseline health and inform the brainstorm.
 
 ---
 
-## Step 1: Invoke Brainstorming Skill
+## Step 1: Invoke Brainstorming Skill (opus)
 
 Use the `superpowers:brainstorming` skill with the task description:
 
@@ -52,7 +63,7 @@ Skill tool:
 
 ---
 
-## Step 2: Save Brainstorm Output
+## Step 2: Save Brainstorm Output (sonnet)
 
 Immediately after brainstorming completes, save the output:
 
@@ -70,7 +81,7 @@ git commit -m "vrau(<workflow>): complete initial brainstorm"
 
 ---
 
-## Step 3: Self-Review (Optional but Recommended)
+## Step 3: Self-Review (sonnet) - Optional but Recommended
 
 Before requesting formal review, do a quick self-check:
 
@@ -87,7 +98,7 @@ git commit -m "vrau(<workflow>): refine brainstorm after self-review"
 
 ---
 
-## Step 4: Request Formal Review
+## Step 4: Request Formal Review (opus via reviewer agent)
 
 **IMPORTANT: Before requesting review, remind the user about session compaction:**
 
@@ -116,7 +127,7 @@ Skill tool:
 
 ---
 
-## Step 5: Attempt Brainstorm Breakdown (Optional)
+## Step 5: Attempt Brainstorm Breakdown (sonnet) - Optional
 
 If the brainstorm is large or complex, consider breaking it down into smaller feature-sized pieces:
 
@@ -177,7 +188,7 @@ If the brainstorm is large or complex, consider breaking it down into smaller fe
 
 ---
 
-## Step 6: Open PR and Merge
+## Step 6: Open PR and Merge (haiku)
 
 Once brainstorm is approved (and optionally broken down), open a PR for the brainstorm phase:
 
