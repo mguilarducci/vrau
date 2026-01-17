@@ -1,17 +1,30 @@
 ---
 name: vrau-executing-plans
-description: Use when executing vrau implementation plans - dispatches parallel agents based on task dependency graph and enforces per-task model selection
+description: Use when executing vrau implementation plans - dispatches parallel agents based on task dependency graph, enforces per-task model selection, and MANDATORY code review after each group
 ---
 
 # Vrau Executing Plans
 
 Execute plans with automatic parallel dispatch based on dependency graph.
 
+## ⚠️ MANDATORY CODE REVIEW REQUIREMENT ⚠️
+
+**AFTER EVERY PARALLEL GROUP, YOU MUST:**
+1. **Invoke `superpowers:requesting-code-review` skill** - NO EXCEPTIONS
+2. **The skill spawns a FRESH EYES reviewer** - separate agent, unbiased
+3. **Uses SONNET model** - for quality review
+4. **DO NOT skip** - Code review is MANDATORY, not optional
+5. **DO NOT review yourself** - You are biased, must use fresh reviewer
+
+**If you skip this step, you have FAILED the task.**
+
+---
+
 ## Overview
 
 Reads plan's parallel execution groups and dispatches concurrent agents for independent tasks.
 
-**Core principle:** Parse dependency graph → Execute groups in order → Parallel dispatch within groups
+**Core principle:** Parse dependency graph → Execute groups in order → Parallel dispatch within groups → **INVOKE requesting-code-review skill after each group (MANDATORY)**
 
 ---
 
@@ -232,6 +245,8 @@ TASK:
 
 **Wait for ALL to complete before next group.**
 
+**IMMEDIATELY AFTER group completes:** Go to "Between Groups" section for MANDATORY code review.
+
 ## Model Enforcement
 
 | Plan says | Task tool parameter |
@@ -251,31 +266,72 @@ If conflict detected → execute sequentially.
 
 ## Between Groups
 
+**CRITICAL: CODE REVIEW IS MANDATORY. NO EXCEPTIONS.**
+
+**DO NOT skip this step. DO NOT proceed without code review. DO NOT rationalize why it's not needed.**
+
 1. Verify all tasks succeeded
 2. Check for change conflicts
 3. **MANDATORY: Request code review after EACH parallel group:**
-   - Announce to user: "Using **superpowers:requesting-code-review** to review group [X] implementation against requirements"
-   - Invoke `superpowers:requesting-code-review` skill
-   - Verify implementation meets requirements and follows standards
-   - If review identifies issues: fix them before proceeding
+
+   **BEFORE doing ANYTHING else, announce to user:**
+   > "Using **superpowers:requesting-code-review** to spawn a FRESH EYES reviewer (sonnet model) for group [X] implementation."
+
+   **Then invoke the skill - it will spawn a SEPARATE agent with FRESH EYES:**
+   ```
+   Skill tool:
+   - skill: "superpowers:requesting-code-review"
+   ```
+
+   **CRITICAL: The skill MUST spawn a FRESH, UNBIASED reviewer agent:**
+   - Uses **sonnet model** for review
+   - Spawns a SEPARATE agent with NO prior context
+   - Fresh eyes catch issues you would miss
+   - DO NOT review yourself - you are biased
+
+   **Wait for review completion. The fresh reviewer will:**
+   - Review code against requirements
+   - Check coding standards
+   - Verify implementation quality
+   - Provide unbiased feedback
+
+   **If review identifies issues:**
+   - Fix ALL issues immediately
+   - Re-invoke requesting-code-review (spawns fresh reviewer again)
+   - DO NOT proceed until review passes
+
 4. **Update execution log:**
    - Update Current Group to next group letter
    - Add completed task numbers to Completed Tasks
-   - Note review results in Notes
+   - Note review results: "Code review PASSED for group [X]"
    - Commit and push
 5. Proceed to next group
 
+**STOP if you think any of these:**
+- "Code review is optional" → NO. It's MANDATORY.
+- "I'll skip it this time" → NO. NEVER skip.
+- "Tasks are simple, don't need review" → NO. ALL tasks need review.
+- "I'll review manually instead" → NO. Use the skill with FRESH EYES.
+- "I can review it myself" → NO. You're biased. Spawn fresh reviewer.
+- "Review after next group" → NO. Review NOW.
+- "Don't need separate agent" → NO. MUST spawn fresh, unbiased reviewer.
+
 ## Red Flags
 
-**Never:**
+**CRITICAL VIOLATIONS - NEVER DO THESE:**
+
+- **Skip code review** → MANDATORY after EVERY group, NO EXCEPTIONS
+- **Proceed to next group without code review** → STOP. Review first.
+- **Review code yourself instead of using requesting-code-review** → NO. MUST use fresh eyes.
+- **Think "review is optional"** → NO. It's MANDATORY.
+- **Think "tasks are simple, don't need review"** → NO. ALL tasks need review.
+- **Think "I can review my own code"** → NO. Biased. Use fresh reviewer.
 - Skip model enforcement
 - Dispatch parallel tasks editing same files
 - Proceed before group completes
 - Ignore task failures
-- **Dispatch tasks WITHOUT the skill preamble**
-- **Skip TDD because "task is simple"**
-- **Skip code review after completing tasks**
-- **Proceed to next group without review**
+- Dispatch tasks WITHOUT the skill preamble
+- Skip TDD because "task is simple"
 
 ## Subagent Skill Violations
 
