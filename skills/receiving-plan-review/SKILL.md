@@ -22,6 +22,16 @@ Handle reviewer feedback on implementation plans with technical rigor. Plans hav
 
 **Plans are promises. Review feedback questions if promises are keepable.**
 
+## Research Before Responding
+
+Before accepting or rejecting reviewer feedback on feasibility, verify claims:
+
+1. **Check available MCP tools** for relevant documentation
+2. **Use web search** to verify technical feasibility claims
+3. **Fetch current docs** for libraries/APIs mentioned in feedback
+
+Example: Reviewer says "This library doesn't support that feature" → Verify with current docs before accepting.
+
 Unlike brainstorm reviews (which focus on design quality), plan reviews focus on:
 - **Can we actually build this?** (feasibility)
 - **In what order?** (dependencies)

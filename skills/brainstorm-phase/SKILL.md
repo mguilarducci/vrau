@@ -23,7 +23,30 @@ You're now in Phase 1 (Brainstorm) of the vrau workflow.
 
 ---
 
-## Before You Start: Pre-Brainstorm Checks (haiku)
+## Step 0: Research Available Tools (haiku)
+
+Before brainstorming, check what research tools are available:
+
+1. **List available MCP tools:**
+   - Check for documentation fetchers (context7, claude-docs, etc.)
+   - Check for web search capabilities
+   - Check for API explorers or code search tools
+
+2. **Identify relevant tools for this task:**
+   - Does the task mention specific technologies? (React, Claude API, etc.)
+   - Are there docs that should be fetched?
+   - Would web search help find current best practices?
+
+3. **Use relevant tools:**
+   - Fetch current documentation for mentioned technologies
+   - Search for recent changes or deprecations
+   - Gather context before brainstorming begins
+
+**Output:** Brief summary of what was researched and key findings. Include this context when invoking the brainstorming skill.
+
+---
+
+## Pre-Brainstorm Checks (haiku)
 
 Run these checks ONCE at the start of the brainstorm phase:
 

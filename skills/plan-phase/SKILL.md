@@ -17,6 +17,18 @@ description: Use when executing Phase 2 of a vrau workflow - after brainstorm is
 
 ---
 
+## Step 0: Research Available Tools (haiku)
+
+Before writing the plan, check what research tools are available:
+
+1. **List available MCP tools** - documentation fetchers, web search, API explorers
+2. **Identify relevant tools** - does the design mention technologies with MCP tools?
+3. **Use relevant tools** - fetch current docs, search for implementation patterns
+
+**Output:** Brief summary of research findings to inform the plan.
+
+---
+
 ## Pre-Plan Setup (haiku)
 
 **Recommend new session:** "Consider starting a fresh session for planning."
@@ -47,7 +59,7 @@ Same as Phase 1 Step 0:
 
 ## Write Plan (opus)
 
-1. Invoke `superpowers:writing-plans` skill with opus model
+1. Invoke `vrau:vrau-writing-plans` skill with opus model
 2. Provide context: reference the selected design document
 3. Write plan to: `docs/designs/<workflow>/plan/<design-name>-plan.md`
 
@@ -58,10 +70,13 @@ git commit -m "plan: <description> [#issue-number]"
 git push
 ```
 
-**Plan requirements:**
-- List all task dependencies explicitly
+**Plan requirements (vrau-writing-plans format):**
+- Task dependency graph (visual ASCII)
+- Parallel execution groups table
+- Model assignments table
+- Per-task: depends-on, parallel group, model fields
 - Reference the design document
-- Follow bite-sized task format from writing-plans skill
+- Follow bite-sized task format
 
 ## Review Loop (opus)
 

@@ -53,6 +53,12 @@ That's it. One command handles everything.
 
 ```
 ┌──────────────────────────────────────────────────────────────────┐
+│  STEP 0: RESEARCH AVAILABLE TOOLS (haiku)                        │
+│  Check MCP tools, fetch relevant docs, web search                │
+└──────────────────────────────────────────────────────────────────┘
+                              │
+                              ▼
+┌──────────────────────────────────────────────────────────────────┐
 │  PRE-CHECKS (haiku)                                              │
 │  Run tests, start dev server, establish baseline                 │
 └──────────────────────────────────────────────────────────────────┘
@@ -130,6 +136,12 @@ That's it. One command handles everything.
 
 ```
 ┌──────────────────────────────────────────────────────────────────┐
+│  STEP 0: RESEARCH AVAILABLE TOOLS (haiku)                        │
+│  Check MCP tools, fetch implementation patterns                  │
+└──────────────────────────────────────────────────────────────────┘
+                              │
+                              ▼
+┌──────────────────────────────────────────────────────────────────┐
 │  PRE-PLAN SETUP (haiku)                                          │
 │  Select design to plan, branch setup, update from main           │
 └──────────────────────────────────────────────────────────────────┘
@@ -179,14 +191,14 @@ That's it. One command handles everything.
                               │
                               ▼
 ┌──────────────────────────────────────────────────────────────────┐
-│  EXECUTION (model varies by task complexity)                     │
-│  Invoke superpowers:subagent-driven-development                  │
-│  → Execute tasks → Commit as you go                              │
+│  EXECUTION (model per task from plan)                            │
+│  Invoke vrau-executing-plans                                     │
+│  → Parse dependency graph → Dispatch parallel groups             │
+│  → Model per task from plan                                      │
 │                                                                  │
-│  Model selection:                                                │
-│  • Simple tasks: haiku                                           │
-│  • Complex tasks: sonnet                                         │
-│  • Very complex: ASK before opus                                 │
+│  Parallel execution:                                             │
+│  • Tasks in same group run concurrently                          │
+│  • Wait for group completion before next group                   │
 └──────────────────────────────────────────────────────────────────┘
                               │
                               ▼
@@ -212,6 +224,39 @@ docs/designs/2026-01-16-feat-user-auth/
 └── plan/
     └── plan.md         # Phase 2 output
 ```
+
+## Enhanced Plan Format
+
+Vrau plans include dependency tracking for parallel execution:
+
+### Task Dependencies
+
+Each task specifies what it depends on:
+
+```markdown
+### Task 3: Feature Implementation
+
+**Depends on:** Task 1, Task 2
+**Parallel group:** B
+**Model:** sonnet
+```
+
+### Parallel Execution Groups
+
+Tasks in the same parallel group run concurrently:
+
+| Group | Tasks | Runs After |
+|-------|-------|------------|
+| A | 0, 1 | (start) |
+| B | 2, 3, 4 | Group A |
+| C | 5 | Group B |
+
+### Model Per Task
+
+Each task specifies which model to use:
+- **haiku**: Simple setup, config
+- **sonnet**: Standard implementation
+- **opus**: Complex logic (requires approval)
 
 ## State Detection
 

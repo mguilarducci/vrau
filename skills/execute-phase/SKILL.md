@@ -14,7 +14,7 @@ Tell user: "Consider compacting or starting a fresh session for execution."
 | Step | Model | Rationale |
 |------|-------|-----------|
 | Pre-execution checks | sonnet | Dependency analysis |
-| Execution | varies | Based on task complexity (see rules below) |
+| Execution | **per task** | From plan's Model field for each task |
 | Post-execution | haiku | Simple git/PR operations |
 
 ---
@@ -46,23 +46,20 @@ Plan approved. Ready to execute.
 Proceed with execution? [Y/n]
 ```
 
-## Execution (model varies)
-
-### Model Selection Rules
-
-Based on task complexity (from README.md config):
-- **Simple tasks**: haiku
-- **Complex tasks**: sonnet
-- **Very complex tasks**: **ASK** before using opus
-- **Quality/review**: sonnet minimum (never haiku)
+## Execution (model per task from plan)
 
 ### Execution Process
 
-1. Invoke `superpowers:subagent-driven-development`
-2. After permission granted:
-   - Execute without asking for each step
-   - Ask only if doubts or decisions needed
-3. Follow superpower skill until complete
+1. Invoke `vrau:vrau-executing-plans`
+2. Skill reads parallel groups from plan
+3. For groups with 2+ tasks: dispatches parallel agents
+4. For single-task groups: uses sequential execution
+5. Uses model specified per task in plan
+
+**Parallel execution:**
+- Tasks in same parallel group run concurrently
+- Wait for group completion before next group
+- Model enforced per task from plan's Model field
 
 ## Post-Execution (haiku)
 
