@@ -43,26 +43,162 @@ That's it. One command handles everything.
 ```
 ┌─────────────┐     ┌──────────┐     ┌─────────────┐
 │  BRAINSTORM │ ──▶ │   PLAN   │ ──▶ │   EXECUTE   │
-│   + Review  │     │ + Review │     │             │
+│   + Review  │     │ + Review │     │   + PR      │
 └─────────────┘     └──────────┘     └─────────────┘
 ```
 
-**Phase 1: Brainstorm**
-- Explore requirements and design
-- Ask clarifying questions
-- Document decisions
-- Review with fresh-eyes analysis
+---
 
-**Phase 2: Plan**
-- Break design into tasks
-- Define dependencies
-- Create implementation plan
-- Review for completeness
+### Phase 1: Brainstorm
 
-**Phase 3: Execute**
-- Implement task by task
-- Commit as you go
-- Open PR when done
+```
+┌──────────────────────────────────────────────────────────────────┐
+│  PRE-CHECKS (haiku)                                              │
+│  Run tests, start dev server, establish baseline                 │
+└──────────────────────────────────────────────────────────────────┘
+                              │
+                              ▼
+┌──────────────────────────────────────────────────────────────────┐
+│  STEP 1: BRAINSTORMING (opus)                                    │
+│  Invoke superpowers:brainstorming skill                          │
+│  → Clarifying questions → Design exploration → Document          │
+└──────────────────────────────────────────────────────────────────┘
+                              │
+                              ▼
+┌──────────────────────────────────────────────────────────────────┐
+│  STEP 2: SAVE OUTPUT (sonnet)                                    │
+│  Save to design/brainstorm.md, commit immediately                │
+└──────────────────────────────────────────────────────────────────┘
+                              │
+                              ▼
+┌──────────────────────────────────────────────────────────────────┐
+│  STEP 3: EVALUATE SCOPE FOR BREAKDOWN (sonnet) ◄── MANDATORY     │
+│  Always check: can this be split into smaller workflows?         │
+│  Smaller, focused workflows preferred over large ones            │
+└──────────────────────────────────────────────────────────────────┘
+                              │
+              ┌───────────────┴───────────────┐
+              │                               │
+              ▼                               ▼
+    ┌─────────────────┐             ┌─────────────────┐
+    │  SPLIT NEEDED   │             │  NO SPLIT       │
+    │  Create sub-    │             │  Continue to    │
+    │  workflows,     │             │  Step 4         │
+    │  restart vrau   │             │                 │
+    └─────────────────┘             └─────────────────┘
+              │                               │
+              ▼                               ▼
+        [STOP - restart              ┌──────────────────────────────┐
+         for each sub-workflow]      │  STEP 4: SELF-REVIEW (sonnet)│
+                                     │  Optional quality check      │
+                                     └──────────────────────────────┘
+                                                      │
+                                                      ▼
+                                     ┌──────────────────────────────┐
+                                     │  STEP 5: FORMAL REVIEW       │
+                                     │  (opus via reviewer agent)   │
+                                     └──────────────────────────────┘
+                                                      │
+                              ┌───────────────────────┴──────────┐
+                              │                                  │
+                              ▼                                  ▼
+                    ┌─────────────────┐                ┌─────────────────┐
+                    │  APPROVED       │                │  NEEDS REVISION │
+                    │  Continue to    │                │  Update, re-    │
+                    │  Step 6         │                │  submit review  │
+                    └─────────────────┘                └─────────────────┘
+                              │                                  │
+                              │                    ┌─────────────┘
+                              │                    │ (max 3 iterations)
+                              │                    ▼
+                              │         ┌─────────────────────────────┐
+                              │         │  Loop back to FORMAL REVIEW │
+                              │         └─────────────────────────────┘
+                              ▼
+                    ┌──────────────────────────────────────────────────┐
+                    │  STEP 6: OPEN PR AND MERGE (haiku)               │
+                    │  Create PR, merge to main                        │
+                    └──────────────────────────────────────────────────┘
+                              │
+                              ▼
+                        [PHASE 2: PLAN]
+```
+
+---
+
+### Phase 2: Plan
+
+```
+┌──────────────────────────────────────────────────────────────────┐
+│  PRE-PLAN SETUP (haiku)                                          │
+│  Select design to plan, branch setup, update from main           │
+└──────────────────────────────────────────────────────────────────┘
+                              │
+                              ▼
+┌──────────────────────────────────────────────────────────────────┐
+│  WRITE PLAN (opus)                                               │
+│  Invoke superpowers:writing-plans skill                          │
+│  → Task breakdown → Dependencies → Implementation steps          │
+└──────────────────────────────────────────────────────────────────┘
+                              │
+                              ▼
+┌──────────────────────────────────────────────────────────────────┐
+│  REVIEW LOOP (opus via reviewer agent)                           │
+│  Spawn vrau-reviewer, process feedback                           │
+└──────────────────────────────────────────────────────────────────┘
+                              │
+              ┌───────────────┴───────────────┐
+              │                               │
+              ▼                               ▼
+    ┌─────────────────┐             ┌─────────────────┐
+    │  APPROVED       │             │  REVISE/RETHINK │
+    │  Continue to    │             │  Use receiving- │
+    │  Phase 3        │             │  plan-review    │
+    └─────────────────┘             │  skill, update  │
+              │                     └─────────────────┘
+              │                               │
+              │                    ┌──────────┘
+              │                    │ (max 3 iterations)
+              │                    ▼
+              │         ┌─────────────────────────────┐
+              │         │  Loop back to REVIEW        │
+              │         └─────────────────────────────┘
+              ▼
+        [PHASE 3: EXECUTE]
+```
+
+---
+
+### Phase 3: Execute
+
+```
+┌──────────────────────────────────────────────────────────────────┐
+│  PRE-EXECUTION CHECKS (sonnet)                                   │
+│  Verify plan dependencies, ask permission to proceed             │
+└──────────────────────────────────────────────────────────────────┘
+                              │
+                              ▼
+┌──────────────────────────────────────────────────────────────────┐
+│  EXECUTION (model varies by task complexity)                     │
+│  Invoke superpowers:subagent-driven-development                  │
+│  → Execute tasks → Commit as you go                              │
+│                                                                  │
+│  Model selection:                                                │
+│  • Simple tasks: haiku                                           │
+│  • Complex tasks: sonnet                                         │
+│  • Very complex: ASK before opus                                 │
+└──────────────────────────────────────────────────────────────────┘
+                              │
+                              ▼
+┌──────────────────────────────────────────────────────────────────┐
+│  POST-EXECUTION (haiku)                                          │
+│  Update README with execution log                                │
+│  Open PR with gh pr create                                       │
+└──────────────────────────────────────────────────────────────────┘
+                              │
+                              ▼
+                        [WORKFLOW COMPLETE]
+```
 
 ## Workflow Files
 
