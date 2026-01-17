@@ -88,32 +88,22 @@ If current session is haiku, run in current session.
 
 ---
 
-## Step 0: Research Available Tools (haiku)
+## Step 0: Research Available Tools
 
-**Model enforcement:** If current session is not haiku, dispatch Task tool:
+**Invoke wrapper skill to enforce haiku model:**
+
 ```
-Task(subagent_type="general-purpose", model="haiku", prompt="[Step 0 instructions]")
+Skill tool:
+- skill: "vrau:brainstorm-step-research"
 ```
-If current session is haiku, run in current session.
 
-Before brainstorming, check what research tools are available:
+The skill will:
+- Check current session model
+- If not haiku, dispatch Task tool with haiku model
+- If haiku, execute research directly
+- Research available MCP tools and gather context
 
-1. **List available MCP tools:**
-   - Check for documentation fetchers (context7, claude-docs, etc.)
-   - Check for web search capabilities
-   - Check for API explorers or code search tools
-
-2. **Identify relevant tools for this task:**
-   - Does the task mention specific technologies? (React, Claude API, etc.)
-   - Are there docs that should be fetched?
-   - Would web search help find current best practices?
-
-3. **Use relevant tools:**
-   - Fetch current documentation for mentioned technologies
-   - Search for recent changes or deprecations
-   - Gather context before brainstorming begins
-
-**Output:** Brief summary of what was researched and key findings. Include this context when invoking the brainstorming skill.
+**Output:** Research summary to pass to brainstorming step.
 
 ---
 
@@ -145,28 +135,22 @@ These checks establish baseline health and inform the brainstorm.
 
 ---
 
-## Step 1: Invoke Brainstorming Skill (opus)
+## Step 1: Invoke Brainstorming Skill
 
-**Model enforcement:** If current session is not opus, dispatch Task tool:
-```
-Task(subagent_type="general-purpose", model="opus", prompt="[Step 1 instructions]")
-```
-If current session is opus, run in current session.
-
-Use the `superpowers:brainstorming` skill with the task description:
+**Invoke wrapper skill to enforce opus model:**
 
 ```
 Skill tool:
-- skill: "superpowers:brainstorming"
-- args: <full task description from workflow>
+- skill: "vrau:brainstorm-step-brainstorm"
 ```
 
-**Let the skill drive the conversation:**
-- It will ask clarifying questions
-- Answer thoroughly and thoughtfully
-- The skill will produce a final brainstorm document when complete
+The skill will:
+- Check current session model
+- If not opus, dispatch Task tool with opus model
+- If opus, invoke superpowers:brainstorming skill directly
+- Drive the brainstorming conversation
 
-**Completion signal:** The skill produces a summary or "brainstorm complete" message.
+**Completion signal:** The skill produces a brainstorm document ready to save.
 
 ---
 
@@ -289,13 +273,7 @@ git commit -m "vrau(<workflow>): refine brainstorm after self-review"
 
 ---
 
-## Step 5: Request Formal Review (opus via reviewer agent)
-
-**Model enforcement:** If current session is not opus, dispatch Task tool:
-```
-Task(subagent_type="general-purpose", model="opus", prompt="[Step 5 instructions]")
-```
-If current session is opus, run in current session.
+## Step 5: Request Formal Review
 
 **IMPORTANT: Before requesting review, remind the user about session compaction:**
 
@@ -303,38 +281,23 @@ If current session is opus, run in current session.
 
 Wait for user response. If user wants to compact, pause here and let them handle it.
 
-### Review Process
+**Invoke wrapper skill to enforce opus model:**
 
-1. **Read the brainstorm document:**
-   ```
-   Read tool: docs/designs/<workflow>/design/brainstorm.md
-   ```
+```
+Skill tool:
+- skill: "vrau:review-step-spawn-reviewer"
+```
 
-2. **Spawn reviewer agent:**
-   ```
-   Task tool:
-   - subagent_type: "vrau:vrau-reviewer"
-   - model: "opus"
-   - prompt:
-     1. Task: <one-line description>
-     2. Complexity: <trivial/simple/moderate/complex>
-     3. Content: <paste brainstorm.md content>
-     4. Request: "Review this brainstorm for completeness, clarity, and technical soundness"
-   ```
+The skill will:
+- Check current session model
+- If not opus, dispatch Task tool with opus model
+- If opus, execute review process directly:
+  - Read brainstorm document
+  - Spawn vrau-reviewer agent
+  - If REVISE/RETHINK: Use receiving-brainstorm-review skill
+  - If APPROVED: Signal completion
 
-3. **Wait for reviewer feedback**
-
-4. **If reviewer returns REVISE or RETHINK:**
-   - **REQUIRED SKILL:** Use `vrau:receiving-brainstorm-review`
-   - Process each issue with technical verification
-   - Update brainstorm document
-   - Save, commit, push
-   - Re-spawn reviewer (step 2)
-
-5. **If reviewer returns APPROVED:**
-   - Proceed to Step 6
-
-6. **Loop constraints:** Max 3 iterations, then ask user
+**When review is approved:** Proceed to Step 6.
 
 ---
 

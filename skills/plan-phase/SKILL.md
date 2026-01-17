@@ -96,77 +96,47 @@ Select: [1-N]
    **If C (current branch):**
    - Continue in current branch
 
-## Write Plan (opus)
+## Write Plan
 
-**Model enforcement:** If current session is not opus, dispatch Task tool:
+**Invoke wrapper skill to enforce opus model:**
+
 ```
-Task(subagent_type="general-purpose", model="opus", prompt="[Write Plan instructions]")
-```
-If current session is opus, run in current session.
-
-1. Invoke `vrau:vrau-writing-plans` skill with opus model
-2. Provide context: reference the selected design document
-3. Write plan to: `docs/designs/<workflow>/plan/<design-name>-plan.md`
-
-**Commit discipline:** Commit after each major section:
-```bash
-git add docs/designs/<workflow>/plan/
-git commit -m "plan: <description> [#issue-number]"
-git push
+Skill tool:
+- skill: "vrau:plan-step-write"
 ```
 
-**Plan requirements (vrau-writing-plans format):**
-- Task dependency graph (visual ASCII)
-- Parallel execution groups table
-- Model assignments table
-- Per-task: depends-on, parallel group, model fields
-- Reference the design document
-- Follow bite-sized task format
+The skill will:
+- Check current session model
+- If not opus, dispatch Task tool with opus model
+- If opus, invoke vrau:vrau-writing-plans skill directly
+- Create plan with dependency graph, parallel groups, model assignments
+- Commit after each major section
 
-## Review Loop (opus)
+**Output:** Plan document saved to `docs/designs/<workflow>/plan/<design-name>-plan.md`
 
-**Model enforcement:** If current session is not opus, dispatch Task tool:
-```
-Task(subagent_type="general-purpose", model="opus", prompt="[Review Loop instructions]")
-```
-If current session is opus, run in current session.
+## Review Loop
 
 **FIRST: Recommend session compaction**
 
-### Review Process
+> "Before I request a plan review, consider compacting the session to reduce token usage."
 
-1. **Ensure plan is saved and committed**
+**Invoke wrapper skill to enforce opus model:**
 
-2. **Read the plan document:**
-   ```
-   Read tool: docs/designs/<workflow>/plan/<design-name>-plan.md
-   ```
+```
+Skill tool:
+- skill: "vrau:review-step-spawn-reviewer"
+```
 
-3. **Spawn reviewer agent:**
-   ```
-   Task tool:
-   - subagent_type: "vrau:vrau-reviewer"
-   - model: "opus"
-   - prompt:
-     1. Task: <one-line description>
-     2. Complexity: <same as brainstorm>
-     3. Content: <paste plan.md content>
-     4. Request: "Review this plan for completeness and feasibility"
-   ```
+The skill will:
+- Check current session model
+- If not opus, dispatch Task tool with opus model
+- If opus, execute review process directly:
+  - Read plan document
+  - Spawn vrau-reviewer agent
+  - If REVISE/RETHINK: Use receiving-plan-review skill
+  - If APPROVED: Signal completion
 
-4. **Wait for reviewer feedback**
-
-5. **If reviewer returns REVISE or RETHINK:**
-   - **REQUIRED SKILL:** Use `vrau:receiving-plan-review`
-   - Process each issue with technical rigor
-   - Update plan document
-   - Save, commit, push
-   - Re-spawn reviewer (step 3)
-
-6. **If reviewer returns APPROVED:**
-   - Plan is complete, proceed to Phase 3
-
-7. **Loop constraints:** Max 3 iterations, then ask user
+**When plan is approved:** Proceed to Phase 3.
 
 ## Phase 2 Complete
 
