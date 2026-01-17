@@ -163,38 +163,6 @@ The skill will:
 
 ---
 
-## Pre-Brainstorm Checks (haiku)
-
-**Model enforcement:** Always dispatch Task tool with haiku model:
-```
-Task(subagent_type="general-purpose", model="haiku", prompt="[Pre-checks instructions]")
-```
-
-Run these checks ONCE at the start of the brainstorm phase:
-
-1. **Run the test suite** (if one exists):
-   ```bash
-   npm test  # or pytest, cargo test, etc.
-   ```
-   - If tests fail, note failures in brainstorm context
-   - Don't block on failures - proceed with brainstorming
-
-2. **Start the dev server** (if applicable):
-   ```bash
-   npm run dev  # or similar
-   ```
-   - Verify it starts without errors
-   - Note any startup issues in brainstorm context
-
-These checks establish baseline health and inform the brainstorm.
-
-**After pre-checks, update execution log:**
-- Note any test failures or dev server issues in Research Summary
-- Update Last Updated
-- Commit and push
-
----
-
 ## Step 1: Invoke Brainstorming Skill
 
 **CRITICAL: Brainstorming runs in MAIN session - USER must answer questions.**
