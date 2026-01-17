@@ -167,7 +167,8 @@ Skill tool:
 The skill will:
 - Always dispatch Task tool with opus model
 - Read plan document
-- Spawn vrau-reviewer agent
+- **MANDATORY: Spawn a SEPARATE vrau-reviewer agent for unbiased fresh-eyes review**
+- The orchestrator must NOT review the document itself
 - If REVISE/RETHINK: Use receiving-plan-review skill
 - If APPROVED: Signal completion
 
