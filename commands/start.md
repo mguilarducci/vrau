@@ -116,9 +116,22 @@ Skill tool:
 
 ## State Detection
 
+**State depends on Doc Approach (read from README.md):**
+
+**Doc Approach A (files) or C (local-only):**
+
 | Folder Contents | State | Action |
 |-----------------|-------|--------|
 | README.md only | not_started | Start brainstorm |
 | + design/*.md | brainstorm_complete | Start plan |
 | + plan/*.md | plan_complete | Start execute |
+| Execution markers in README | done | Show summary |
+
+**Doc Approach B (GitHub Issues):**
+
+| README Contents | State | Action |
+|-----------------|-------|--------|
+| No issue links | not_started | Start brainstorm |
+| Has issue link(s), no plan/*.md | brainstorm_complete | Start plan |
+| Has issue link(s) AND plan/*.md | plan_complete | Start execute |
 | Execution markers in README | done | Show summary |

@@ -24,7 +24,14 @@ Discovers vrau workflows and handles user selection. Returns workflow path, name
 
 ## State Derivation
 
-Derive state from folder contents:
+**IMPORTANT:** State detection must handle both Doc Approach A (files) and B (GitHub Issues).
+
+### Detection Process
+
+1. **Read README.md** to get Doc Approach field
+2. **Determine state based on Doc Approach:**
+
+**For Doc Approach A (files in docs/designs/):**
 
 | Folder Contents | State |
 |-----------------|-------|
@@ -33,6 +40,19 @@ Derive state from folder contents:
 | README.md + design/*.md + plan/*.md | plan_complete |
 | README.md with "Execution in progress" | executing |
 | README.md with "Execution complete" | done |
+
+**For Doc Approach B (GitHub Issues):**
+
+| README Contents | State |
+|-----------------|-------|
+| No issue links in "GitHub Issues" section | not_started |
+| Has issue link(s) in "GitHub Issues" section, no plan/*.md | brainstorm_complete |
+| Has issue link(s) AND plan/*.md | plan_complete |
+| README with "Execution in progress" | executing |
+| README with "Execution complete" | done |
+
+**For Doc Approach C (local-only):**
+- Same as Doc Approach A (file-based detection)
 
 ## Output Format
 

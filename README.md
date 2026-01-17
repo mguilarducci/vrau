@@ -260,13 +260,24 @@ Each task specifies which model to use:
 
 ## State Detection
 
-Vrau knows where you are by checking what files exist:
+Vrau knows where you are by checking workflow contents. Detection depends on your doc approach:
+
+**Doc Approach A (files) or C (local-only):**
 
 | Files Present | State | What Happens |
 |---------------|-------|--------------|
 | README.md only | Not started | Begin brainstorm |
 | + design/*.md | Brainstorm done | Begin planning |
 | + plan/*.md | Plan done | Begin execution |
+| Execution markers | Done | Show summary |
+
+**Doc Approach B (GitHub Issues):**
+
+| README Contents | State | What Happens |
+|-----------------|-------|--------------|
+| No issue links | Not started | Begin brainstorm |
+| Has issue link(s), no plan/*.md | Brainstorm done | Begin planning |
+| Has issue link(s) + plan/*.md | Plan done | Begin execution |
 | Execution markers | Done | Show summary |
 
 ## Philosophy
