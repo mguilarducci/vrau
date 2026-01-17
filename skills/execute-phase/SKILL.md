@@ -21,6 +21,12 @@ Tell user: "Consider compacting or starting a fresh session for execution."
 
 ## Pre-Execution Checks (sonnet)
 
+**Model enforcement:** If current session is not sonnet, dispatch Task tool:
+```
+Task(subagent_type="general-purpose", model="sonnet", prompt="[Pre-Execution Checks instructions]")
+```
+If current session is sonnet, run in current session.
+
 ### Verify Dependencies
 
 Check if all dependencies listed in plan file are implemented:
@@ -48,6 +54,8 @@ Proceed with execution? [Y/n]
 
 ## Execution (model per task from plan)
 
+**Model enforcement:** The vrau-executing-plans skill handles per-task model selection from the plan. No model enforcement needed at this level - the skill will dispatch tasks with their specified models.
+
 ### Execution Process
 
 1. Invoke `vrau:vrau-executing-plans`
@@ -62,6 +70,12 @@ Proceed with execution? [Y/n]
 - Model enforced per task from plan's Model field
 
 ## Post-Execution (haiku)
+
+**Model enforcement:** If current session is not haiku, dispatch Task tool:
+```
+Task(subagent_type="general-purpose", model="haiku", prompt="[Post-Execution instructions]")
+```
+If current session is haiku, run in current session.
 
 ### Update README
 

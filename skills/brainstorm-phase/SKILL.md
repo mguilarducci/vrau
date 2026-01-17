@@ -23,7 +23,32 @@ You're now in Phase 1 (Brainstorm) of the vrau workflow.
 
 ---
 
+## Pre-Brainstorm Setup: Select Issue or File
+
+**Ask the user what to brainstorm:**
+
+```
+What would you like to brainstorm?
+
+Options:
+1. GitHub issue (provide issue number)
+2. Specific file or feature (provide description)
+3. General task (provide description)
+
+Please specify:
+```
+
+Wait for user response. Use their input as the task description for the rest of the phase.
+
+---
+
 ## Step 0: Research Available Tools (haiku)
+
+**Model enforcement:** If current session is not haiku, dispatch Task tool:
+```
+Task(subagent_type="general-purpose", model="haiku", prompt="[Step 0 instructions]")
+```
+If current session is haiku, run in current session.
 
 Before brainstorming, check what research tools are available:
 
@@ -48,6 +73,12 @@ Before brainstorming, check what research tools are available:
 
 ## Pre-Brainstorm Checks (haiku)
 
+**Model enforcement:** If current session is not haiku, dispatch Task tool:
+```
+Task(subagent_type="general-purpose", model="haiku", prompt="[Pre-checks instructions]")
+```
+If current session is haiku, run in current session.
+
 Run these checks ONCE at the start of the brainstorm phase:
 
 1. **Run the test suite** (if one exists):
@@ -70,6 +101,12 @@ These checks establish baseline health and inform the brainstorm.
 
 ## Step 1: Invoke Brainstorming Skill (opus)
 
+**Model enforcement:** If current session is not opus, dispatch Task tool:
+```
+Task(subagent_type="general-purpose", model="opus", prompt="[Step 1 instructions]")
+```
+If current session is opus, run in current session.
+
 Use the `superpowers:brainstorming` skill with the task description:
 
 ```
@@ -89,6 +126,12 @@ Skill tool:
 
 ## Step 2: Save Brainstorm Output (sonnet)
 
+**Model enforcement:** If current session is not sonnet, dispatch Task tool:
+```
+Task(subagent_type="general-purpose", model="sonnet", prompt="[Step 2 instructions]")
+```
+If current session is sonnet, run in current session.
+
 Immediately after brainstorming completes, save the output:
 
 ```
@@ -106,6 +149,12 @@ git commit -m "vrau(<workflow>): complete initial brainstorm"
 ---
 
 ## Step 3: Evaluate Scope for Breakdown (sonnet)
+
+**Model enforcement:** If current session is not sonnet, dispatch Task tool:
+```
+Task(subagent_type="general-purpose", model="sonnet", prompt="[Step 3 instructions]")
+```
+If current session is sonnet, run in current session.
 
 **Always check if the brainstorm should be split.** Smaller, focused workflows are preferred over large ones.
 
@@ -173,6 +222,12 @@ git commit -m "vrau(<workflow>): complete initial brainstorm"
 
 ## Step 4: Self-Review (sonnet) - Optional
 
+**Model enforcement:** If current session is not sonnet, dispatch Task tool:
+```
+Task(subagent_type="general-purpose", model="sonnet", prompt="[Step 4 instructions]")
+```
+If current session is sonnet, run in current session.
+
 Before requesting formal review, do a quick self-check:
 
 1. **Completeness:** Does the brainstorm cover requirements, design, and implementation approach?
@@ -189,6 +244,12 @@ git commit -m "vrau(<workflow>): refine brainstorm after self-review"
 ---
 
 ## Step 5: Request Formal Review (opus via reviewer agent)
+
+**Model enforcement:** If current session is not opus, dispatch Task tool:
+```
+Task(subagent_type="general-purpose", model="opus", prompt="[Step 5 instructions]")
+```
+If current session is opus, run in current session.
 
 **IMPORTANT: Before requesting review, remind the user about session compaction:**
 
@@ -218,6 +279,12 @@ Skill tool:
 ---
 
 ## Step 6: Open PR and Merge (haiku)
+
+**Model enforcement:** If current session is not haiku, dispatch Task tool:
+```
+Task(subagent_type="general-purpose", model="haiku", prompt="[Step 6 instructions]")
+```
+If current session is haiku, run in current session.
 
 Once brainstorm is approved, open a PR for the brainstorm phase:
 

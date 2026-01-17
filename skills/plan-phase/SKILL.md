@@ -19,6 +19,12 @@ description: Use when executing Phase 2 of a vrau workflow - after brainstorm is
 
 ## Step 0: Research Available Tools (haiku)
 
+**Model enforcement:** If current session is not haiku, dispatch Task tool:
+```
+Task(subagent_type="general-purpose", model="haiku", prompt="[Step 0 instructions]")
+```
+If current session is haiku, run in current session.
+
 Before writing the plan, check what research tools are available:
 
 1. **List available MCP tools** - documentation fetchers, web search, API explorers
@@ -30,6 +36,12 @@ Before writing the plan, check what research tools are available:
 ---
 
 ## Pre-Plan Setup (haiku)
+
+**Model enforcement:** If current session is not haiku, dispatch Task tool:
+```
+Task(subagent_type="general-purpose", model="haiku", prompt="[Pre-Plan Setup instructions]")
+```
+If current session is haiku, run in current session.
 
 **Recommend new session:** "Consider starting a fresh session for planning."
 
@@ -59,6 +71,12 @@ Same as Phase 1 Step 0:
 
 ## Write Plan (opus)
 
+**Model enforcement:** If current session is not opus, dispatch Task tool:
+```
+Task(subagent_type="general-purpose", model="opus", prompt="[Write Plan instructions]")
+```
+If current session is opus, run in current session.
+
 1. Invoke `vrau:vrau-writing-plans` skill with opus model
 2. Provide context: reference the selected design document
 3. Write plan to: `docs/designs/<workflow>/plan/<design-name>-plan.md`
@@ -79,6 +97,12 @@ git push
 - Follow bite-sized task format
 
 ## Review Loop (opus)
+
+**Model enforcement:** If current session is not opus, dispatch Task tool:
+```
+Task(subagent_type="general-purpose", model="opus", prompt="[Review Loop instructions]")
+```
+If current session is opus, run in current session.
 
 **FIRST: Recommend session compaction**
 
