@@ -24,7 +24,7 @@ Execute plans with automatic parallel dispatch based on dependency graph.
 
 Reads plan's parallel execution groups and dispatches concurrent agents for independent tasks.
 
-**Core principle:** Parse dependency graph → Execute groups in order → Parallel dispatch within groups → **INVOKE requesting-code-review skill after each group (MANDATORY)**
+**Core principle:** Parse dependency graph → Execute groups in order → Parallel dispatch within groups → **INVOKE superpowers:requesting-code-review skill after each group (MANDATORY)**
 
 ---
 
@@ -297,7 +297,7 @@ If conflict detected → execute sequentially.
 
    **If review identifies issues:**
    - Fix ALL issues immediately
-   - Re-invoke requesting-code-review (spawns fresh reviewer again)
+   - Re-invoke superpowers:requesting-code-review (spawns fresh reviewer again)
    - DO NOT proceed until review passes
 
 4. **Update execution log:**
@@ -322,7 +322,7 @@ If conflict detected → execute sequentially.
 
 - **Skip code review** → MANDATORY after EVERY group, NO EXCEPTIONS
 - **Proceed to next group without code review** → STOP. Review first.
-- **Review code yourself instead of using requesting-code-review** → NO. MUST use fresh eyes.
+- **Review code yourself instead of using superpowers:requesting-code-review** → NO. MUST use fresh eyes.
 - **Think "review is optional"** → NO. It's MANDATORY.
 - **Think "tasks are simple, don't need review"** → NO. ALL tasks need review.
 - **Think "I can review my own code"** → NO. Biased. Use fresh reviewer.
