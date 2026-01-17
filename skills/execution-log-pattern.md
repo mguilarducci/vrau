@@ -63,13 +63,16 @@ Every step MUST:
 
 ## Cleanup
 
-At workflow completion (after PR merged in execute-phase):
+**IMPORTANT:** The execution log is deleted BEFORE creating the final PR (not after merge). This ensures the deletion is included in the PR changes for a cleaner commit history.
+
+At workflow completion (in execute-phase Post-Execution, BEFORE `gh pr create`):
 ```bash
 rm docs/designs/<workflow>/execution-log.md
 git add docs/designs/<workflow>/execution-log.md
-git commit -m "vrau(<workflow>): cleanup execution log"
-git push
+# Then commit with other changes and create PR
 ```
+
+**Why before PR?** Including the deletion in the final PR keeps the commit history clean (single merge commit) rather than having a separate cleanup commit after merge.
 
 ## Recovery
 

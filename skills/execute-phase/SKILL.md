@@ -158,44 +158,79 @@ Add execution summary to README.md:
 **Notes:** [Any relevant notes]
 ```
 
-### Open PR
+### Delete Execution Log (BEFORE PR)
 
-1. Open PR with `gh pr create`
-2. Add comment: `@claude, review`
-
-```bash
-gh pr create --title "<task description>" --body "## Summary
-- Implements design from docs/designs/<workflow>/
-- Plan: docs/designs/<workflow>/plan/<plan>.md
-
-## Verification
-- Verified using superpowers:verification-before-completion
-- All tests passing
-- Build successful"
-
-gh pr comment <pr-number> --body "@claude, review"
-```
-
-**After PR created, update execution log:**
-- Set Execution Status to `complete`
-- Update Last Updated
-- Commit and push
-
-## Phase 3 Complete
-
-**Cleanup execution log after PR is merged:**
-
-Once the PR is merged, delete the execution log file:
+**IMPORTANT:** Delete the execution log file BEFORE creating the PR, so the deletion is included in the PR changes:
 
 ```bash
 rm docs/designs/<workflow>/execution-log.md
 git add docs/designs/<workflow>/execution-log.md
-git commit -m "vrau(<workflow>): cleanup execution log"
-git push
 ```
 
-**Why cleanup?** The execution log is a temporary file used for workflow recovery. Once the workflow is complete and merged, it's no longer needed.
+**Why delete before PR?** The execution log is a temporary file for workflow recovery. Including its deletion in the final PR keeps the commit history clean (single merge commit) rather than having a separate cleanup commit after merge.
+
+### Check for GitHub Issue (Doc Approach B)
+
+1. **Read the workflow README** to check Doc Approach:
+   ```bash
+   cat docs/designs/<workflow>/README.md
+   ```
+
+2. **If Doc Approach is B**, extract the issue number from the `### GitHub Issues` section:
+   - Look for pattern `- #<number>:` or `- #<number>`
+   - Store the issue number for the PR description
+
+### Open PR
+
+1. **Commit all changes** (including execution log deletion):
+   ```bash
+   git add -A
+   git commit -m "vrau(<workflow>): complete execution"
+   ```
+
+2. **Create PR with appropriate body:**
+
+   **If Doc Approach B (has GitHub issue):**
+   ```bash
+   gh pr create --title "<task description>" --body "$(cat <<'EOF'
+   ## Summary
+   - Implements design from docs/designs/<workflow>/
+   - Plan: docs/designs/<workflow>/plan/<plan>.md
+
+   ## Verification
+   - Verified using superpowers:verification-before-completion
+   - All tests passing
+   - Build successful
+
+   Closes #<issue-number>
+   EOF
+   )"
+   ```
+
+   **If Doc Approach A or C (no GitHub issue):**
+   ```bash
+   gh pr create --title "<task description>" --body "$(cat <<'EOF'
+   ## Summary
+   - Implements design from docs/designs/<workflow>/
+   - Plan: docs/designs/<workflow>/plan/<plan>.md
+
+   ## Verification
+   - Verified using superpowers:verification-before-completion
+   - All tests passing
+   - Build successful
+   EOF
+   )"
+   ```
+
+3. **Add review request comment:**
+   ```bash
+   gh pr comment <pr-number> --body "@claude, review"
+   ```
+
+## Phase 3 Complete
 
 Workflow is complete. Report to user:
 
 > "Vrau workflow complete! PR created and ready for review."
+
+**Note:** The execution log was deleted as part of the PR changes. No separate cleanup commit is needed after merge.

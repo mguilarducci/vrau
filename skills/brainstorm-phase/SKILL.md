@@ -62,6 +62,24 @@ Please specify:
 
 Wait for user response. Use their input as the task description for the rest of the phase.
 
+### If User Chose GitHub Issue (Option 1)
+
+When the user provides a GitHub issue number:
+
+1. **Set Doc Approach to B** in the README
+2. **Fetch issue details:**
+   ```bash
+   gh issue view <issue-number> --json title,body,number
+   ```
+3. **Store the issue link in README** under `### GitHub Issues` section:
+   ```markdown
+   ### GitHub Issues
+   - #<issue-number>: <issue-title>
+   ```
+4. **Use the issue content** as input for brainstorming
+
+**Important:** The issue number will be used in Phase 3 (Execute) to auto-close the issue when the final PR is merged.
+
 ### Initialize Execution Log
 
 After getting user input, create the execution log:
@@ -385,6 +403,9 @@ Once brainstorm is approved, open a PR for the brainstorm phase:
    ```
 
 3. **Create PR:**
+
+   **IMPORTANT:** Do NOT include "closes #issue-number" or "fixes #issue-number" in this PR, even if the workflow started from a GitHub issue. The issue should only be closed by the final PR after execution is complete (Phase 3).
+
    ```bash
    gh pr create --title "vrau(<workflow>): Phase 1 - Brainstorm" --body "$(cat <<'EOF'
    ## Summary

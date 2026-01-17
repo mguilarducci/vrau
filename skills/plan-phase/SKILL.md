@@ -207,6 +207,9 @@ Once plan is approved, open a PR for the plan phase:
    ```
 
 3. **Create PR:**
+
+   **IMPORTANT:** Do NOT include "closes #issue-number" or "fixes #issue-number" in this PR, even if the workflow started from a GitHub issue. The issue should only be closed by the final PR after execution is complete (Phase 3).
+
    ```bash
    gh pr create --title "vrau(<workflow>): Phase 2 - Plan" --body "$(cat <<'EOF'
    ## Summary
