@@ -13,13 +13,13 @@ Wraps `superpowers:writing-plans` with vrau-specific enhancements for parallel e
 
 **Announce:** "I'm using vrau-writing-plans to create the plan with dependency tracking."
 
-## Step 0: Research Available Tools (haiku)
+## Step 0: Research Context (haiku)
 
-Before writing, check for useful MCP tools:
+Before writing, gather relevant context:
 
-1. **List available MCP tools** - doc fetchers, web search, API explorers
-2. **Identify relevant tools** - technologies mentioned in the design
-3. **Use them** - fetch current docs, search for patterns
+1. **Identify research needs** - technologies mentioned in the design
+2. **Use available tools** - MCP tools and built-in capabilities for docs, search, etc.
+3. **Fetch context** - current docs, implementation patterns
 
 **Output:** Brief research summary to inform the plan.
 

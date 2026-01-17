@@ -3,7 +3,7 @@ name: brainstorm-step-research
 description: Use when executing research step in brainstorm phase - enforces haiku model usage
 ---
 
-# Brainstorm Step: Research Available Tools
+# Brainstorm Step: Research Context
 
 **This skill enforces haiku model usage by always dispatching to haiku.**
 
@@ -17,35 +17,29 @@ description: Use when executing research step in brainstorm phase - enforces hai
 Task tool:
 - subagent_type: "general-purpose"
 - model: "haiku"
-- description: "Research available tools"
+- description: "Research context for brainstorm"
 - prompt: "You are in the brainstorm phase of a vrau workflow.
 
-TASK: Research available tools before brainstorming.
+TASK: Gather context before brainstorming.
 
 INSTRUCTIONS:
 
-1. LIST AVAILABLE MCP TOOLS
-   Check for:
-   - Documentation fetchers (context7, claude-docs, etc.)
-   - Web search capabilities
-   - API explorers or code search tools
-
-2. IDENTIFY RELEVANT TOOLS
-   Ask yourself:
-   - Does the task mention specific technologies? (React, Claude API, etc.)
+1. IDENTIFY RESEARCH NEEDS
+   - What technologies does this task involve?
    - Are there docs that should be fetched?
    - Would web search help find current best practices?
 
-3. USE RELEVANT TOOLS
-   - Fetch current documentation for mentioned technologies
-   - Search for recent changes or deprecations
-   - Gather context before brainstorming begins
+2. USE AVAILABLE TOOLS
+   Use your installed MCP tools and built-in capabilities to:
+   - Fetch relevant documentation
+   - Search for recent changes or patterns
+   - Gather implementation context
 
-4. OUTPUT SUMMARY
+3. OUTPUT SUMMARY
    Provide a brief summary of:
    - What was researched
    - Key findings
-   - Any relevant documentation or patterns found
+   - Relevant documentation or patterns found
 
 This context will be passed to the brainstorming step."
 ```

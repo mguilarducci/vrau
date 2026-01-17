@@ -141,7 +141,7 @@ Task(subagent_type="general-purpose", model="haiku", prompt="[Branch Setup instr
 
 ---
 
-## Step 0: Research Available Tools
+## Step 0: Research Context
 
 **Invoke wrapper skill to enforce haiku model:**
 
@@ -152,7 +152,7 @@ Skill tool:
 
 The skill will:
 - Always dispatch Task tool with haiku model
-- Research available MCP tools and gather context
+- Use available MCP tools and built-in capabilities to gather context
 
 **Output:** Research summary to pass to brainstorming step.
 

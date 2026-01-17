@@ -39,18 +39,18 @@ git push
 
 ---
 
-## Step 0: Research Available Tools (haiku)
+## Step 0: Research Context (haiku)
 
 **Model enforcement:** Always dispatch Task tool with haiku model:
 ```
 Task(subagent_type="general-purpose", model="haiku", prompt="[Step 0 instructions]")
 ```
 
-Before writing the plan, check what research tools are available:
+Before writing the plan, gather relevant context:
 
-1. **List available MCP tools** - documentation fetchers, web search, API explorers
-2. **Identify relevant tools** - does the design mention technologies with MCP tools?
-3. **Use relevant tools** - fetch current docs, search for implementation patterns
+1. **Identify research needs** - what technologies does the design mention?
+2. **Use available tools** - MCP tools and built-in capabilities for docs, search, etc.
+3. **Fetch relevant context** - current docs, implementation patterns
 
 **Output:** Brief summary of research findings to inform the plan.
 
