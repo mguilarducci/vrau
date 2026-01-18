@@ -23,17 +23,18 @@ git branch --show-current
 **If on main/master:** STOP. Create a new branch or use worktree. NEVER proceed with commits on main.
 
 ## Steps
-1. Update main, ask user: worktree (use superpowers:using-git-worktrees) or new branch?
-2. Brainstorm with user (main session - use tools/MCP/web as needed)
-3. Save to `design/brainstorm.md`, commit, push
-4. Evaluate scope - split if too large
-5. Self-review (optional)
-6. Spawn reviewer → vrau:vrau-reviewer agent
-7. Handle feedback (see below)
-8. Open PR with "refs #<issue>" (if Doc Approach B), merge to main
+1. Brainstorm with user (main session - use tools/MCP/web as needed)
+2. Save to `design/brainstorm.md`, commit, push
+3. Evaluate scope - split if too large
+4. Self-review (optional)
+5. Spawn reviewer → vrau:vrau-reviewer agent
+6. Handle feedback (see below)
+7. Open PR with "refs #<issue>" (if Doc Approach B), merge to main
+
+**Note:** Branch/worktree setup already done by vrau entry point during workflow setup
 
 ## Handling Review Feedback
-- **APPROVED** → proceed to step 8
+- **APPROVED** → proceed to step 7
 - **REVISE/RETHINK** → evaluate feedback technically, then fix and re-submit (max 3 iterations)
 - **After 3 failures** → ASK USER what to do
 
