@@ -21,9 +21,9 @@ Key findings from Anthropic best practices and Claude Code docs:
 - **Summary:** Radical consolidation from 15 skills to 5, with clear phase boundaries
 
 ## Plan
-- **Status:** in_progress
+- **Status:** approved
 - **File:** docs/designs/2026-01-17-refactor-token-efficiency/plan/refactor-plan.md
 - **Summary:** 9 tasks in 4 groups - create 5 new skills, update references, delete 15 old skills, verify
 
 ## Last Updated
-2026-01-17 - Plan written, pending review
+2026-01-17 - Plan approved, ready for PR
