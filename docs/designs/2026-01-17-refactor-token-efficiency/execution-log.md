@@ -2,8 +2,8 @@
 
 ## Workflow Context
 - **Task:** Refactor vrau plugin for token efficiency and prevent getting lost
-- **Phase:** brainstorm
-- **Branch:** vrau/2026-01-17-refactor-token-efficiency/brainstorm
+- **Phase:** plan
+- **Branch:** (pending)
 - **Started:** 2026-01-17
 
 ## Research Summary
@@ -20,5 +20,9 @@ Key findings from Anthropic best practices and Claude Code docs:
 - **File:** docs/designs/2026-01-17-refactor-token-efficiency/design/brainstorm.md
 - **Summary:** Radical consolidation from 15 skills to 5, with clear phase boundaries
 
+## Plan
+- **Status:** pending
+- **File:** docs/designs/2026-01-17-refactor-token-efficiency/plan/refactor-plan.md
+
 ## Last Updated
-2026-01-17 - brainstorm approved after 2 review iterations, ready for PR
+2026-01-17 - Phase 1 complete (PR #2 merged), ready for Phase 2
