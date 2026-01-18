@@ -67,7 +67,8 @@ Fallback if no execution log - check files:
 - Has plan/*.md → execute
 - If unclear → ASK USER
 
-## Execution Log Format
+## Execution Log Format (simplified)
+Note: Intentionally simpler than current format. Only essential fields for state recovery.
 ```
 # Execution Log: <workflow>
 
@@ -313,9 +314,9 @@ Match review depth to task complexity:
 - skills/execute/SKILL.md
 - skills/vrau-reviewer/SKILL.md
 
-### Keep (unchanged)
-- commands/start.md
-- .claude/vrau/templates/README.template.md
+### Keep (update as needed)
+- commands/start.md - update to invoke vrau:vrau instead of vrau:start
+- .claude/vrau/templates/README.template.md - simplify: remove per-step model config (now in skill metadata)
 
 ### External Dependencies (superpowers skills, unchanged)
 - superpowers:using-git-worktrees
