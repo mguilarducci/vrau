@@ -25,8 +25,8 @@ git branch --show-current
 ## On Start
 1. Scan `docs/designs/` for folders matching `YYYY-MM-DD-*`
 2. If none: start new workflow (see below)
-3. If one: auto-select, detect state, invoke correct phase
-4. If multiple: ask user which to resume (or start new, or delete old)
+3. If one: auto-select, detect state, ask about worktree/branch (see Resuming Workflow below), invoke correct phase
+4. If multiple: ask user which to resume (or start new, or delete old), then ask about worktree/branch (see Resuming Workflow below), invoke correct phase
 
 ## New Workflow Setup
 1. Ask user for task description
@@ -44,6 +44,17 @@ git branch --show-current
 9. Create execution-log.md (see format below)
 10. Commit, push (skip if Doc Approach C)
 11. Invoke vrau:brainstorm
+
+## Resuming Workflow
+When resuming an existing workflow:
+1. Update main first: `git checkout main && git pull`
+2. **Ask: Worktree or new branch?**
+   - Worktree → use superpowers:using-git-worktrees
+   - New branch → `git checkout -b <workflow-name>-<phase>` and `git push -u origin <workflow-name>-<phase>`
+3. Create worktree OR branch based on choice
+4. Proceed to invoke correct phase
+
+**Why:** User must choose worktree/branch preference every time they resume work. Never assume.
 
 ## State Detection
 Read `docs/designs/<workflow>/execution-log.md`:
