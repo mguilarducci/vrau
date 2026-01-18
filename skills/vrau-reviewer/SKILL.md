@@ -24,7 +24,7 @@ You'll receive a document path to review (brainstorm.md or plan.md).
 
 ## Complexity Calibration
 Match review depth to task complexity:
-- **Simple tasks:** Don't over-engineering. Brief review.
+- **Simple tasks:** Don't over-engineer. Brief review.
 - **Complex tasks:** Thorough analysis. Check edge cases.
 
 ## Output Format
