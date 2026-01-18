@@ -1,65 +1,56 @@
 ---
-name: vrau-workflow
-description: |
-  Use when detecting complex multi-step tasks that would benefit from
-  structured brainstorm → plan → execute workflow. Triggers: new features,
-  refactors, multi-file changes, bug investigations, architectural changes.
+name: vrau
+description: Use when starting or resuming a vrau workflow - routes to correct phase
+model: haiku
 ---
 
-# Vrau Workflow Suggestion
+# Vrau Workflow
 
-Suggest vrau for complex tasks, but never force it.
+## On Start
+1. Scan `docs/designs/` for folders matching `YYYY-MM-DD-*`
+2. If none: start new workflow (see below)
+3. If one: auto-select, detect state, invoke correct phase
+4. If multiple: ask user which to resume (or start new, or delete old)
 
-## Complexity Estimation
+## New Workflow Setup
+1. Ask user for task description
+2. Ask: Start from GitHub issue?
+   - Yes → get issue number, set Doc Approach B
+   - No → set Doc Approach A
+3. (Optional) Ask: Local-only mode? → set Doc Approach C, create .no-commit.local
+4. Create folder `docs/designs/YYYY-MM-DD-<slug>/`
+5. Create README.md with Doc Approach and issue number (if any)
+6. Create execution-log.md (see format below)
+7. Commit, push (skip if Doc Approach C)
+8. Invoke vrau:brainstorm
 
-Before suggesting vrau, estimate task complexity:
+## State Detection
+Read `docs/designs/<workflow>/execution-log.md`:
+- Phase: brainstorm | plan | execute
+- Status of current phase
 
-| Signal | Points |
-|--------|--------|
-| Multiple files mentioned | +1 |
-| Multiple components/systems | +1 |
-| Requires investigation first | +1 |
-| User says "feature", "refactor", "redesign", "architecture" | +1 |
-| User says "quick", "small", "just", "simple" | -2 |
-| Single file explicitly mentioned | -1 |
+Fallback if no execution log - check files:
+- Only README.md → brainstorm
+- Has design/*.md, no plan/*.md → plan
+- Has plan/*.md → execute
+- If unclear → ASK USER
 
-**Threshold:** Suggest vrau when score >= 2
-
-## When to Suggest
-
-Score >= 2 AND task involves:
-- New features with multiple components
-- Refactoring spanning multiple files
-- Bug fixes requiring investigation
-- Tasks with multiple requirements
-- Architectural changes or design decisions
-
-## When NOT to Suggest
-
-Score < 2 OR task is:
-- Simple single-file changes
-- Quick fixes or typo corrections
-- Questions or research tasks
-- Tasks user explicitly wants done immediately
-
-## How to Suggest
-
-Present naturally when score >= 2:
-
+## Execution Log Format
 ```
-This looks like a multi-step task that could benefit from structured workflow.
+# Execution Log: <workflow>
 
-Would you like to use vrau?
-→ Brainstorm requirements (with auto-review)
-→ Create detailed plan (with auto-review)
-→ Execute with tracking
+## Workflow Context
+- **Task:** <description>
+- **Phase:** brainstorm | plan | execute
+- **Branch:** <branch name>
+- **Issue:** #<number> or (none)
 
-1. Yes, start vrau workflow
-2. No, just help me directly
+## Status
+- **Current Step:** <step number and name>
+- **Last Updated:** <timestamp>
 ```
 
-If user chooses "Yes", invoke `/vrau:start`.
-
-## Key Principle
-
-**Never force vrau.** Always offer "help directly" as an alternative.
+## Routing
+- Brainstorm needed → invoke vrau:brainstorm
+- Plan needed → invoke vrau:plan
+- Execute needed → invoke vrau:execute
