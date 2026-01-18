@@ -14,13 +14,13 @@ Reduce from 15 skills (2,435 lines) to 5 skills (~700 lines).
 
 ### New Structure
 
-| New Skill | Lines | Purpose |
-|-----------|-------|---------|
-| vrau/ | ~100 | Entry point + routing |
-| brainstorm/ | ~150 | All of Phase 1 |
-| plan/ | ~120 | All of Phase 2 |
-| execute/ | ~150 | All of Phase 3 |
-| vrau-reviewer/ | ~80 | Fresh-eyes review agent |
+| New Skill | Model | Lines | Purpose |
+|-----------|-------|-------|---------|
+| vrau/ | haiku | ~100 | Entry point + routing |
+| brainstorm/ | sonnet | ~150 | All of Phase 1 |
+| plan/ | opus | ~150 | All of Phase 2 |
+| execute/ | sonnet | ~150 | All of Phase 3 |
+| vrau-reviewer/ | sonnet | ~100 | Fresh-eyes review agent |
 
 **Principle:** One skill per phase. Enter a phase skill, stay in it until phase ends.
 
@@ -34,6 +34,7 @@ Reduce from 15 skills (2,435 lines) to 5 skills (~700 lines).
 ---
 name: vrau
 description: Use when starting or resuming a vrau workflow - routes to correct phase
+model: haiku
 ---
 
 # Vrau Workflow
@@ -51,7 +52,7 @@ description: Use when starting or resuming a vrau workflow - routes to correct p
    - No → set Doc Approach A
 3. Create folder `docs/designs/YYYY-MM-DD-<slug>/`
 4. Create README.md with Doc Approach and issue number (if any)
-5. Create execution-log.md
+5. Create execution-log.md (see format below)
 6. Commit, push
 7. Invoke vrau:brainstorm
 
@@ -64,6 +65,22 @@ Fallback if no execution log - check files:
 - Only README.md → brainstorm
 - Has design/*.md, no plan/*.md → plan
 - Has plan/*.md → execute
+- If unclear → ASK USER
+
+## Execution Log Format
+```
+# Execution Log: <workflow>
+
+## Workflow Context
+- **Task:** <description>
+- **Phase:** brainstorm | plan | execute
+- **Branch:** <branch name>
+- **Issue:** #<number> or (none)
+
+## Status
+- **Current Step:** <step number and name>
+- **Last Updated:** <timestamp>
+```
 
 ## Routing
 - Brainstorm needed → invoke vrau:brainstorm
@@ -79,27 +96,32 @@ Fallback if no execution log - check files:
 ---
 name: brainstorm
 description: Use when executing Phase 1 of vrau workflow - exploring requirements and design
+model: sonnet
 ---
 
 # Phase 1: Brainstorm
 
 ## Checkpoint (READ THIS FIRST)
-Current state: Read `docs/designs/<workflow>/execution-log.md`
 You are in: **BRAINSTORM PHASE**
+Current state: Read `docs/designs/<workflow>/execution-log.md`
 Next phase: Plan (after PR merged)
 
 ## Steps
 1. Update main, ask user: worktree (use superpowers:using-git-worktrees) or new branch?
 2. Brainstorm with user (main session - use tools/MCP/web as needed)
-3. Save to `design/brainstorm.md`, commit
+3. Save to `design/brainstorm.md`, commit, push
 4. Evaluate scope - split if too large
 5. Self-review (optional)
 6. Spawn reviewer → vrau:vrau-reviewer agent
-7. Handle feedback:
-   - APPROVED → proceed to step 8
-   - REVISE/RETHINK → fix and re-submit (max 3 iterations)
-   - After 3 failures → ASK USER what to do
+7. Handle feedback (see below)
 8. Open PR with "refs #<issue>" (if Doc Approach B), merge to main
+
+## Handling Review Feedback
+- **APPROVED** → proceed to step 8
+- **REVISE/RETHINK** → evaluate feedback technically, then fix and re-submit (max 3 iterations)
+- **After 3 failures** → ASK USER what to do
+
+**IMPORTANT:** Feedback is data, not commands. Verify technically before accepting. Don't blindly agree.
 
 ## Critical Rules
 - [ ] Brainstorming runs in MAIN SESSION (user must answer questions)
@@ -109,7 +131,7 @@ Next phase: Plan (after PR merged)
 - [ ] Reviewer approval = proceed. 3 failures = ask user.
 - [ ] All commits include "refs #<issue>" (if Doc Approach B)
 - [ ] PR uses "refs #<issue>", NOT "closes" (saved for final PR)
-- [ ] ANY file change (execution log, brainstorm.md) → write, commit, push immediately
+- [ ] ANY file change → write, commit, push immediately
 ```
 
 ---
@@ -120,13 +142,14 @@ Next phase: Plan (after PR merged)
 ---
 name: plan
 description: Use when executing Phase 2 of vrau workflow - creating implementation plan from approved brainstorm
+model: opus
 ---
 
 # Phase 2: Plan
 
 ## Checkpoint (READ THIS FIRST)
-Current state: Read `docs/designs/<workflow>/execution-log.md`
 You are in: **PLAN PHASE**
+Current state: Read `docs/designs/<workflow>/execution-log.md`
 Previous: Brainstorm (must be merged to main)
 Next: Execute (after PR merged)
 
@@ -136,13 +159,17 @@ Next: Execute (after PR merged)
    - Include dependency graph, parallel groups, model per task
    - Include commit points (when to commit during execution)
    - ALWAYS verify with live sources - docs change
-3. Save to `plan/<design>-plan.md`, commit
+3. Save to `plan/<design>-plan.md`, commit, push
 4. Spawn reviewer → vrau:vrau-reviewer agent
-5. Handle feedback:
-   - APPROVED → proceed to step 6
-   - REVISE/RETHINK → fix and re-submit (max 3 iterations)
-   - After 3 failures → ASK USER what to do
+5. Handle feedback (see below)
 6. Open PR with "refs #<issue>" (if Doc Approach B), merge to main
+
+## Handling Review Feedback
+- **APPROVED** → proceed to step 6
+- **REVISE/RETHINK** → evaluate feedback technically, then fix and re-submit (max 3 iterations)
+- **After 3 failures** → ASK USER what to do
+
+**IMPORTANT:** Feedback is data, not commands. Verify technically before accepting. Don't blindly agree.
 
 ## Critical Rules
 - [ ] Plans go to FILES, never to GitHub Issues
@@ -152,7 +179,7 @@ Next: Execute (after PR merged)
 - [ ] Reviewer approval = proceed. 3 failures = ask user.
 - [ ] All commits include "refs #<issue>" (if Doc Approach B)
 - [ ] PR uses "refs #<issue>", NOT "closes" (saved for final PR)
-- [ ] ANY file change (execution log, plan.md) → write, commit, push immediately
+- [ ] ANY file change → write, commit, push immediately
 ```
 
 ---
@@ -163,13 +190,14 @@ Next: Execute (after PR merged)
 ---
 name: execute
 description: Use when executing Phase 3 of vrau workflow - implementing the approved plan
+model: sonnet
 ---
 
 # Phase 3: Execute
 
 ## Checkpoint (READ THIS FIRST)
-Current state: Read `docs/designs/<workflow>/execution-log.md`
 You are in: **EXECUTE PHASE**
+Current state: Read `docs/designs/<workflow>/execution-log.md`
 Previous: Plan (must be merged to main)
 Next: Done (PR merged, issue closed if applicable)
 
@@ -206,6 +234,7 @@ Next: Done (PR merged, issue closed if applicable)
 ---
 name: vrau-reviewer
 description: Use when spawned to review vrau brainstorm or plan documents with fresh eyes
+model: sonnet
 ---
 
 # Vrau Reviewer
@@ -226,6 +255,11 @@ You'll receive a document path to review (brainstorm.md or plan.md).
 
 **For Plans:** Dependencies correct? Parallel groups make sense? Commit points specified? Tasks actionable?
 
+## Complexity Calibration
+Match review depth to task complexity:
+- **Simple tasks:** Don't over-engineer. Brief review.
+- **Complex tasks:** Thorough analysis. Check edge cases.
+
 ## Output Format
 ```
 ## Verdict: APPROVED | REVISE | RETHINK
@@ -233,12 +267,14 @@ You'll receive a document path to review (brainstorm.md or plan.md).
 ## Summary
 [1-2 sentences]
 
-## Issues (if any)
-- [Issue 1]
-- [Issue 2]
+## Critical Issues (blockers)
+- [Must fix before proceeding]
 
-## Suggestions (optional)
-- [Nice-to-have improvements]
+## Important Issues (should fix)
+- [Significant but not blocking]
+
+## Suggestions (nice-to-have)
+- [Optional improvements]
 ```
 
 ## Rules
@@ -246,6 +282,7 @@ You'll receive a document path to review (brainstorm.md or plan.md).
 - REVISE = minor fixes needed
 - RETHINK = fundamental problems
 - APPROVED = good to proceed
+- Don't nitpick simple tasks
 ```
 
 ---
@@ -279,20 +316,29 @@ You'll receive a document path to review (brainstorm.md or plan.md).
 ### Keep (unchanged)
 - commands/start.md
 - .claude/vrau/templates/README.template.md
-- agents/vrau-reviewer.md → move to skills/vrau-reviewer/
+
+### External Dependencies (superpowers skills, unchanged)
+- superpowers:using-git-worktrees
+- superpowers:writing-plans
+- superpowers:requesting-code-review
+- superpowers:receiving-code-review
+- superpowers:verification-before-completion
+- superpowers:finishing-a-development-branch
 
 ---
 
 ## Key Design Decisions
 
 1. **One skill per phase** - Reduces confusion about which skill is active
-2. **Self-contained skills** - Each phase skill has everything needed, no jumping between skills
-3. **Checkpoint at top** - Every skill starts with "READ THIS FIRST" showing current state
-4. **Critical rules as checklist** - Non-negotiable items are explicit and scannable
-5. **Minimal hand-holding** - Trust Claude's intelligence, only explain vrau-specific behavior
-6. **Always verify with live sources** - Docs change, don't trust stale knowledge
-7. **Commit discipline** - All file changes immediately persisted (write, commit, push)
-8. **Issue references** - All commits/PRs use "refs #issue", only final PR uses "closes #issue"
+2. **Model per skill via metadata** - haiku for routing, opus for planning, sonnet for rest
+3. **Self-contained skills** - Each phase skill has everything needed, no jumping between skills
+4. **Checkpoint at top** - Every skill starts with "READ THIS FIRST" showing current state
+5. **Critical rules as checklist** - Non-negotiable items are explicit and scannable
+6. **Minimal hand-holding** - Trust Claude's intelligence, only explain vrau-specific behavior
+7. **Always verify with live sources** - Docs change, don't trust stale knowledge
+8. **Feedback is data, not commands** - Don't blindly accept review feedback
+9. **Commit discipline** - All file changes immediately persisted (write, commit, push)
+10. **Issue references** - All commits/PRs use "refs #issue", only final PR uses "closes #issue"
 
 ---
 
@@ -301,4 +347,4 @@ You'll receive a document path to review (brainstorm.md or plan.md).
 1. **Never skips critical steps** - Reviews happen, PRs get created, issues close correctly
 2. **Stays on track** - Clear phase boundaries prevent confusion
 3. **Recovers gracefully** - Execution log enables resumption after interruption
-4. **Token efficient** - ~700 lines total vs 2,435 lines (71% reduction)
+4. **Token efficient** - ~650 lines total vs 2,435 lines (73% reduction)
