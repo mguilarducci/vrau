@@ -34,11 +34,16 @@ git branch --show-current
    - Yes → get issue number, set Doc Approach B
    - No → set Doc Approach A
 3. (Optional) Ask: Local-only mode? → set Doc Approach C, create .no-commit.local
-4. Create folder `docs/designs/YYYY-MM-DD-<slug>/`
-5. Create README.md with Doc Approach and issue number (if any)
-6. Create execution-log.md (see format below)
-7. Commit, push (skip if Doc Approach C)
-8. Invoke vrau:brainstorm
+4. **Ask: Worktree or new branch?**
+   - Worktree → use superpowers:using-git-worktrees
+   - New branch → `git checkout -b <workflow-name>` and `git push -u origin <workflow-name>`
+5. Update main first: `git checkout main && git pull`
+6. Create worktree OR branch based on choice
+7. Create folder `docs/designs/YYYY-MM-DD-<slug>/`
+8. Create README.md with Doc Approach and issue number (if any)
+9. Create execution-log.md (see format below)
+10. Commit, push (skip if Doc Approach C)
+11. Invoke vrau:brainstorm
 
 ## State Detection
 Read `docs/designs/<workflow>/execution-log.md`:
