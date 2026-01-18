@@ -86,11 +86,12 @@ model: haiku
 2. Ask: Start from GitHub issue?
    - Yes → get issue number, set Doc Approach B
    - No → set Doc Approach A
-3. Create folder `docs/designs/YYYY-MM-DD-<slug>/`
-4. Create README.md with Doc Approach and issue number (if any)
-5. Create execution-log.md (see format below)
-6. Commit, push
-7. Invoke vrau:brainstorm
+3. (Optional) Ask: Local-only mode? → set Doc Approach C, create .no-commit.local
+4. Create folder `docs/designs/YYYY-MM-DD-<slug>/`
+5. Create README.md with Doc Approach and issue number (if any)
+6. Create execution-log.md (see format below)
+7. Commit, push (skip if Doc Approach C)
+8. Invoke vrau:brainstorm
 
 ## State Detection
 Read `docs/designs/<workflow>/execution-log.md`:
@@ -472,7 +473,12 @@ Replace entire contents with:
 
 ### Plan Documents
 {{PLAN_LINKS}}
+
+### GitHub Issues
+{{ISSUE_LINKS}}
 ```
+
+Note: Removed "Model Configuration" section (now in skill metadata) and "User Choices" section (redundant with Doc Approach field). Preserved essential tracking fields.
 
 **Step 2: Verify the update**
 
