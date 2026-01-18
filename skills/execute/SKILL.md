@@ -12,6 +12,17 @@ Current state: Read `docs/designs/<workflow>/execution-log.md`
 Previous: Plan (must be merged to main)
 Next: Done (PR merged, issue closed if applicable)
 
+## ⚠️ CRITICAL SAFETY RULE ⚠️
+
+**NEVER COMMIT TO MAIN BRANCH**
+
+Check current branch:
+```bash
+git branch --show-current
+```
+
+**If on main/master:** STOP. Create a new branch or use worktree. NEVER proceed with commits on main.
+
 ## Steps
 1. Update main, ask user: worktree (use superpowers:using-git-worktrees) or new branch?
 2. Read plan, execute tasks by parallel groups
@@ -27,6 +38,7 @@ Next: Done (PR merged, issue closed if applicable)
    - Otherwise: standard PR
 
 ## Critical Rules
+- [ ] **NEVER COMMIT TO MAIN BRANCH** - use feature branch or worktree
 - [ ] ALWAYS verify with live sources - docs change, your knowledge may be stale
 - [ ] Code review after EVERY parallel group (fresh eyes each time)
 - [ ] MUST run verification before PR - never skip

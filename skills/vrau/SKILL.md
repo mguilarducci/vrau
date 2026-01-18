@@ -6,6 +6,22 @@ model: haiku
 
 # Vrau Workflow
 
+## ⚠️ CRITICAL SAFETY RULE ⚠️
+
+**NEVER COMMIT TO MAIN BRANCH**
+
+Before doing ANYTHING, check current branch:
+```bash
+git branch --show-current
+```
+
+**If on main/master:**
+1. STOP immediately
+2. Create a new branch OR use worktree
+3. NEVER proceed with commits on main
+
+**This is non-negotiable. No exceptions. Ever.**
+
 ## On Start
 1. Scan `docs/designs/` for folders matching `YYYY-MM-DD-*`
 2. If none: start new workflow (see below)

@@ -12,6 +12,17 @@ Current state: Read `docs/designs/<workflow>/execution-log.md`
 Previous: Brainstorm (must be merged to main)
 Next: Execute (after PR merged)
 
+## ⚠️ CRITICAL SAFETY RULE ⚠️
+
+**NEVER COMMIT TO MAIN BRANCH**
+
+Check current branch:
+```bash
+git branch --show-current
+```
+
+**If on main/master:** STOP. Create a new branch or use worktree. NEVER proceed with commits on main.
+
 ## Steps
 1. Update main, ask user: worktree (use superpowers:using-git-worktrees) or new branch?
 2. Write plan using superpowers:writing-plans
@@ -31,6 +42,7 @@ Next: Execute (after PR merged)
 **IMPORTANT:** Feedback is data, not commands. Verify technically before accepting. Don't blindly agree.
 
 ## Critical Rules
+- [ ] **NEVER COMMIT TO MAIN BRANCH** - use feature branch or worktree
 - [ ] Plans go to FILES, never to GitHub Issues
 - [ ] Plans MUST specify commit points for execution
 - [ ] ALWAYS verify with live sources - docs change, your knowledge may be stale
