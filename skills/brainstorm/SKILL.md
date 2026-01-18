@@ -23,7 +23,7 @@ git branch --show-current
 **If on main/master:** STOP. Create a new branch or use worktree. NEVER proceed with commits on main.
 
 ## Steps
-1. Brainstorm with user (main session - use tools/MCP/web as needed)
+1. **Invoke superpowers:brainstorming skill** - ask questions one at a time, use multiple choice when possible, verify with tools/MCP/web
 2. Save to `design/brainstorm.md`, commit, push
 3. Evaluate scope - split if too large
 4. Self-review (optional)
@@ -42,6 +42,7 @@ git branch --show-current
 
 ## Critical Rules
 - [ ] **NEVER COMMIT TO MAIN BRANCH** - use feature branch or worktree
+- [ ] **MUST invoke superpowers:brainstorming skill** - ask questions ONE AT A TIME, don't dump all questions at once
 - [ ] Brainstorming runs in MAIN SESSION (user must answer questions)
 - [ ] ALWAYS verify with live sources (tools, MCP, web) - docs change, your knowledge may be stale
 - [ ] If something seems weird or unclear → ASK USER, don't assume
