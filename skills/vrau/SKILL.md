@@ -6,7 +6,7 @@ model: haiku
 
 # Vrau Workflow
 
-## ⚠️ CRITICAL SAFETY RULE ⚠️
+## CRITICAL SAFETY RULE
 
 **NEVER COMMIT TO MAIN BRANCH**
 
@@ -30,20 +30,18 @@ git branch --show-current
 
 ## New Workflow Setup
 1. Ask user for task description
-2. Ask: Start from GitHub issue?
-   - Yes → get issue number, set Doc Approach B
-   - No → set Doc Approach A
-3. (Optional) Ask: Local-only mode? → set Doc Approach C, create .no-commit.local
-4. **Ask: Worktree or new branch?**
+2. Ask: Track with GitHub Issue?
+   - Yes → run /start-job command, set Tracking Mode: GitHub
+   - No → set Tracking Mode: None
+3. **Ask: Worktree or new branch?**
    - Worktree → use superpowers:using-git-worktrees
    - New branch → `git checkout -b <workflow-name>` and `git push -u origin <workflow-name>`
-5. Update main first: `git checkout main && git pull`
-6. Create worktree OR branch based on choice
-7. Create folder `docs/designs/YYYY-MM-DD-<slug>/`
-8. Create README.md with Doc Approach and issue number (if any)
-9. Create execution-log.md (see format below)
-10. Commit, push (skip if Doc Approach C)
-11. Invoke vrau:brainstorm
+4. Update main first: `git checkout main && git pull`
+5. Create worktree OR branch based on choice
+6. Create folder `docs/designs/YYYY-MM-DD-<slug>/`
+7. Create README.md with Tracking Mode and issue number (if any)
+8. Commit, push
+9. Invoke vrau:brainstorm
 
 ## Resuming Workflow
 When resuming an existing workflow:
@@ -51,36 +49,21 @@ When resuming an existing workflow:
 2. **Ask: Worktree or new branch?**
    - Worktree → use superpowers:using-git-worktrees
    - New branch → `git checkout -b <workflow-name>-<phase>` and `git push -u origin <workflow-name>-<phase>`
-3. Create worktree OR branch based on choice
+3. Create/go to existent worktree OR branch based on choice
 4. Proceed to invoke correct phase
 
 **Why:** User must choose worktree/branch preference every time they resume work. Never assume.
 
 ## State Detection
-Read `docs/designs/<workflow>/execution-log.md`:
-- Phase: brainstorm | plan | execute
-- Status of current phase
-
-Fallback if no execution log - check files:
-- Only README.md → brainstorm
-- Has design/*.md, no plan/*.md → plan
-- Has plan/*.md → execute
+Check files in `docs/designs/<workflow>/`:
+- Only README.md → brainstorm phase
+- Has `design/*.md`, no `plan/*.md` → plan phase
+- Has `plan/*.md` → execute phase
 - If unclear → ASK USER
 
-## Execution Log Format
-```
-# Execution Log: <workflow>
+**For Tracking Mode: GitHub** - can also check issue comments for status updates.
 
-## Workflow Context
-- **Task:** <description>
-- **Phase:** brainstorm | plan | execute
-- **Branch:** <branch name>
-- **Issue:** #<number> or (none)
-
-## Status
-- **Current Step:** <step number and name>
-- **Last Updated:** <timestamp>
-```
+**For Tracking Mode: None** - vrau asks user to confirm detected state before proceeding.
 
 ## Routing
 - Brainstorm needed → invoke vrau:brainstorm

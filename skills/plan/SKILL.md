@@ -8,11 +8,10 @@ model: opus
 
 ## Checkpoint (READ THIS FIRST)
 You are in: **PLAN PHASE**
-Current state: Read `docs/designs/<workflow>/execution-log.md`
 Previous: Brainstorm (must be merged to main)
 Next: Execute (after PR merged)
 
-## ⚠️ CRITICAL SAFETY RULE ⚠️
+## CRITICAL SAFETY RULE
 
 **NEVER COMMIT TO MAIN BRANCH**
 
@@ -24,18 +23,23 @@ git branch --show-current
 **If on main/master:** STOP. Create a new branch or use worktree. NEVER proceed with commits on main.
 
 ## Steps
-1. Update main, ask user: worktree (use superpowers:using-git-worktrees) or new branch?
-2. Write plan using superpowers:writing-plans
+1. Run /sync-main - ensure branch is up to date
+2. Ask user: worktree (use superpowers:using-git-worktrees) or new branch?
+3. Write plan using superpowers:writing-plans
    - Include dependency graph, parallel groups, model per task
    - Include commit points (when to commit during execution)
    - ALWAYS verify with live sources - docs change
-3. Save to `plan/<design>-plan.md`, commit, push
-4. Spawn reviewer → vrau:vrau-reviewer agent
-5. Handle feedback (see below)
-6. Open PR with "refs #<issue>" (if Doc Approach B), merge to main
+4. Save to `plan/<design>-plan.md`, commit, push
+5. Run /commit-push-pr - title: "[Review] Plan: <task>"
+6. Spawn reviewer → run /review-comment on PR
+7. Handle feedback:
+   - APPROVED → run /merge-pr, proceed to step 8
+   - REVISE/RETHINK → run /read-review-update-pr, loop to step 6 (max 3 iterations)
+   - After 3 failures → ASK USER what to do
+8. If Tracking Mode: GitHub → run /track-task
 
 ## Handling Review Feedback
-- **APPROVED** → proceed to step 6
+- **APPROVED** → proceed to merge
 - **REVISE/RETHINK** → evaluate feedback technically, then fix and re-submit (max 3 iterations)
 - **After 3 failures** → ASK USER what to do
 
@@ -48,6 +52,6 @@ git branch --show-current
 - [ ] ALWAYS verify with live sources - docs change, your knowledge may be stale
 - [ ] MUST spawn separate reviewer (fresh eyes)
 - [ ] Reviewer approval = proceed. 3 failures = ask user.
-- [ ] All commits include "refs #<issue>" (if Doc Approach B)
+- [ ] All commits include "refs #<issue>" (if Tracking Mode: GitHub)
 - [ ] PR uses "refs #<issue>", NOT "closes" (saved for final PR)
 - [ ] ANY file change → write, commit, push immediately

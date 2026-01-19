@@ -4,7 +4,7 @@
 
 **Branch:** {{BRANCH_NAME}}
 **Date:** {{DATE}}
-**Doc Approach:** {{DOC_APPROACH}}
+**Tracking Mode:** {{TRACKING_MODE}}
 **Issue:** {{ISSUE_NUMBER}}
 
 ## Links

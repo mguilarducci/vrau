@@ -44,6 +44,14 @@ Match review depth to task complexity:
 - [Optional improvements]
 ```
 
+## When Reviewing via PR
+After completing your analysis, run /review-comment to post your verdict to the PR.
+
+This allows the author to:
+1. See feedback in the PR
+2. Run /read-review-update-pr to process and address feedback
+3. Push updates directly to the PR branch
+
 ## Rules
 - Be constructive, not pedantic
 - REVISE = minor fixes needed

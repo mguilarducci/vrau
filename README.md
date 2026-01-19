@@ -27,8 +27,11 @@ That's it. One command handles everything.
 
 1. Run `/vrau:start`
 2. Describe what you're working on
-3. Choose branch setup (worktree, new branch, or current)
-4. Vrau creates a workflow folder and guides you through phases
+3. Choose tracking mode:
+   - **GitHub Issue** - Track via issue comments, PRs for reviews
+   - **None** - File-based state detection only
+4. Choose branch setup (worktree or new branch)
+5. Vrau creates a workflow folder and guides you through phases
 
 ### Resuming an Existing Workflow
 
@@ -53,78 +56,24 @@ That's it. One command handles everything.
 
 ```
 ┌──────────────────────────────────────────────────────────────────┐
-│  STEP 0: RESEARCH AVAILABLE TOOLS (haiku)                        │
-│  Check MCP tools, fetch relevant docs, web search                │
-└──────────────────────────────────────────────────────────────────┘
-                              │
-                              ▼
-┌──────────────────────────────────────────────────────────────────┐
-│  PRE-CHECKS (haiku)                                              │
-│  Run tests, start dev server, establish baseline                 │
-└──────────────────────────────────────────────────────────────────┘
-                              │
-                              ▼
-┌──────────────────────────────────────────────────────────────────┐
-│  STEP 1: BRAINSTORMING (opus)                                    │
+│  STEP 1: BRAINSTORMING (sonnet)                                  │
 │  Invoke superpowers:brainstorming skill                          │
 │  → Clarifying questions → Design exploration → Document          │
 └──────────────────────────────────────────────────────────────────┘
                               │
                               ▼
 ┌──────────────────────────────────────────────────────────────────┐
-│  STEP 2: SAVE OUTPUT (sonnet)                                    │
-│  Save to design/brainstorm.md, commit immediately                │
+│  STEP 2: SAVE & CREATE PR                                        │
+│  Save to design/brainstorm.md, run /commit-push-pr               │
 └──────────────────────────────────────────────────────────────────┘
                               │
                               ▼
 ┌──────────────────────────────────────────────────────────────────┐
-│  STEP 3: EVALUATE SCOPE FOR BREAKDOWN (sonnet) ◄── MANDATORY     │
-│  Always check: can this be split into smaller workflows?         │
-│  Smaller, focused workflows preferred over large ones            │
+│  STEP 3: PR-BASED REVIEW LOOP                                    │
+│  Spawn reviewer → /review-comment                                │
+│  → APPROVED: /merge-pr                                           │
+│  → REVISE: /read-review-update-pr, loop (max 3x)                 │
 └──────────────────────────────────────────────────────────────────┘
-                              │
-              ┌───────────────┴───────────────┐
-              │                               │
-              ▼                               ▼
-    ┌─────────────────┐             ┌─────────────────┐
-    │  SPLIT NEEDED   │             │  NO SPLIT       │
-    │  Create sub-    │             │  Continue to    │
-    │  workflows,     │             │  Step 4         │
-    │  restart vrau   │             │                 │
-    └─────────────────┘             └─────────────────┘
-              │                               │
-              ▼                               ▼
-        [STOP - restart              ┌──────────────────────────────┐
-         for each sub-workflow]      │  STEP 4: SELF-REVIEW (sonnet)│
-                                     │  Optional quality check      │
-                                     └──────────────────────────────┘
-                                                      │
-                                                      ▼
-                                     ┌──────────────────────────────┐
-                                     │  STEP 5: FORMAL REVIEW       │
-                                     │  (opus via reviewer agent)   │
-                                     └──────────────────────────────┘
-                                                      │
-                              ┌───────────────────────┴──────────┐
-                              │                                  │
-                              ▼                                  ▼
-                    ┌─────────────────┐                ┌─────────────────┐
-                    │  APPROVED       │                │  NEEDS REVISION │
-                    │  Continue to    │                │  Update, re-    │
-                    │  Step 6         │                │  submit review  │
-                    └─────────────────┘                └─────────────────┘
-                              │                                  │
-                              │                    ┌─────────────┘
-                              │                    │ (max 3 iterations)
-                              │                    ▼
-                              │         ┌─────────────────────────────┐
-                              │         │  Loop back to FORMAL REVIEW │
-                              │         └─────────────────────────────┘
-                              ▼
-                    ┌──────────────────────────────────────────────────┐
-                    │  STEP 6: OPEN PR AND MERGE (haiku)               │
-                    │  Create PR, merge to main                        │
-                    └──────────────────────────────────────────────────┘
                               │
                               ▼
                         [PHASE 2: PLAN]
@@ -136,18 +85,6 @@ That's it. One command handles everything.
 
 ```
 ┌──────────────────────────────────────────────────────────────────┐
-│  STEP 0: RESEARCH AVAILABLE TOOLS (haiku)                        │
-│  Check MCP tools, fetch implementation patterns                  │
-└──────────────────────────────────────────────────────────────────┘
-                              │
-                              ▼
-┌──────────────────────────────────────────────────────────────────┐
-│  PRE-PLAN SETUP (haiku)                                          │
-│  Select design to plan, branch setup, update from main           │
-└──────────────────────────────────────────────────────────────────┘
-                              │
-                              ▼
-┌──────────────────────────────────────────────────────────────────┐
 │  WRITE PLAN (opus)                                               │
 │  Invoke superpowers:writing-plans skill                          │
 │  → Task breakdown → Dependencies → Implementation steps          │
@@ -155,28 +92,14 @@ That's it. One command handles everything.
                               │
                               ▼
 ┌──────────────────────────────────────────────────────────────────┐
-│  REVIEW LOOP (opus via reviewer agent)                           │
-│  Spawn vrau-reviewer, process feedback                           │
+│  PR-BASED REVIEW LOOP                                            │
+│  Run /commit-push-pr, spawn reviewer → /review-comment           │
+│  → APPROVED: /merge-pr                                           │
+│  → REVISE: /read-review-update-pr, loop (max 3x)                 │
 └──────────────────────────────────────────────────────────────────┘
                               │
-              ┌───────────────┴───────────────┐
-              │                               │
-              ▼                               ▼
-    ┌─────────────────┐             ┌─────────────────┐
-    │  APPROVED       │             │  REVISE/RETHINK │
-    │  Continue to    │             │  Use receiving- │
-    │  Phase 3        │             │  plan-review    │
-    └─────────────────┘             │  skill, update  │
-              │                     └─────────────────┘
-              │                               │
-              │                    ┌──────────┘
-              │                    │ (max 3 iterations)
-              │                    ▼
-              │         ┌─────────────────────────────┐
-              │         │  Loop back to REVIEW        │
-              │         └─────────────────────────────┘
-              ▼
-        [PHASE 3: EXECUTE]
+                              ▼
+                        [PHASE 3: EXECUTE]
 ```
 
 ---
@@ -185,32 +108,34 @@ That's it. One command handles everything.
 
 ```
 ┌──────────────────────────────────────────────────────────────────┐
-│  PRE-EXECUTION CHECKS (sonnet)                                   │
-│  Verify plan dependencies, ask permission to proceed             │
-└──────────────────────────────────────────────────────────────────┘
-                              │
-                              ▼
-┌──────────────────────────────────────────────────────────────────┐
 │  EXECUTION (model per task from plan)                            │
-│  Invoke vrau-executing-plans                                     │
 │  → Parse dependency graph → Dispatch parallel groups             │
-│  → Model per task from plan                                      │
-│                                                                  │
-│  Parallel execution:                                             │
-│  • Tasks in same group run concurrently                          │
-│  • Wait for group completion before next group                   │
+│  → Code review after each group                                  │
 └──────────────────────────────────────────────────────────────────┘
                               │
                               ▼
 ┌──────────────────────────────────────────────────────────────────┐
-│  POST-EXECUTION (haiku)                                          │
-│  Update README with execution log                                │
-│  Open PR with gh pr create                                       │
+│  FINALIZE                                                        │
+│  Verification → Final PR (closes issue if tracking)              │
 └──────────────────────────────────────────────────────────────────┘
                               │
                               ▼
                         [WORKFLOW COMPLETE]
 ```
+
+## Slash Commands
+
+Vrau provides atomic operations as slash commands:
+
+| Command | Purpose |
+|---------|---------|
+| `/start-job` | Verify/create GitHub issue, link to workflow |
+| `/track-task` | Post status update comment to linked issue |
+| `/commit-push-pr` | Stage, commit, push, create PR atomically |
+| `/review-comment` | Post structured review as PR comment |
+| `/read-review-update-pr` | Read review, make changes, push |
+| `/merge-pr` | Merge approved PR to main |
+| `/sync-main` | Fetch and merge main into current branch |
 
 ## Workflow Files
 
@@ -218,7 +143,7 @@ All workflow artifacts are stored in `docs/designs/`:
 
 ```
 docs/designs/2026-01-16-feat-user-auth/
-├── README.md           # Workflow metadata
+├── README.md           # Workflow metadata (tracking mode, issue link)
 ├── design/
 │   └── brainstorm.md   # Phase 1 output
 └── plan/
@@ -260,31 +185,27 @@ Each task specifies which model to use:
 
 ## State Detection
 
-Vrau knows where you are by checking workflow contents. Detection depends on your doc approach:
+Vrau knows where you are by checking workflow contents:
 
-**Doc Approach A (files) or C (local-only):**
+**Tracking Mode: GitHub**
+
+Uses issue comments for status. PRs track review progress.
+
+**Tracking Mode: None**
 
 | Files Present | State | What Happens |
 |---------------|-------|--------------|
 | README.md only | Not started | Begin brainstorm |
 | + design/*.md | Brainstorm done | Begin planning |
 | + plan/*.md | Plan done | Begin execution |
-| Execution markers | Done | Show summary |
 
-**Doc Approach B (GitHub Issues):**
-
-| README Contents | State | What Happens |
-|-----------------|-------|--------------|
-| No issue links | Not started | Begin brainstorm |
-| Has issue link(s), no plan/*.md | Brainstorm done | Begin planning |
-| Has issue link(s) + plan/*.md | Plan done | Begin execution |
-| Execution markers | Done | Show summary |
+When tracking mode is None, vrau asks user to confirm detected state before proceeding.
 
 ## Philosophy
 
 **Autonomous execution, user-driven decisions.**
 
-Vrau automates the tedious parts while keeping you in control of all key decisions. Each phase has a review checkpoint where you can adjust course.
+Vrau automates the tedious parts while keeping you in control of all key decisions. Each phase has a PR-based review checkpoint where you can adjust course.
 
 ## License
 
