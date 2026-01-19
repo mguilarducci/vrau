@@ -20,6 +20,9 @@ Next phase: **Plan** (after PR merged) → NOT Execute
 | "I can skip planning since I know what to do" | Plans get reviewed separately. Different concerns. |
 | "After approval I can start coding" | After approval → Plan phase. Not coding. |
 | "The brainstorm has specific code changes" | Still needs Plan phase to organize execution order. |
+| "I can review it myself" | NO. You wrote it, you CANNOT review it. Spawn a separate agent. |
+| "I'll just check it quickly before spawning reviewer" | That's self-review. Spawn reviewer INSTEAD of reviewing yourself. |
+| "I understand it best since I wrote it" | That's WHY you can't review it. Fresh eyes catch what you missed. |
 
 **If any thought above occurs: STOP. The workflow is Brainstorm → Plan → Execute. No shortcuts.**
 
@@ -43,7 +46,10 @@ git branch --show-current
 6. If Tracking Mode: GitHub → run /track-task "Brainstorm document saved to design/brainstorm.md"
 7. Run /commit-push-pr - title: "[Review] Brainstorm: <task>"
 8. If Tracking Mode: GitHub → run /track-task "PR #X created for brainstorm review"
-9. Spawn reviewer → run /review-comment on PR
+9. **Spawn SEPARATE reviewer** (you CANNOT review your own work):
+   - Use Task tool with `vrau:vrau-reviewer` subagent
+   - Reviewer runs /review-comment on PR
+   - You wrote it = you cannot review it. No exceptions.
 10. If Tracking Mode: GitHub → run /track-task "Reviewer verdict: <VERDICT>"
 11. Handle feedback:
     - APPROVED → run /merge-pr, then /track-task "Brainstorm PR merged"

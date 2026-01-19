@@ -37,6 +37,9 @@ git log --oneline main | head -20 | grep -i "brainstorm"
 | "The brainstorm looks complete enough" | Complete ≠ Approved. Check if PR was merged. |
 | "I can start planning while review happens" | NO. Wait for approval. Review may change direction. |
 | "Review is just a formality" | Review catches real issues. Never skip. |
+| "I can review my own plan" | NO. You wrote it, you CANNOT review it. Spawn a separate agent. |
+| "I'll just check it quickly myself" | That's self-review. Spawn reviewer INSTEAD. |
+| "I understand it best since I wrote it" | That's WHY you can't review it. Fresh eyes catch what you missed. |
 
 **If any thought above occurs: STOP. Verify the brainstorm PR was merged.**
 
@@ -63,7 +66,10 @@ git branch --show-current
 6. If Tracking Mode: GitHub → run /track-task "Plan document saved to plan/<name>.md"
 7. Run /commit-push-pr - title: "[Review] Plan: <task>"
 8. If Tracking Mode: GitHub → run /track-task "PR #X created for plan review"
-9. Spawn reviewer → run /review-comment on PR
+9. **Spawn SEPARATE reviewer** (you CANNOT review your own work):
+   - Use Task tool with `vrau:vrau-reviewer` subagent
+   - Reviewer runs /review-comment on PR
+   - You wrote it = you cannot review it. No exceptions.
 10. If Tracking Mode: GitHub → run /track-task "Reviewer verdict: <VERDICT>"
 11. Handle feedback:
     - APPROVED → run /merge-pr, then /track-task "Plan PR merged"

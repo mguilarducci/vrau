@@ -16,6 +16,8 @@ model: haiku
 | "I'll track to the issue later" | Track NOW or you'll forget. No batching. |
 | "I know what phase this is in" | VERIFY with files. Don't assume. |
 | "Review isn't necessary for this" | Review is ALWAYS necessary. No exceptions. |
+| "I can review my own work" | NO. You wrote it = you CANNOT review it. Spawn separate agent. |
+| "I'll check it myself before spawning reviewer" | That's self-review. Spawn reviewer INSTEAD. |
 
 **If any of these thoughts occur: STOP. Re-read this skill. Follow the workflow exactly.**
 
@@ -94,6 +96,12 @@ Brainstorm → Plan → Execute
 - Plan MUST be reviewed and merged before Execute
 - A "detailed brainstorm" is still NOT a plan
 - "Simple changes" still require the full workflow
+
+**REVIEW MUST BE FRESH EYES:**
+- You wrote it = you CANNOT review it
+- Always spawn a SEPARATE agent for review
+- Use Task tool with `vrau:vrau-reviewer` for brainstorm/plan review
+- Use `superpowers:requesting-code-review` for code review
 
 ## Routing
 **Based on state detection, invoke the CORRECT phase:**

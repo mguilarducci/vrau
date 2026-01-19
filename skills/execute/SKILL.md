@@ -39,6 +39,9 @@ git log --oneline main | head -20 | grep -i "plan"
 | "The changes are simple/already done" | Sunk cost. Delete unplanned work, follow workflow. |
 | "I'll verify the plan was approved later" | Verify NOW. Before any implementation. |
 | "Review said APPROVED on the brainstorm" | Brainstorm approval → Plan phase. NOT Execute. |
+| "I can review my own code" | NO. You wrote it, you CANNOT review it. Request fresh eyes. |
+| "I'll just check my changes quickly" | That's self-review. Request code review from fresh eyes INSTEAD. |
+| "I tested it so it's fine" | Testing ≠ Review. Fresh eyes catch design issues you missed. |
 
 **If any thought above occurs: STOP. You're rationalizing. Follow the workflow.**
 
@@ -61,7 +64,9 @@ git branch --show-current
    - Dispatch parallel agents for independent tasks
    - ALWAYS verify with live sources - docs change
    - After each group: /track-task "Completed task group X (tasks N, M, ...)"
-5. After EACH parallel group: use superpowers:requesting-code-review (fresh eyes)
+5. After EACH parallel group: **request code review from SEPARATE agent** (fresh eyes)
+   - Use superpowers:requesting-code-review (spawns reviewer subagent)
+   - You wrote the code = you CANNOT review it. No exceptions.
    - If Tracking Mode: GitHub → run /track-task "Code review for group X: <VERDICT>"
    - APPROVED → continue to next group
    - Issues found → use superpowers:receiving-code-review, then request NEW fresh review
