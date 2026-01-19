@@ -6,6 +6,19 @@ model: haiku
 
 # Vrau Workflow
 
+## Red Flags - STOP If You're Thinking This
+
+| Thought | Reality |
+|---------|---------|
+| "The brainstorm is detailed enough to skip planning" | Brainstorm ≠ Plan. NEVER skip phases. |
+| "I can just implement this directly" | Implementation requires an APPROVED PLAN. No exceptions. |
+| "The changes are simple/already done" | Sunk cost. Delete it, follow the workflow. |
+| "I'll track to the issue later" | Track NOW or you'll forget. No batching. |
+| "I know what phase this is in" | VERIFY with files. Don't assume. |
+| "Review isn't necessary for this" | Review is ALWAYS necessary. No exceptions. |
+
+**If any of these thoughts occur: STOP. Re-read this skill. Follow the workflow exactly.**
+
 ## CRITICAL SAFETY RULE
 
 **NEVER COMMIT TO MAIN BRANCH**
@@ -65,7 +78,30 @@ Check files in `docs/designs/<workflow>/`:
 
 **For Tracking Mode: None** - vrau asks user to confirm detected state before proceeding.
 
+## Mandatory Phase Order
+
+```
+Brainstorm → Plan → Execute
+    ↓          ↓        ↓
+ (review)  (review)  (review)
+    ↓          ↓        ↓
+  merge     merge     merge
+```
+
+**PHASES CANNOT BE SKIPPED. This is not negotiable.**
+
+- Brainstorm MUST be reviewed and merged before Plan
+- Plan MUST be reviewed and merged before Execute
+- A "detailed brainstorm" is still NOT a plan
+- "Simple changes" still require the full workflow
+
 ## Routing
-- Brainstorm needed → invoke vrau:brainstorm
-- Plan needed → invoke vrau:plan
-- Execute needed → invoke vrau:execute
+**Based on state detection, invoke the CORRECT phase:**
+- Only README.md → invoke vrau:brainstorm (Phase 1)
+- Has `design/*.md`, no `plan/*.md` → invoke vrau:plan (Phase 2)
+- Has `plan/*.md` → invoke vrau:execute (Phase 3)
+
+**NEVER skip phases:**
+- If only brainstorm exists → MUST do plan next, not execute
+- If no plan exists → CANNOT execute, even if brainstorm is "detailed"
+- Each phase has its own review gate that MUST pass

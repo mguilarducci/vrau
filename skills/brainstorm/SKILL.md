@@ -8,7 +8,20 @@ model: sonnet
 
 ## Checkpoint (READ THIS FIRST)
 You are in: **BRAINSTORM PHASE**
-Next phase: Plan (after PR merged)
+Next phase: **Plan** (after PR merged) → NOT Execute
+
+**After brainstorm approval, invoke vrau:plan. NEVER skip to vrau:execute.**
+
+## Red Flags - STOP If You're Thinking This
+
+| Thought | Reality |
+|---------|---------|
+| "This brainstorm is detailed enough to implement directly" | Brainstorm ≠ Plan. Plan phase creates actionable tasks. |
+| "I can skip planning since I know what to do" | Plans get reviewed separately. Different concerns. |
+| "After approval I can start coding" | After approval → Plan phase. Not coding. |
+| "The brainstorm has specific code changes" | Still needs Plan phase to organize execution order. |
+
+**If any thought above occurs: STOP. The workflow is Brainstorm → Plan → Execute. No shortcuts.**
 
 ## CRITICAL SAFETY RULE
 
