@@ -11,6 +11,35 @@ You are in: **PLAN PHASE**
 Previous: Brainstorm (must be merged to main)
 Next: Execute (after PR merged)
 
+## MANDATORY Phase Gate Verification
+
+**Before doing ANYTHING else, verify these prerequisites:**
+
+```bash
+# 1. Check brainstorm exists
+ls docs/designs/*/design/*.md
+
+# 2. Verify brainstorm PR was merged (not just created)
+git log --oneline main | head -20 | grep -i "brainstorm"
+```
+
+**STOP if:**
+- No `design/*.md` files exist → You need Brainstorm phase first
+- Brainstorm PR not merged to main → Brainstorm needs review/approval first
+- Brainstorm marked "Status: Brainstorm Phase" without approval → Still needs review
+
+**An unreviewed brainstorm cannot proceed to planning.**
+
+## Red Flags - STOP If You're Thinking This
+
+| Thought | Reality |
+|---------|---------|
+| "The brainstorm looks complete enough" | Complete ≠ Approved. Check if PR was merged. |
+| "I can start planning while review happens" | NO. Wait for approval. Review may change direction. |
+| "Review is just a formality" | Review catches real issues. Never skip. |
+
+**If any thought above occurs: STOP. Verify the brainstorm PR was merged.**
+
 ## CRITICAL SAFETY RULE
 
 **NEVER COMMIT TO MAIN BRANCH**
