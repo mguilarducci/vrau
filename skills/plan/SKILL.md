@@ -25,18 +25,21 @@ git branch --show-current
 ## Steps
 1. Run /sync-main - ensure branch is up to date
 2. Ask user: worktree (use superpowers:using-git-worktrees) or new branch?
-3. Write plan using superpowers:writing-plans
+3. If Tracking Mode: GitHub → run /track-task "Started plan phase"
+4. Write plan using superpowers:writing-plans
    - Include dependency graph, parallel groups, model per task
    - Include commit points (when to commit during execution)
    - ALWAYS verify with live sources - docs change
-4. Save to `plan/<design>-plan.md`, commit, push
-5. Run /commit-push-pr - title: "[Review] Plan: <task>"
-6. Spawn reviewer → run /review-comment on PR
-7. Handle feedback:
-   - APPROVED → run /merge-pr, proceed to step 8
-   - REVISE/RETHINK → run /read-review-update-pr, loop to step 6 (max 3 iterations)
-   - After 3 failures → ASK USER what to do
-8. If Tracking Mode: GitHub → run /track-task
+5. Save to `plan/<design>-plan.md`, commit, push
+6. If Tracking Mode: GitHub → run /track-task "Plan document saved to plan/<name>.md"
+7. Run /commit-push-pr - title: "[Review] Plan: <task>"
+8. If Tracking Mode: GitHub → run /track-task "PR #X created for plan review"
+9. Spawn reviewer → run /review-comment on PR
+10. If Tracking Mode: GitHub → run /track-task "Reviewer verdict: <VERDICT>"
+11. Handle feedback:
+    - APPROVED → run /merge-pr, then /track-task "Plan PR merged"
+    - REVISE/RETHINK → run /read-review-update-pr, loop to step 9 (max 3 iterations)
+    - After 3 failures → ASK USER what to do
 
 ## Handling Review Feedback
 - **APPROVED** → proceed to merge

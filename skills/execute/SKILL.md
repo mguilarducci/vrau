@@ -25,16 +25,20 @@ git branch --show-current
 ## Steps
 1. Run /sync-main - ensure branch is up to date
 2. Ask user: worktree (use superpowers:using-git-worktrees) or new branch?
-3. Read plan, execute tasks by parallel groups
+3. If Tracking Mode: GitHub → run /track-task "Started execute phase"
+4. Read plan, execute tasks by parallel groups
    - Dispatch parallel agents for independent tasks
    - ALWAYS verify with live sources - docs change
-4. After EACH parallel group: use superpowers:requesting-code-review (fresh eyes)
+   - After each group: /track-task "Completed task group X (tasks N, M, ...)"
+5. After EACH parallel group: use superpowers:requesting-code-review (fresh eyes)
+   - If Tracking Mode: GitHub → run /track-task "Code review for group X: <VERDICT>"
    - APPROVED → continue to next group
    - Issues found → use superpowers:receiving-code-review, then request NEW fresh review
-5. If Tracking Mode: GitHub → run /track-task (status update)
-6. Run verification (superpowers:verification-before-completion)
-7. Use superpowers:finishing-a-development-branch
+6. If Tracking Mode: GitHub → run /track-task "All tasks complete, running verification"
+7. Run verification (superpowers:verification-before-completion)
+8. Use superpowers:finishing-a-development-branch
    - If Tracking Mode: GitHub → include "Closes #<issue>" in final PR
+   - If Tracking Mode: GitHub → run /track-task "Final PR #X created (closes #<issue>)"
    - Otherwise: standard PR
 
 ## Critical Rules

@@ -23,16 +23,19 @@ git branch --show-current
 
 ## Steps
 1. Run /sync-main - ensure branch is up to date
-2. **Invoke superpowers:brainstorming skill** - ask questions one at a time, use multiple choice when possible, verify with tools/MCP/web
-3. Evaluate scope - split if too large
-4. Save to `design/brainstorm.md`, commit, push
-5. Run /commit-push-pr - title: "[Review] Brainstorm: <task>"
-6. Spawn reviewer → run /review-comment on PR
-7. Handle feedback:
-   - APPROVED → run /merge-pr, proceed to step 8
-   - REVISE/RETHINK → run /read-review-update-pr, loop to step 6 (max 3 iterations)
-   - After 3 failures → ASK USER what to do
-8. If Tracking Mode: GitHub → run /track-task
+2. If Tracking Mode: GitHub → run /track-task "Started brainstorm phase"
+3. **Invoke superpowers:brainstorming skill** - ask questions one at a time, use multiple choice when possible, verify with tools/MCP/web
+4. Evaluate scope - split if too large
+5. Save to `design/brainstorm.md`, commit, push
+6. If Tracking Mode: GitHub → run /track-task "Brainstorm document saved to design/brainstorm.md"
+7. Run /commit-push-pr - title: "[Review] Brainstorm: <task>"
+8. If Tracking Mode: GitHub → run /track-task "PR #X created for brainstorm review"
+9. Spawn reviewer → run /review-comment on PR
+10. If Tracking Mode: GitHub → run /track-task "Reviewer verdict: <VERDICT>"
+11. Handle feedback:
+    - APPROVED → run /merge-pr, then /track-task "Brainstorm PR merged"
+    - REVISE/RETHINK → run /read-review-update-pr, loop to step 9 (max 3 iterations)
+    - After 3 failures → ASK USER what to do
 
 **Note:** Branch/worktree setup already done by vrau entry point during workflow setup
 
